@@ -1,1 +1,4 @@
-# Computer lab 1
+# Sequencing data formats and visualization 
+## FASTQ
+## BAM
+## VCF 
