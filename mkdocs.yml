@@ -1,8 +1,8 @@
 site_name: Precision Medicine 1
 nav:
   - Introduction: intro.md
-  - Lab1 - IGV and file formats: lab1.md
-  - Lab2 - MultiQC: lab2.md
+  - Lab1 - Sequencing data formats and visualization: lab1.md
+  - Lab2 - Sequencing Quality Control: lab2.md
   - Lab3 - Germline variants: lab3.md
   - Lab4 - Somatic variants: lab4.md
 
