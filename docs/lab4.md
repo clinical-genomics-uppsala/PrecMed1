@@ -20,26 +20,7 @@ Lets first explore some different types of variant that can occur in a somatic s
 Open IGV and then open the `RNA-SeraSeq_R.FGFR3.TACC3.bam` file. 
 
 ### Variants
-:question: 
-In the regions below there are variants, determine which variants is an
-
-* Somatic SNV
-* Germline SNV
-* SNV artifact
-* Insertion
-* Deletion
-
-:question: 
-Determine the exact start position of the variants for all non-artifact variants
-
-:question: 
-Determine the number of supporting reads for all non-artifact variants
-
-:question: 
-Determine the allele frequency for all non-artifact variants
-
-!!! TIP
-    Copy the regions into IGV
+In the regions below there are different type of variants or mutations.
 
 **Regions:**
 
@@ -49,18 +30,38 @@ Determine the allele frequency for all non-artifact variants
 * chr3:41,265,566-41,266,697
 * chr2:29,416,005-29,416,044
 
+!!! question
+    :question: 
+    In the regions below there are variants, determine which variants is an
+
+    * Somatic SNV
+    * Germline SNV
+    * SNV artifact
+    * Insertion
+    * Deletion
+
+
+!!! question
+    :question: 
+    Determine the exact start position of the variants for all non-artifact variants
+
+!!! question
+    :question: 
+    Determine the number of supporting reads for all non-artifact variants
+
+!!! question
+    :question: 
+    Determine the allele frequency for all non-artifact variants
+
 !!! TIP
-    Zoom in when needed
-    
-!!! TIP
-    Left click on positions in the coverage track to see support for each allele
-    
-!!! TIP
-    Right click in the read track and choose Collapsed or Squished to see more of the data
+    * Copy the regions into IGV
+    * Zoom in when needed
+    * Left click on positions in the coverage track to see support for each allele
+    * Right click in the read track and choose Collapsed or Squished to see more of the data
 
 ---
 
-### Fusion
+### Fusions
 Now, lets look at a fusion event between the genes FGFR3 and TACC3.
 
 1. Make a new session in IGV or open a new window.
@@ -82,19 +83,22 @@ Using the current visualization settings it is hard to see the fusion break poin
 5. Click the Save button
 
 <br/>
-:question:
-Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine between which exons the fusion has occurred.
+!!! question
+    :question:
+    Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine between which exons the fusion has occurred.
 
 ### Fusion visualization using the Arriba fusion caller
 Somatic fusion calling can be performed by a number of different callers. One such caller is caller [Arriba](https://github.com/suhrig/arriba). The nice thing with this caller is that the fusions that they call are visualized in a very nice way.
 
 Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The first fusion in this document is the same one that we previously studied in IGV, FGFR3::TACC3. Here we can see the fusion breakpoint as well as the direction and if it is in-frame. This together with the included protein domains in the fusion product is important to determine if the fusion is clinically relevant.
 
-:question:
-Which of the two proteins are mainly involved in cancer?
+!!! question
+    :question:
+    Which of the two proteins are mainly involved in cancer?
 
-:question:
-Why is it clinically relevant to find FGFR3::TACC3 fusions.
+!!! question
+    :question:
+    Why is it clinically relevant to find FGFR3::TACC3 fusions.
 
 <br/>
 Scroll further down in the document to find further fusion that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
@@ -103,4 +107,5 @@ Scroll further down in the document to find further fusion that Arriba has found
 
 ## Variant annotation in vcf
 Use grep to investigate the variants found earlier.
+
 ---
