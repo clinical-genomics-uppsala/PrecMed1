@@ -1,9 +1,16 @@
 # Computer lab 4 - Somatic variants
 In this computer lab we are going to explore different kinds of somatic variants.
 
+## Overview
+1. Explore different somatic variants in IGV
+2. Look at a gene fusion
+3. Run a small somatic pipeline
+4. Variant annotations in a vcf file
+5. Somatic copy number variations
+
 ## Prerequisites
 * IGV
-* Shell / terminal
+* Shell / terminal / putty
 * rsync
 
 ## Files
@@ -70,8 +77,9 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3.
 > chr4:1807661-1809661 chr4:1738429-1744429
 
 <br/>
-:question:
-Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
+!!! question
+    :question:
+    Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
 Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
@@ -103,9 +111,42 @@ Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The fir
 <br/>
 Scroll further down in the document to find further fusion that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
 
+---
+
 ## Run somatic pipeline
+
+---
 
 ## Variant annotation in vcf
 Use grep to investigate the variants found earlier.
+
+---
+
+## Copy number variation (CNV)
+In cancer cells there is quite common with large and many copy number alterations, especially in certain solid tumors like lung cancers. Here, we are going to look at how it can look in a few solid cancer samples. 
+
+### Normal sample
+However, lets start with how it looks in a normal sample without alterations. Open `CNV/normal_sample.cnv.html` in a browser. The first plot show the zoomed-in view of the data and the second plot and overview of the entire genome. There is also a table to the right with potentially clinically relevant CNVs. Consider the tips below and play around with the data in the CNV html report.
+
+!!! TIP
+    * Click on a chromosome in the overview to show it in the top plot.
+    * In the top plot, left-click and drag to zoom in.
+    * In the top plot, left-click and to zoom out to chromosome view.
+
+!!! NOTE
+    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (2) and then log2 is applied. A normal copy number of 2 is therefore log2(2/2)=log2(1)=0. One extra copy is log2(3/2)=log(1,5)=0.6 and one lost copy is log2(1/2)=log(0,5)=-1. However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller.
+
+!!! NOTE
+    The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
+
+### Sample with CNVs
+
+### Sample with clinically relevant amplification
+
+### Sample with clinically relevant deletion
+
+!!! question
+    :question:
+    A chromosome has two copies according to the log2ratio plot but there is a clear separation in the VAF-signal with all SNPs far away from 50% in allele frequency. What has happened to the chromosome in this tumor to explain these data?
 
 ---
