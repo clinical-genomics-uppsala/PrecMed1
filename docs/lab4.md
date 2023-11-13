@@ -134,19 +134,59 @@ However, lets start with how it looks in a normal sample without alterations. Op
     * In the top plot, left-click and to zoom out to chromosome view.
 
 !!! NOTE
-    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (2) and then log2 is applied. A normal copy number of 2 is therefore log2(2/2)=log2(1)=0. One extra copy is log2(3/2)=log(1,5)=0.6 and one lost copy is log2(1/2)=log(0,5)=-1. However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller.
+    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (2) and then log2 is applied. A normal copy number of 2 is therefore log2(2/2)=log2(1)=0. One extra copy is log2(3/2)=log(1,5)=0.6 and one lost copy is log2(1/2)=log(0,5)=-1. However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected.
 
 !!! NOTE
     The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
 
 ### Sample with CNVs
-
-### Sample with clinically relevant amplification
-
-### Sample with clinically relevant deletion
+Now, lets consider a sample with chromosomal alterations: `CNV/tumor.cnv.html`. 
 
 !!! question
     :question:
-    A chromosome has two copies according to the log2ratio plot but there is a clear separation in the VAF-signal with all SNPs far away from 50% in allele frequency. What has happened to the chromosome in this tumor to explain these data?
+    How many chromosomes have deletions?
+
+!!! question
+    :question:
+    How many chromosomes have duplications?
+
+!!! question
+    :question:
+    Look at VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation) stronger for a deletion than an duplication?
+
+### Sample with clinically relevant amplification
+In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Cancers with this amplification are often resistant to tyrosine kinase inhibitors and can therefore affect the treatment of the patient. 
+
+Find the EGFR amplification and zoom in on the gene.
+
+!!! TIP
+    * When there are really high amplifications the data is sometimes of the scale. Click the box "Zoom to data extent" to see all the data.
+
+!!! question
+    :question:
+    What is the approximate log2 ratio of the EGFR mutation? 
+
+!!! question
+    :question:
+    How many copies does this log2 ratio represent?
+
+!!! question
+    :question:
+    In the table, what is the actual copy number reported? (The table reports the copy number after taking tumor content into account.)
+
+
+### Sample with clinically relevant deletion
+In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the gene CDKN2A and CDKN2B. This is a diagnostic marker is some cancers associated with poor prognosis. 
+
+Find the CDKN2A and CDKN2B deletion. 
+
+!!! question
+    :question:
+    Based on the copy number plot and the VAF-plot it seems that most of chromosome 10 has only one copy in the tumor (hemizygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region overlapping CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
+
+### Final / extra CNV question
+!!! question
+    :question:
+    Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
 ---
