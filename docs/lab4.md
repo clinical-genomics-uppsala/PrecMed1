@@ -1,9 +1,16 @@
 # Computer lab 4 - Somatic variants
 In this computer lab we are going to explore different kinds of somatic variants.
 
+## Overview
+1. Explore different somatic variants in IGV
+2. Look at a gene fusion
+3. Run a small somatic pipeline
+4. Variant annotations in a vcf file
+5. Somatic copy number variations
+
 ## Prerequisites
 * IGV
-* Shell / terminal
+* Shell / terminal / putty
 * rsync
 
 ## Files
@@ -70,8 +77,9 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3.
 > chr4:1807661-1809661 chr4:1738429-1744429
 
 <br/>
-:question:
-Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
+!!! question
+    :question:
+    Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
 Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
@@ -103,9 +111,82 @@ Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The fir
 <br/>
 Scroll further down in the document to find further fusion that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
 
+---
+
 ## Run somatic pipeline
+
+---
 
 ## Variant annotation in vcf
 Use grep to investigate the variants found earlier.
+
+---
+
+## Copy number variation (CNV)
+In cancer cells there is quite common with large and many copy number alterations, especially in certain solid tumors like lung cancers. Here, we are going to look at how it can look in a few solid cancer samples. 
+
+### Normal sample
+However, lets start with how it looks in a normal sample without alterations. Open `CNV/normal_sample.cnv.html` in a browser. The first plot show the zoomed-in view of the data and the second plot and overview of the entire genome. There is also a table to the right with potentially clinically relevant CNVs. Consider the tips below and play around with the data in the CNV html report.
+
+!!! TIP
+    * Click on a chromosome in the overview to show it in the top plot.
+    * In the top plot, left-click and drag to zoom in.
+    * In the top plot, left-click and to zoom out to chromosome view.
+
+!!! NOTE
+    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (2) and then log2 is applied. A normal copy number of 2 is therefore log2(2/2)=log2(1)=0. One extra copy is log2(3/2)=log(1,5)=0.6 and one lost copy is log2(1/2)=log(0,5)=-1. However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected.
+
+!!! NOTE
+    The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
+
+### Sample with CNVs
+Now, lets consider a sample with chromosomal alterations: `CNV/tumor.cnv.html`. 
+
+!!! question
+    :question:
+    How many chromosomes have deletions?
+
+!!! question
+    :question:
+    How many chromosomes have duplications?
+
+!!! question
+    :question:
+    Look at VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation) stronger for a deletion than an duplication?
+
+### Sample with clinically relevant amplification
+In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Cancers with this amplification are often resistant to tyrosine kinase inhibitors and can therefore affect the treatment of the patient. 
+
+Find the EGFR amplification and zoom in on the gene.
+
+!!! TIP
+    * When there are really high amplifications the data is sometimes of the scale. Click the box "Zoom to data extent" to see all the data.
+
+!!! question
+    :question:
+    What is the approximate log2 ratio of the EGFR mutation? 
+
+!!! question
+    :question:
+    How many copies does this log2 ratio represent?
+
+!!! question
+    :question:
+    In the table, what is the actual copy number reported? (The table reports the copy number after taking tumor content into account.)
+
+
+### Sample with clinically relevant deletion
+In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the gene CDKN2A and CDKN2B. This is a diagnostic marker is some cancers associated with poor prognosis. 
+
+Find the CDKN2A and CDKN2B deletion. 
+
+!!! question
+    :question:
+    Based on the copy number plot and the VAF-plot it seems that most of chromosome 10 has only one copy in the tumor (hemizygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region overlapping CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
+
+### Final / extra CNV question
+!!! question
+    :question:
+    Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
 ---
