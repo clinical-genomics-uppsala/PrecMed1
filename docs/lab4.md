@@ -31,21 +31,21 @@ In the regions below there are different type of variants or mutations.
 
 **Regions:**
 
-* chr7:140,447,299-140,450,937
-* chr2:29,416,286-29,416,459
+* chr7:140,453,022-140,453,248
+* chr2:29,416,330-29,416,416
 * chr7:140,432,776-140,436,414
-* chr3:41,265,566-41,266,697
+* chr3:41,265,991-41,266,273
 * chr2:29,416,005-29,416,044
 
 !!! question
     :question: 
-    In the regions below there are variants, determine which variants is an
+    In the regions above there are variants, determine which variant is of which type (there can be more than one)
 
+    * SNV artifact
     * Somatic SNV
     * Germline SNV
-    * SNV artifact
-    * Insertion
     * Deletion
+    * Insertion
 
 
 !!! question
@@ -118,7 +118,17 @@ Scroll further down in the document to find further fusion that Arriba has found
 ---
 
 ## Variant annotation in vcf
-Use grep to investigate the variants found earlier.
+Use the grep command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
+
+Investigate the SNV found in the region chr7:140,453,022-140,453,248. 
+
+!!! question
+    :question:
+    What effect does the variant have on the protein sequence?
+
+!!! question
+    :question:
+    Does it seem to be clinically relevant? Motivate!
 
 ---
 
@@ -172,11 +182,11 @@ Find the EGFR amplification and zoom in on the gene.
 
 !!! question
     :question:
-    In the table, what is the actual copy number reported? (The table reports the copy number after taking tumor content into account.)
+    The table reports the copy number after taking tumor content into account. What is the actual reported copy number estimated in the tumor?
 
 
 ### Sample with clinically relevant deletion
-In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the gene CDKN2A and CDKN2B. This is a diagnostic marker is some cancers associated with poor prognosis. 
+In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the gene CDKN2A and CDKN2B. This is a diagnostic marker in some cancer types, associated with poor prognosis. 
 
 Find the CDKN2A and CDKN2B deletion. 
 
