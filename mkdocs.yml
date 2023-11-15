@@ -6,7 +6,7 @@ nav:
   - Lab3 - Germline variants: lab3.md
   - Lab4 - Somatic variants: lab4.md
 
-theme: readthedocs
+theme: material
 extra_css: [extra.css]
 markdown_extensions:
   - abbr
