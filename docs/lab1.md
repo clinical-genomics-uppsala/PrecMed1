@@ -30,13 +30,65 @@ GTTTTGTCGCTGCGTTCAGTTTATGGGTGCGGGTGTTATGATGCTTCGCTTTACGTGACAAGAAAGTTAGTAGATTGTCT
 $&'((&%$$$.$2/=-*#'.2'&&##$$#$#&&(&+-%'(%&#"###""$$%#)%,+)+&'(,&%*((%%&%$%'+),,+,,&%$')1+*$.&+6*+(*%(&'*(''&%*+,*)('%#$$$%,$&&'&)))12)*&/*,364$%$%))$'')#%%&%$#$%$$#('$(%$%$%%$$*$&$%)''%%$$&'&$)+2++,)&%
 ```
 
-### Assignment 1
 
-In `PATH` you will find an example of a fastq file generated with a NovaSeq sequencing machine: ``FILENAME.fq`
+### Assignment 1 
+!!! question 
+	In `PATH` you will find an example of a fastq file generated with a NovaSeq sequencing machine: ``FILENAME.fq`
+    
 
-1. Have a look at the quality scores, what do you think is happening here? 
+	:question:
+	Have a look at the quality scores, what do you think is happening here? 
+     
 
-2. What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). We are counting from 33 in the decimal system. 
+	:question:
+	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). We are counting from 33 in the decimal system. 
 
 ## BAM
-## VCF 
+Output from mapping is stored in .sam/.bam/.cram files.
+These files are tab-delimited and container a header, where header rows start with an @, and the alignment data, with one row per aligned sequence. 
+
+
+### Assignment 2 
+
+In your terminal look and compare the bam files in the directory. You can use samtools to explore bam files. Have a look at the [documentation](https://www.htslib.org/doc/samtools-view.html). We first want to explore the bam header, so find the command flag to include or show the header in your output. These files are big so make sure to pipe into `less`. 
+
+!!! question
+	
+
+	:question:
+	Notice that there are tags in the header. You can check what these mean in the [samtools manual](https://samtools.github.io/hts-specs/SAMv1.pdf) In the file HD892_df_C which programs have been used to create the bam file? 
+
+
+### Assignment 3
+
+Open IGV and select reference hg19. Now load the files HD829_df_A, HD829_df_C and in IGV. You need to select both the .bam files and the .bai files.
+!!! question
+
+
+	:question:
+	Navigate to the gene ABL1. Look at the reference at the bottom to find where the exons are and where targeted regions might be sequenced. Zoom in closer and navigate to exonic sites. What is the difference between the different .bam files? See how the reads are mapped and also look at the coverage plots at the top of each .bam file. Which sample do you think is a sequenced with a Whole Genome, amplicon and capture strategy?  
+
+
+	:question: 
+	Navigate to position 133748283. We know that there is a variant here in the sample sequenced with an amplicon or capture method. You can get a read count and allele frequency  when clicking at the position in the coverage plot.  What is the allele frequency and read depth at this position for the capture sequence data? What is about the amplicon sequence data? And what about the WGS sample? 
+
+
+	:question:
+	Navigate to chr9:5070021.  Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence? 
+     
+
+	Navigate to chr9:5073770. What type of variant do you find here? What is the read depth, and allele frequencies in the different .bam files? 
+
+
+	:question:
+	Navigate to chr5:170837543. Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence?
+
+ 
+	:question:
+	Navigate to chr5:170846329-170847798. Look at the sample sequence with a capture method. Make sure to scroll all the way up so you can see the coverage plot. What is the read depth here? 
+
+
+	??? info
+		You can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality. 
+
+##  VCF 
