@@ -1,0 +1,83 @@
+rule all:
+   input:
+      "analysis/mutect/HD832.vcf"
+
+configfile: "config.yaml"
+
+# Perform trimming of reads to remove unwanted adapter sequences
+rule fastp:
+   input:
+     read1="fastq/{sample}.filtered.sorted.R1.fastq.gz",
+     read2="fastq/{sample}.filtered.sorted.R2.fastq.gz",
+   output:
+     read1="analysis/fastp/{sample}.trimmed.R1.fastq.gz",
+     read2="analysis/fastp/{sample}.trimmed.R2.fastq.gz"
+   log:
+     "analysis/fastp/{sample}.log"
+   container:
+     "img/fastp.sif"
+   shell:
+     "(fastp "
+     "-i {input.read1} "
+     "-I {input.read2} "
+     "-o {output.read1} "
+     "-O {output.read2})"
+     " &> {log} "
+
+# Align against reference genome specifig by procived config.yaml file
+# see profile/config.yaml
+rule bwa_mem:
+    input:
+        reads=["analysis/fastp/{sample}.trimmed.R1.fastq.gz", "analysis/fastp/{sample}.trimmed.R2.fastq.gz"]
+    output:
+        "analysis/bwa_mem/{sample}.bam"
+    params:
+        readgroups=lambda wildcards: f"@RG\\tID:${wildcards.sample}_T_L001_ACT-ACT\\tSM:{wildcards.sample}_T\\tLB:HCGF125_L001_ACT-ACT\\tPL:ILLUMINA",
+        fasta=config['fasta_file']
+    container:
+        "img/bwa.sif"
+    log:
+        "analysis/bwa_mem/{sample}.bam.log"
+    threads:
+        2
+    shell:
+        "(bwa mem -t 2 "
+        "-R '{params.readgroups}' "
+        "{params.fasta} "
+        "{input.reads} | "
+        "samtools sort "
+        " > {output}) "
+        "&> {log}"
+
+
+# Create index file for create bam file, needed by mutect2
+rule samtools_index:
+    input:
+        bam="{file}.bam",
+    output:
+        bai=temp("{file}.bam.bai"),
+    container:
+        "img/bwa.sif"
+    shell:
+        "samtools index {input}"
+
+
+# Call variants using the created bam file
+rule mutect:
+    input:
+        bam="analysis/bwa_mem/{sample}.bam",
+        bai="analysis/bwa_mem/{sample}.bam.bai",
+    output:
+        vcf="analysis/mutect/{sample}.vcf",
+    params:
+        fasta=config['fasta_file']
+    log:
+        "analysis/mutect/{sample}.vcf.log"
+    container:
+        "img/gatk.sif"
+    shell:
+        "(gatk Mutect2 "
+        "--input {input.bam} "
+        "--reference {params.fasta} "
+        "--output {output.vcf}) "
+        " &> {log}"
