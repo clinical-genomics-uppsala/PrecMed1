@@ -44,28 +44,28 @@ In the regions below there are different type of variants or mutations. For addi
 * chr3:41,265,991-41,266,273
 * chr2:29,416,005-29,416,044
 
-!!! question
+!!! question 1
     :question: 
-    In the regions above there are variants, determine which variant is of which type (there can be more than one)
+    In the regions above there are variants, determine which variant is of which type (there can be more than one)!
 
-    * SNV artifact
-    * Somatic SNV
-    * Germline SNV
-    * Deletion
-    * Insertion
+    1. SNV artifact
+    2. Somatic SNV
+    3. Germline SNV
+    4. Deletion
+    5. Insertion
 
 
-!!! question
+!!! question 2
     :question: 
-    Determine the exact start position of the variants for all non-artifact variants
+    Determine the exact start position of the variants for all non-artifact variants in the regions.
 
-!!! question
+!!! question 3
     :question: 
-    Determine the number of supporting reads for all non-artifact variants
+    Determine the number of supporting reads for all non-artifact variants in the regions.
 
-!!! question
+!!! question 4
     :question: 
-    Determine the allele frequency for all non-artifact variants
+    Determine the allele frequency for all non-artifact variants in the regions.
 
 !!! TIP
     * Copy the regions into IGV
@@ -84,9 +84,9 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of 
 > chr4:1807661-1809661 chr4:1738429-1744429
 
 <br/>
-!!! question
+!!! question 5
     :question:
-    Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
+    Note that this is RNA sequencing data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
 Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
@@ -98,7 +98,7 @@ Using the current visualization settings it is hard to see the fusion break poin
 5. Click the Save button
 
 <br/>
-!!! question
+!!! question 6
     :question:
     Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine between which exons the fusion has occurred.
 
@@ -107,7 +107,7 @@ Somatic fusion calling can be performed by a number of different callers. One su
 
 Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The first fusion in this document is the same one that we previously studied in IGV, FGFR3::TACC3. Here we can see the fusion breakpoint as well as the direction and if it is in-frame. This together with the included protein domains in the fusion product is important to determine if the fusion is clinically relevant.
 
-!!! question
+!!! question 7
     :question:
     What role does the the genes play in the ongogenic FGFR3::TACC3 fusions.
 
@@ -125,11 +125,11 @@ Use the grep command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to
 
 Investigate the SNV found in the region chr7:140,453,022-140,453,248. 
 
-!!! question
+!!! question 8
     :question:
     What effect does the variant have on the protein sequence?
 
-!!! question
+!!! question 9
     :question:
     Does it seem to be clinically relevant? Motivate!
 
@@ -155,15 +155,15 @@ However, lets start with how it looks in a normal sample without alterations. Op
 ### Sample with CNVs
 Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.html`. 
 
-!!! question
+!!! question 10
     :question:
     How many chromosomes have deletions?
 
-!!! question
+!!! question 11
     :question:
     How many chromosomes have duplications?
 
-!!! question
+!!! question 12
     :question:
     Look at VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation between dots) stronger for a deletion than an duplication?
 
@@ -175,15 +175,15 @@ Find the EGFR amplification and zoom in on the gene.
 !!! TIP
     * When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.
 
-!!! question
+!!! question 13
     :question:
     What is the approximate log2 ratio of the EGFR mutation? 
 
-!!! question
+!!! question 14
     :question:
     How many copies does this log2 ratio represent?
 
-!!! question
+!!! question 15
     :question:
     The table reports the copy number after taking tumor content into account. What is the actual reported copy number estimated in the tumor?
 
@@ -193,12 +193,12 @@ In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the g
 
 Find the CDKN2A and CDKN2B deletion. 
 
-!!! question
+!!! question 16
     :question:
     Based on the copy number plot and the VAF-plot it seems that most of chromosome 10 has only one copy in the tumor (hemizygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region overlapping CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
 
 ### Final / extra CNV question
-!!! question
+!!! question 17
     :question:
     Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
