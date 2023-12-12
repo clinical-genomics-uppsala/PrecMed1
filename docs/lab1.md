@@ -1,12 +1,12 @@
 # Sequencing data formats and visualization 
-In this computer lab we will talk about and have a look at the most common file formats used for NGS sequencing data. 
+In this computer lab we will talk about and have a look at the most common file formats used for next-generation sequencing data. 
 
 ## FASTQ
-The FASTQ file format is a progression of the FASTA file format, developed for NGS data.  
+To store the countless reads generated in short read sequencing along with additional information, the FASTQ file fomrat was developped as a progression of the FASTA file format.  
 
-fastq files often contain multiple reads that are described in four rows:
+FASTQ files often contain multiple reads that are described in four rows:
  
-1. sequence identifier, row starts with @ 
+1. A sequence identifier, row starts with @ 
 
 2. the raw read 
 
@@ -30,18 +30,22 @@ GTTTTGTCGCTGCGTTCAGTTTATGGGTGCGGGTGTTATGATGCTTCGCTTTACGTGACAAGAAAGTTAGTAGATTGTCT
 $&'((&%$$$.$2/=-*#'.2'&&##$$#$#&&(&+-%'(%&#"###""$$%#)%,+)+&'(,&%*((%%&%$%'+),,+,,&%$')1+*$.&+6*+(*%(&'*(''&%*+,*)('%#$$$%,$&&'&)))12)*&/*,364$%$%))$'')#%%&%$#$%$$#('$(%$%$%%$$*$&$%)''%%$$&'&$)+2++,)&%
 ```
 
+If sequencing was performed on paired reads, you will always have at least two .fastq files per sample, marked with R1 and R2, for read1 and read2. These will be sorted so that the first read in R1 is the mate of the first read in R2. 
+
 
 ### Assignment 1 
 !!! question 
-	In `PATH` you will find an example of a fastq file generated with a NovaSeq sequencing machine: ``FILENAME.fq`
-    
+	In `PATH` you will find an example of a fastq file generated with a NovaSeq sequencing machine: `q1.fq`
+
+	:question:
+	Have a look at the [sequence identifier](https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers). Is this fastq file from paired end sequencing? Which read pair are we looking at? What is the index of this sample? 
 
 	:question:
 	Have a look at the quality scores, what do you think is happening here? 
      
 
 	:question:
-	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). We are counting from 33 in the decimal system. 
+	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system. 
 
 ## BAM
 Output from mapping is stored in .sam/.bam/.cram files.
@@ -159,4 +163,4 @@ If you are done with all the exercises, go check out the rest of the quiz on stu
 
 
 
- 
+
