@@ -6,7 +6,6 @@ use-singularity: True
 configfile: "config.yaml"
 ## Add mount path suitable for current system (Bianca, Rackham, etc)
 #singularity-args: "-e --cleanenv -B /projects -B /data -B /beegfs-storage" #Locally dependent arguments for singularities
-## If run on bianca we need to upload singularity images and set a singularity_prefix 
-#singularity-prefix: "/projects/wp4/nobackup/singularity_cache/" #Local path to the singularity cache
-drmaa: " -N 1-1 -t 1:00:00 -n 1 --mem=6144 --mem-per-cpu=6144 --partition=core -J {rule} -e slurm_out/{rule}_%j.err -o slurm_out/{rule}_%j.out"
+## Remember to change ACCOUNT_ID
+drmaa: "-A ACCOUNT_ID -N 1-1 -t 1:00:00 -n 1 --mem=6144 --mem-per-cpu=6144 --partition=core -J {rule} -e slurm_out/{rule}_%j.err -o slurm_out/{rule}_%j.out"
 drmaa-log-dir: "slurm_out"

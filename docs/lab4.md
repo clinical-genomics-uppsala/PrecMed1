@@ -149,6 +149,7 @@ module load slurm-drmaa
 snakemake -s PATH_TO_PIPELINE/Snakefile --profile profile
 ```
 
+# The output will end up in folder named analysis
 ---
 
 ## Variant annotation in vcf

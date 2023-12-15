@@ -1,0 +1,9 @@
+---
+ 
+ fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/bwa/concat.fa"
+
+ gatk_fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/GATK/concat.fasta"
+
+ vep_fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/GATK/concat.fasta"
+
+ vep_cache: "/sw/data/vep/107"
