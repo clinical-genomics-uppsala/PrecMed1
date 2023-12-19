@@ -274,7 +274,7 @@ There are several different ways and steps to validate a variant. Most variant c
 The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and there for it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
 !!! question "Question 11"
-    :question: Open `.bam` file called `sampleC_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below 30Q?
+    :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below 30Q?
     ??? tip
         Sort the position based on base (right click -> sort by -> base). Under view -> preferences -> alignments make make sure that  `shade mismatched bases by quality` is checked.
 
