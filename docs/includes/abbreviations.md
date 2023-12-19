@@ -1,7 +1,7 @@
 *[hg19]: UCSC human genome version 19
 *[hg38]: human genome GRch38 assembly from Genome Reference Consortium
 *[API]: Application programming interface
-*[bp]: base pairs
+*[bp]: base pair
 *[cDNA]: coding DNA
 *[gDNA]: genomic DNA
 *[DNA]: Deoxyribonucleic acid
