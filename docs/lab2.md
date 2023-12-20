@@ -116,7 +116,7 @@ A measurement of how well covered your sample is. Usually defined as *"Y" x cove
     Either you do this locally on your computer (need to have singularity available), or on Uppmax.  
     *(Bam-file aligned to Hg19 reference genome.)*  
 
-    ```
+    ```bash
     cd ${project_folder}/${user_folder}/
     module load bioinfo-tools
     module load mosdepth
@@ -124,7 +124,7 @@ A measurement of how well covered your sample is. Usually defined as *"Y" x cove
     ```
 
     or if using singularity locally you need download bamfile and index files from Uppmax first, and then run mosdepth locally using singularity
-    ```
+    ```bash
     # Files needed: sampleB_subset.bam and sampleB_subset.bam.bai
     singularity exec docker://hydragenetics/mosdepth:0.3.2 mosdepth sampleB-output sampleB_subset.bam
     ```
@@ -196,7 +196,7 @@ picard, mapped 5' end of read -->
 | Sample  | Number of reads | Duplication rate | Mean Coverage | % &ge; 200x | % &ge; 500x |  Fold80 |
 | --- | --- | --- | ---- | --- | --- | --- | 
 | SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  | | |
-| SampleE | | FastQC:  <br />CollectDuplicateMetrics: |  |  | | |
+| SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  | | |
 
 !!! question "Question 8"
     :question: Fill out the table above with the missing values for sampleD.
@@ -226,16 +226,16 @@ picard, mapped 5' end of read -->
         Identify which columns you are interested in and use it to replace `$x` with the column number (1-index) in the script below:
         ``` bash
         zcat qc/mosdepth_bed/sampleD_T.thresholds.bed.gz | awk 'NR>1{tot_length+=$3-$2;tot_bases+=$x}END{print tot_bases"/"tot_length"="tot_bases/tot_length}'
-        ```
+        ```bash
         Step-by-step explanation:
         
         *   `zcat` allows for reading the gzipped file without extracting it.
         *   [`awk`](https://www.geeksforgeeks.org/awk-command-unixlinux-examples/) is a handy string manipulating program
-        *   `NR>1` means skip the first line since that is the header
-        *   `tot_length+=$3-$2` is a cumulative variable that for each row the values in column 2 is subtracted from column 3 and the sum is added to the variable
-        *   `tot_bases+=$x` is the cumulative value of your desired column
-        *   `END` just means do the following at the end of the file
-        *   `print ` print the following to the command line
+        *   `NR>1` means skip the first line since that line is the header.
+        *   `tot_length+=$3-$2` is a cumulative variable that increases with the length of the region for each row. The values in column 2 is subtracted from column 3 and the sum is added to the variable `tot_length`.
+        *   `tot_bases+=$x` is the cumulative value of your desired column.
+        *   `END` just means do the following once the end of the file is reached.
+        *   `print ` print the following to the command line.
 
 
         
