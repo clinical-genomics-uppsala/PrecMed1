@@ -34,22 +34,29 @@ If sequencing was performed on paired reads, you will always have at least two .
 
 
 ### Assignment 1 
-!!! question 
-	In `PATH` you will find an example of a fastq file generated with a NovaSeq sequencing machine: `q1.fq`
 
-	:question:
-	Have a look at the [sequence identifier](https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers). Is this fastq file from paired end sequencing? Which read pair are we looking at? What is the index of this sample? 
+In `PATH` you will find an example of a FASTQ file generated with a NovaSeq sequencing machine: `q1.fq`
 
-	:question:
-	Have a look at the quality scores, what do you think is happening here? 
-     
+!!! question "Question 1"
 
-	:question:
+	:question: 
+	Have a look at the [sequence identifier](https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers) of the FASTQ file. Is this FASTQ file from paired end sequencing? Which read pair are we looking at? What is the index of this sample? 
+
+
+:question:
+Have a look at the quality scores, what do you think is happening here? 
+   
+!!! question "Question 2"
+
+	:question: 
 	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system. 
 
 ## BAM
-Output from mapping is stored in .sam/.bam/.cram files.
-These files are tab-delimited and container a header, where header rows start with an @, and the alignment data, with one row per aligned sequence. 
+Aligned reads are stored in .sam/.bam/.cram files.
+These files are tab-delimited and container a header, where header rows start with an @, followed by the aligned reads, with one row per read. 
+
+
+The binary formats .bam and .cram often need an index file to make computation quicker. Index files function like a table of content in a book, pointing the reader to content without the need to read the book until you find the requested information. 
 
 
 ### Assignment 2 
@@ -59,37 +66,44 @@ Remember, bam files are binary files, so using commands like `cat` or `less` wil
 Thankfully, there are programs that help you handling binary files. To explore bam files one of these programs is **samtools**. 
 [Samtools](https://www.htslib.org/doc/samtools.html) has a range of utilities to process sam/bam/cram files. These sub-commmands can be used like `samtools subcommand <optional flags>`. Each subcommand has it's own documentation page. Have a look at the documentation for [samtools view](https://www.htslib.org/doc/samtools-view.html), which is what we'll be using to investigate the bam files. These files are big so make sure to pipe into `less`. 
 
-!!! question
+
 	
-	:question:
-	Try using samtools view on sample_C.bam. What do you see? Can you identify the columns we discussed in the lecture part?
+:question:
+Try using samtools view on sample_C.bam. What do you see? Can you identify the columns we discussed in the lecture part?
+
+!!! question "Question 3"
 
 	:question:
 	Using samtools view without any flags will only show us the reads. Even the column header is missing. However, bam files store this meta-information in the header of the bam file. Look at the documentation to find the flag to display the header. 
 	Notice that there are tags in the header. You can check what these mean in the [samtools manual](https://samtools.github.io/hts-specs/SAMv1.pdf). In the file sample_C.bam, which programs have been used to create the bam file? 
 
+
+!!! question "Question 4"
 	:question: 
 	Figure out which flag to use in samtools view to count the number of reads in the file. What is the number of reads in sample_C.bam?
 
-	:question:
-	In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'
+:question:
+In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'
 
 
+To help visualize mapped reads, tools such as IGV have been developed. We can use IGV to investigate variants in more detail along with their position on the reads. 
 
 ### Assignment 3
 
 Open IGV and select reference hg19. Now load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. You need to select both the .bam files and the .bai files. You can either use IGV on the [cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on yout computer. 
 
-!!! question
+??? info
+	You can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  
+	Click on the coverage plot part of a base to get more information on read depth of the base and the allele frequency of the variants found in this position. You can also see which strand they were found on. 
 
-	??? info
-		You can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  
-		Click on the coverage plot part of a base to get more information on read depth of the base and the allele frequency of the variants found in this position. You can also see which strand they were found on. 
 
+!!! question "Question 5"
 
 	:question:
 	Navigate to the gene ABL1. Look at the reference at the bottom to find where the exons are and where targeted regions might be sequenced. Zoom in closer and navigate to exonic sites. What is the difference between the different .bam files? See how the reads are mapped and also look at the coverage plots at the top of each .bam file. Which sample do you think is a sequenced with a Whole Genome, amplicon and capture strategy?  
          
+
+!!! question "Question 6"
 
 	:question: 
 	Navigate to position 133748283 on this chromosome. There is a variant here in the sample sequenced with the  capture method. You can get a read count and allele frequency  when clicking at the position in the coverage plot.  
@@ -97,41 +111,47 @@ Open IGV and select reference hg19. Now load the .bam files of sample_A.sorted, 
 
 
 	!!! note 
-		Notice how the WGS sample looks very messy, as if most bases carry a variant? Do you have an idea why? Remove the sample from IGV, we will look at it later. 
+		Notice how the WGS sample looks very messy, as if most bases carry a variant? Do you have an idea why? Remove the sample from IGV, we will look at it later. You can do this by right clicking on the sample name and then *remove track*  at the very bottom.
 
 
+!!! question "Question 7"
 	:question:
 	Navigate to chr9:5070021.  Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence? 
      
-
+!!! question "Question 8"
 	Navigate to chr9:5073770. What type of variant do you find here? What is the read depth, and allele frequencies in the different .bam files? 
 
 
+!!! question "Question 9"
 	:question:
-	Navigate to chr5:170837543. Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence?
+	Navigate to chr5:170837544. Which gene are we looking at? What variant do you observe at this position  in the capture and amplicon sample. How long is the variant? What is the affected sequence?
 
  
-	:question:
-	Navigate to chr5:170846329-170847798. Look at the sample sequence with a capture method. Make sure to scroll all the way up so you can see the coverage plot. What is the read depth here? How does this compare to the read depth in other areas we looked at. Check the reference, are you looking at a gene? Intronic or extronic region? What do you think is happening here?   
+:question:
+Navigate to chr5:170846329-170847798. Look at the sample sequence with a capture method. Make sure to scroll all the way up so you can see the coverage plot. What is the read depth here? How does this compare to the read depth in other areas we looked at. Check the reference, are you looking at a gene? Intronic or extronic region? What do you think is happening here?   
 
 
-	:question:
-	The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are artefacts?
+:question:
+The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are errors/artefacts?
 
 
+!!! question "Question 10"
 	:question: 
 	Switch the reference genome again and look at sample_C. Look again at the variant in detail chr9:133748283. Is this an artefact? Why - why not? 
 
-
+!!! question "Question 11"
 	:question:
-	Which sample do you think is somatic, which is germline? 
+	After looking at the different samples and the allele frequencies of their varriants in IGV, which sample do you think is somatic, which is germline? 
+
+	??? note
+		From germline samples you expect less variants than in somatic (tumor) samples. Also generally you expect the allele frequencies in germline samples to be around 0%, 50% or 100% as the variation is inherited. Variation in somatic samples can be anything in the range of 0-100% due to rising mutations and subclones. 
 
 
 ## VCF
 
-VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, referred to as an all-sites-vcf or just sites that differ from  the reference.
+VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, referred to as an all-sites-vcf or just sites that differ from  the reference. You can save any type of variant in a vcf file: single nucleotide variations, insertions and deletions, translocations. 
 
-As bam files, vcf files also contain a header that describes the information found in the file. It also shows which vcf version is used to encode information in this file. You can always check the specific documentation for the vcf version if you do not know how to interpret the data. PDFs of the documentation of the most recent versions of vcf can be found [here](https://github.com/samtools/hts-specs). 
+As bam files, vcf files also contain a header that describes the information found in the file. In the header you can also find out which vcf version is used to encode information in this file. You can always check the specific documentation for the vcf version if you do not know how to interpret the data. PDFs of the documentation of the most recent versions of vcf can be found [here](https://github.com/samtools/hts-specs). 
 
 You can filter and edit vcf files using [bcftools](https://samtools.github.io/bcftools/bcftools.html), which functions similarly to samtools. 
 
@@ -139,21 +159,22 @@ You can filter and edit vcf files using [bcftools](https://samtools.github.io/bc
 
 In this assignment we will look at variants in the vcf file. Some of them we have already looked at in IGV, and you can always compare how the variants look like in the vcf and in the bam file. 
 
-!!! question
+!!! question "Question 12"
 
 	:question:
 	Look at the files sample_C.vcf.gz and sample_B.vcf.gz. Are they all-sites-vcf-files? Explain! 
 
 
-	:question: 
-	Search for the variant in chromosome 9 position 133748283 in sample_C.vcf.gz. It's a position in the ABL gene we have looked at before. What is the variant frequency and read depth in the vcf file? How many reads have found either allele? Check the header to understand which tags you are looking for? How do the values compare to the values observed in IGV?
+:question: 
+Search for the variant in chromosome 9 position 133748283 in sample_C.vcf.gz. It's a position in the ABL gene we have looked at before. What is the variant frequency and read depth in the vcf file? How many reads have found either allele? Check the header to understand which tags you are looking for? How do the values compare to the values observed in IGV?
 
-
+!!! question "Question 13"
 	:question:
 	Search for the variant chr9	37025419 in sample_C.vcf.gz. Check the FILTER column and look at the header in sample_C.vcf.gz, what does the flag in the filter field indicate? Look at this position in IGV, how many reads are found on the forward, how many on the reverse strand? How is it for the reference allele? Why do you think this is?    
 
+!!! question "Question 14"
 	:question:
-	Using bcftools, figure out how many variants were found on chromosome 9 that passed all filters (FILTER="PASS") in sample_C.vcf.gz. 
+	Using bcftools, figure out how many variants were found on chromosome 9  in sample_C.vcf.gz that passed all filters (FILTER="PASS") in sample_C.vcf.gz. 
 
 
 If you are done with all the exercises, go check out the rest of the quiz on studium! 
