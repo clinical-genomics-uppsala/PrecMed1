@@ -3,9 +3,9 @@ status: new
 --- -->
 # Computer lab 2: Sequencing quality control
 
-This part of the lab picks up as the sequencing machine has finished. Even if we got the machine to run there is no guarantee that the data is actually what we expect and the quality is good enough to use in our downstream analysis.  
+This computer lab picks up as the sequencing machine has finished. Even if the sequencing machine did run ok there is no guarantee that the data is actually what we expect and the quality is good enough to use in our downstream analysis.  
 <br>
-As the machine finishes it usually outputs some QC report, for Illumina machines this is in the Sequencing Analysis Viewer (SAV) but could also be a text file or similar. This QC-report usually contains information on how the sequencing went, i.e. how much data were produced, clustering and average basequality etc. If several samples were pooled there is also information on how much data each index(-pair) got, and how much of the data actually contains the specified indexes.
+As the sequencing machine finishes it usually outputs some QC report, for Illumina machines this is in the Sequencing Analysis Viewer (SAV) file format but could also be a text file or similar. This QC-report usually contains information on how the sequencing went, i.e. how much data were produced, clustering and average basequality etc. If several samples were pooled there is also information on how much data each index(-pair) got, and how much of the data actually contains the specified indexes.
 
 ## Prerequisites
 * IGV
@@ -34,7 +34,7 @@ While running a bioinformatic pipeline it is important to continuously collect Q
 ![qcvalues dag](includes/images/qc_values.png){: width:150%"}  
 <br>
 
-One issue or hurdle is that the same word can be used for different quality-values, it can also be the same value but calculated at different timepoints or the algorithm might differ depending on which program you use. For example duplication rate is a value of how many copies of the same read your library has, this can be estimated optically from the fastq-files or calculated after the reads have been aligned to your reference genome. Even if you calculate the duplication rate on the same file the algorithm can also differ between different programs (or even version of program). For example, how you define a duplicated read can differ, do you look at just the starting point or so you look at both the starting and end position of the reads. Therefor it is **always** important to know that how and on what file a value is calculated.  
+One issue or hurdle is that the same word can be used for different quality-values, it can also be the same value but calculated at different timepoints or the algorithm might differ depending on which program you use. For example duplication rate is a value of how many copies of the same read your library has, this can be estimated optically from the fastq-files or calculated after the reads have been aligned to your reference genome. Even if you calculate the duplication rate on the same file the algorithm can also differ between different programs (or even version of program). For example, how you define a duplicated read can differ, do you look at just the starting point or do you look at both the starting and end position of the reads. Therefor it is **always** important to know how and on what file a value is calculated.  
 <br>
 
 Another important factor to keep in mind is what kind of library you are looking at, capture, amplicon, pcr-free or even long-read all differs in expected values and results, and the values are often not comparable across methods.
@@ -42,19 +42,19 @@ Another important factor to keep in mind is what kind of library you are looking
     **Short Read Sequencing**: most common sequencing method, read length ~50-150 bp.  
     **Long Read Sequencing**: allows for detection of complex SVs, read length ~5000-30000 bp.
     
-    **PCR-free**: sequencing library created without the use of PCR.  
+    **PCR-free**: sequencing library created without the use of PCR amplification.  
     **(Hybridization) Capture**: target sequencing using baits to "fish out" regions of interest.  
     **Amplicon**: target sequencing using primers to amplify specific targets.  
 
 <br>
 
 ### Number of reads
-Number of reads are what they sound like, how many reads do you have in your sample file(s). Often this variable is used to for checking if the sequence machine and pooling behaved as expected. This number is also used to calculate pooling, or expected output if you change flowcell/sequencing machine size.  
+Number of reads are what they sound like, how many reads do you have in your sample file(s). Often this variable is used to check if the sequence machine and pooling behaved as expected. This number is also used to calculate pooling, or expected output if you change flowcell/sequencing machine size.  
 
 Number of reads are calculated either directly in the sequencing machine, raw fastq or even the aligned bamfiles.  
 
 !!! question "Question 1"
-    :question: If you get a lower number of reads for a sample than expected, what (error) could that indicate?  
+    :question: If you get a lower number of reads for a sample than expected, what (errors) could that indicate?  
 <br>
 Example of programs that calculate Number of Reads:
 
@@ -86,7 +86,7 @@ SAV hela korning 100M-1.2B
 
 ### Percent [%] mapped
 
-After trimming the reads are aligned to a reference genome, the percent mapped is often tracked during this step. This is to measure how well your data fit the reference provided. 
+After trimming away low quality reads and bases, the reads are aligned to a reference genome. The percent of reads that are mapped is often tracked during this step. This is to measure how well your data match the genome reference provided. 
 
 <!-- Fixa fastq screen resultat med kontaminerat prov 
 module load bioinfo-tools
@@ -105,7 +105,7 @@ fastq_screen --conf $config $ok_fastq
     
 
 ### Coverage
-A measurement of how well covered your sample is. Usually defined as *"Y" x coverage*; which means the average position is covered by *Y* number of reads. There are many different programs that calculate coverage (often in combination with other QC parameters), some examples are:
+A measurement of how well covered your sample is. Usually defined as *"Y" X coverage*, where for example 40X coverage is normal in whole genome sequencing. This means that the average position is covered by *Y* number of reads. There are many different programs that calculate coverage (often in combination with other QC parameters), some examples are:
 
 - [Samtools Stats](http://www.htslib.org/doc/samtools-stats.html)
 - [Picard CollectAlignmentSummaryMetrics](https://gatk.broadinstitute.org/hc/en-us/articles/13832683660955-CollectAlignmentSummaryMetrics-Picard-)
@@ -137,7 +137,7 @@ A measurement of how well covered your sample is. Usually defined as *"Y" x cove
             `chrA    X   Y`
 
 #### Coverage distribution
-Coverage distribution describes how the aligned reads are divided over the reference genome are aligned; Are they isolated to certain areas? Are some areas not covered properly? Are all regions covered the same?  
+Coverage distribution describes how the aligned reads are divided over the reference genome. Are they isolated to certain areas? Are some areas not covered properly? Are all regions covered the same?  
 Just like you did in [lab 1](lab1.md#assignment-3), you can identify sequencing method by just looking at the distribution i.e. in the coverage track in IGV. In-depth coverage distribution is also used to estimate CNVs by most CNV-algorithms.  
 
 ![mosdepth_percontig](includes/images/mosdepth-coverage-per-contig.png)
@@ -154,10 +154,10 @@ Just like you did in [lab 1](lab1.md#assignment-3), you can identify sequencing 
 
 
 #### Fold80
-A more quantitative value based on coverage distribution is the fold 80 base penalty value calculated by e.g. [Picard CollectHsMetrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html#HsMetrics). The **Fold80** is defined as the fold change of non-zero read coverage needed to bring 80% of the ROI bases to the observed mean coverage, or a bit simpler put: how much more sequencing is required to bring 80% of the target bases to the mean coverage.
+A more quantitative value based on coverage distribution is the fold 80 base penalty value calculated by e.g. [Picard CollectHsMetrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html#HsMetrics). The **Fold80** is defined as the fold change of non-zero read coverage needed to bring 80% of the ROI bases to the observed mean coverage, or a bit simpler put: how much more sequencing is required to bring 80% of the target bases to the mean coverage. So for a fold80 of 1.3 (which is a good value) 30% extra reads would be enough to bring 80% of the targets bases up to mean coverage.
 
 #### Coverage breadth
-Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx** as it is often described as. This means that X % of the genome or target regions is covered by **at least** Y reads. By default several of these levels are calculated in most of the [Picard](http://broadinstitute.github.io/picard/picard-metric-definitions.html) metrics programs (depending one your sequencing method which collect metrics you run may vary). Since this is such a popular value many coverage programs often calculates breadth and allows you to specify your own specific thresholds if needed, but the most common program used many of the [Picard metrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html) algorithms. Since this is a measurement of coverage over a given **target** it is important to keep track of what region/target this is calculated over to be able to compare numbers.
+Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx** as it is often described as. This means that X % of the genome or target regions is covered by **at least** Y reads. By default several of these levels are calculated in most of the [Picard](http://broadinstitute.github.io/picard/picard-metric-definitions.html) metrics programs (depending one your sequencing method which collect metrics you run may vary). Since this is such a popular value many coverage programs often calculates breadth and allows you to specify your own specific thresholds if needed. The most common program used are the [Picard metrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html) algorithms. Since this is a measurement of coverage over a given **target** it is important to keep track of what region/target this is calculated over to be able to compare numbers.
 
 !!! question "Question 6"
     Why might the coverage breadth vary for the same human wgs (reference genome HG38) sample calculated with different pipelines?
@@ -166,13 +166,13 @@ Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx**
     | --- | --- | ---| --- | ---|
     | SampleC | 34 | 91 | 34 | 99 | 
     ??? tip
-        Is can we map reads to the entire genome?
+        Is the reads mapped to the entire genome?
 
 
 ### Duplication rate
-The duplication rate is the fraction of mapped reads marked as duplicate reads in a particular data set. In contrast to overlapping reads, duplicate reads offer no additional information and are removed from sequencing data during the bioinformatic pipeline, a process known as deduplication. With other words  duplicate reads are identical reads which are an artefact/bias introduced by a method; biological or technical (usually but not exclusively PCR), and will not give any new information and should therefore be flagged and remove from your dataset.  
+The duplication rate is the fraction of mapped reads marked as duplicate reads in a particular data set. In contrast to overlapping reads, duplicate reads offer no additional information and are removed from sequencing data during the bioinformatic pipeline, a process known as deduplication. With other words  duplicate reads are identical reads which are an artifact/bias introduced by a method; biological or technical (usually but not exclusively PCR), and will not give any new information and should therefore be flagged and remove from your dataset.  
 
-As most QC-values duplication rate can be calculated at many different stages and the definition can vary depending on algorithm.
+As for most QC-values, duplication rate can be calculated at many different stages and the definition can vary depending on algorithm.
 
 The most common program for calculating the duplication rate on **unaligned reads** is [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/). FastQC can either be a part of the bioinformatic pipelines or on some newer sequencing machines it is included in the "SAV".
 
@@ -266,15 +266,15 @@ edit a ready multiqc report mha config, tex ordningen eller lägga till module b
 -->
 
 ## Variant Quality
-The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not and not an artefact?
+The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
 
 ### BaseQ and MapQ
-There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. Of course does baseQ vary depending sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want at least a phred-score of at least 20 to be able to trust a base-call.
+There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. However, the baseQ vary depending on sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want at least a phred-score of at least 20 to be able to trust a base-call.
 
 The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and there for it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
 !!! question "Question 11"
-    :question: Open `.bam` file called `sampleC_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below 30Q?
+    :question: Open `.bam` file called `sampleC_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q30?
     ??? tip
         Sort the position based on base (right click -> sort by -> base). Under view -> preferences -> alignments make make sure that  `shade mismatched bases by quality` is checked.
 
@@ -288,16 +288,16 @@ Most variant callers have some sort of genotype quality scoring available for ea
 If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller) and [Google's Deepvariant](https://github.com/google/deepvariant)); both specialized on germline calling, both use the flag `GQ` and the `QUAL` column as a quality measurements, we see a clear difference on both of the quality scores for the same variants. That said, the genotype quality score is not useless, but actually a good quality measurement of a variant call, you just always have to know how the file were produced and what scoring thresholds are considered "good" for that specific program. 
 
 ### Background and Artifacts
-Another step for validating you variant is eliminating the risk that the variant actually is a sequencing artefact or just background from a "messy" region.  
+Another step for validating you variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
 
-To identify artifacts you have to be able to separate the calls that look like a real call (quality, depth etc often look very good) but is actually a result of some sort of introduced bias from a disease causing variant. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA such as long repetitive sequences or homopolymers. Some artifacts are easier to identify, for example sequencing chemistry can affect our ability to sequence certain areas.
+To identify artifacts you have to be able to separate the calls that look like a real call (quality, depth etc often look very good), but is actually a result of some sort of introduced bias, from a disease causing variant. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA such as long repetitive sequences or homopolymers. Some artifacts are easier to identify, for example sequencing chemistry can affect our ability to sequence certain areas.
 
 !!! question "Question 12"
     :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
 
-To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No techniques has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allel frequency otherwise it moves towards being an artefact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
+To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No techniques has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
 
-Both background and artifacts it is a lot easier identify if a normal pool is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include. 
+Both background and artifacts is a lot easier identify if a normal pool of samples is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include. 
 
 <!-- Something about how to calc AF? Jonas just a messy region. -->
 
