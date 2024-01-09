@@ -143,12 +143,12 @@ Investigate the SNV found in the region chr7:140453022-140453248.
 In cancer cells there is quite common with large and numerous copy number alterations, especially in certain solid tumors like lung cancers. Here, we are going to look at how it can look in a few solid cancer samples. CNVs are called by cancer specific callers like [CNVkit](https://cnvkit.readthedocs.io/en/stable/pipeline.html).
 
 ### Normal sample
-However, lets start with how it looks in a normal sample without alterations. Open `CNV/normal_sample.cnv.html` in a browser. The first plot show the zoomed-in view of the data and the second plot and overview of the entire genome. There is also a table to the right with potentially clinically relevant CNVs. Consider the tips below and play around with the data in the CNV html report.
+However, lets start with how it looks in a normal sample without alterations. Open `CNV/normal_sample.cnv.html` in a browser. The first plot show the zoomed-in view of the data and the second plot an overview of the entire genome. There is also a table to the right with potentially clinically relevant CNVs. Consider the tips below and play around with the data in the CNV html report.
 
 !!! TIP
     * Click on a chromosome in the overview to show it in the top plot.
     * In the top plot, left-click and drag to zoom in.
-    * In the top plot, left-click and to zoom out to chromosome view.
+    * In the top plot, left-click to zoom out to chromosome view.
 
 !!! NOTE
     Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (diploid genome = 2) and then $ \log_2 $ is applied. A normal copy number of 2 is therefore $ \log_2(\frac {2}{2})=\log_2(1)=0 $. 
@@ -160,8 +160,8 @@ However, lets start with how it looks in a normal sample without alterations. Op
     However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected. See further [CNVkits explanation of log2ratio](https://cnvkit.readthedocs.io/en/stable/calling.html).
 
 !!! NOTE
-    The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
-    <!-- Extra reading about CP neutral loh? Type: https://en.wikipedia.org/wiki/Loss_of_heterozygosity -->
+    The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions. Sometimes the genome can have two copies of the same allele and the deletion will only 
+    show up in the VAF-plot. This is called a [copy number neutral loss of heterozygozity](https://en.wikipedia.org/wiki/Loss_of_heterozygosity).
 
 ### Sample with CNVs
 Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.html`. 
@@ -176,7 +176,7 @@ Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.h
 
 !!! question
     :question:
-    Look at VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation between dots) stronger for a deletion than an duplication?
+    Look at the VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation between dots) stronger for a deletion than a duplication?
 
 ### Sample with clinically relevant amplification
 In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Cancers with this amplification are often resistant to tyrosine kinase inhibitors and can therefore affect the treatment of the patient. 
@@ -188,7 +188,7 @@ Find the EGFR amplification and zoom in on the gene.
 
 !!! question
     :question:
-    What is the approximate log2 ratio of the EGFR mutation? 
+    What is the approximate log2 ratio of the EGFR mutation in the figure? 
 
 !!! question
     :question:
