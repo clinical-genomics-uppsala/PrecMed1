@@ -14,7 +14,7 @@ In this computer lab we are going to explore different kinds of somatic variants
 * rsync
 
 ## Files
-Download the lab 4 files to your local computer. Exchange {user} with your UPPMAX username.
+Download the lab 4 files to your local computer. Exchange `{user}` with your UPPMAX username.
 
 ```bash
 rsync -ah {user}@rackham.uppmax.uu.se:/proj/snic2017-1-1/lab4_files ~/
@@ -31,18 +31,18 @@ rsync -ah {user}@rackham.uppmax.uu.se:/proj/snic2017-1-1/lab4_files ~/
 Lets first explore some different types of variant that can occur in a somatic sample. 
 
 ### IGV
-Open IGV and then open the `RNA-SeraSeq_R.FGFR3.TACC3.bam` file. 
+Open IGV and then open the `RNA-SeraSeq_R.FGFR3.TACC3.bam` file, make sure that the reference genome is set to *Human hg19*. 
 
 ### Variants
 In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/).
 
 **Regions:**
 
-* chr7:140,453,022-140,453,248
-* chr2:29,416,330-29,416,416
-* chr7:140,432,776-140,436,414
-* chr3:41,265,991-41,266,273
-* chr2:29,416,005-29,416,044
+* chr7:140453022-140453248
+* chr2:29416330-29416416
+* chr7:140432776-140436414
+* chr3:41265991-41266273
+* chr2:29416005-29416044
 
 !!! question
     :question: 
@@ -66,6 +66,10 @@ In the regions below there are different type of variants or mutations. For addi
 !!! question
     :question: 
     Determine the allele frequency for all non-artifact variants
+    <!-- Kanske ngn kommentar om IGV AF och varfor den inte alltid ar sa exakt. typ: -->
+    ??? note
+        IGV uses all reads available in the bamfile, no filtering is applied. Therefor the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers filters and weights reads before calculating AF.
+    
 
 !!! TIP
     * Copy the regions into IGV
@@ -86,7 +90,7 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of 
 <br/>
 !!! question
     :question:
-    Note that this is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
+    This is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
 Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
@@ -103,7 +107,7 @@ Using the current visualization settings it is hard to see the fusion break poin
     Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine between which exons the fusion has occurred.
 
 ### Fusion visualization using the Arriba fusion caller
-Somatic fusion calling can be performed by a number of different callers. One such caller is caller [Arriba](https://arriba.readthedocs.io/en/latest/). The nice thing with this caller is that the fusions that they call are [visualized](https://arriba.readthedocs.io/en/latest/visualization/) in a very pretty way. 
+Somatic fusion calling can be performed by a number of different callers. One such caller is caller [Arriba](https://arriba.readthedocs.io/en/latest/). The nice thing with this caller is that the fusions that they call are [visualized](https://arriba.readthedocs.io/en/latest/visualization/) in a very clear and informative way. 
 
 Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The first fusion in this document is the same one that we previously studied in IGV, FGFR3::TACC3. Here we can see the fusion breakpoint as well as the direction and if it is in-frame. This together with the included protein domains in the fusion product is important to determine if the fusion is clinically relevant.
 
@@ -112,7 +116,7 @@ Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The fir
     What role does the the genes play in the ongogenic FGFR3::TACC3 fusions.
 
 <br/>
-Scroll further down in the document to find further fusion that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
+Scroll further down in the document to find remaining fusions that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
 
 ---
 
@@ -121,9 +125,9 @@ Scroll further down in the document to find further fusion that Arriba has found
 ---
 
 ## Variant annotation in vcf
-Use the grep command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
+Use the `grep` command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
 
-Investigate the SNV found in the region chr7:140,453,022-140,453,248. 
+Investigate the SNV found in the region chr7:140453022-140453248. 
 
 !!! question
     :question:
@@ -147,10 +151,17 @@ However, lets start with how it looks in a normal sample without alterations. Op
     * In the top plot, left-click and to zoom out to chromosome view.
 
 !!! NOTE
-    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (2) and then log2 is applied. A normal copy number of 2 is therefore log2(2/2)=log2(1)=0. One extra copy is log2(3/2)=log(1,5)=0.6 and one lost copy is log2(1/2)=log(0,5)=-1. However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected. See further [CNVkits explanation of log2ratio](https://cnvkit.readthedocs.io/en/stable/calling.html).
+    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (diploid genome = 2) and then $ \log_2 $ is applied. A normal copy number of 2 is therefore $ \log_2(\frac {2}{2})=\log_2(1)=0 $. 
+    
+    If the sample instead have an extra copy then $ \log_2(\frac {3}{2})=\log_2(1,5)=0.6 $ 
+
+    Or one lost copy is $ \log_2(\frac {1}{2})=\log_2(0,5)=-1 $.  
+
+    However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected. See further [CNVkits explanation of log2ratio](https://cnvkit.readthedocs.io/en/stable/calling.html).
 
 !!! NOTE
     The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
+    <!-- Extra reading about CP neutral loh? Type: https://en.wikipedia.org/wiki/Loss_of_heterozygosity -->
 
 ### Sample with CNVs
 Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.html`. 
