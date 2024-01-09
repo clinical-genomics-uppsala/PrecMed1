@@ -78,13 +78,6 @@ Thankfully, there are programs that help you handling binary files. To explore .
 Try using samtools view on sample_C.bam. What do you see? Can you identify the columns we discussed in the lecture part?
 
 
-:question: 
-Have a look at the FLAG field and pick out a number. Check the bitwise flags on [wikipedia](https://en.wikipedia.org/wiki/SAM_(file_format)#Bitwise_flags) to calculate what this number is encoding. 
-
-??? info 
-	Tou can check if your calculations were correct and to have a look at some other numbers using this [website](https://broadinstitute.github.io/picard/explain-flags.html)
-
-
 !!! question "Question 3"
 
 	:question:
@@ -96,6 +89,13 @@ Have a look at the FLAG field and pick out a number. Check the bitwise flags on 
 !!! question "Question 4"
 	:question: 
 	Figure out which flag to use in samtools view to count the number of reads in the file. What is the number of reads in sample_C.bam?
+
+
+:question: 
+Have a look at the FLAG field and pick out a number. Check the bitwise flags on [wikipedia](https://en.wikipedia.org/wiki/SAM_(file_format)#Bitwise_flags) to calculate what this number is encoding. 
+
+??? info 
+	Tou can check if your calculations were correct and to have a look at some other numbers using this [website](https://broadinstitute.github.io/picard/explain-flags.html)
 
 
 ### IGV - Integrative Genomics Viewer  
@@ -110,7 +110,7 @@ To help visualize mapped reads, tools such as IGV have been developed. We can us
 In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'
 
 
-Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. You need to select both the .bam files and the .bai files. You can either use IGV on the [compute cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on your computer. 
+Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. Select the .bam files and make sure that the .bai files are in the same directory. You can either use IGV on the [compute cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on your computer. 
 
 ??? info
 	Once you input data, you can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  
@@ -169,7 +169,7 @@ The WGS sample was mapped to hg38. Lets switch the reference accordingly and ope
 
 ## VCF
 
-VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, often referred to as an all-sites-vcf or just sites that differ from  the reference. You can save any type of variant in a vcf file, such as single nucleotide variations, insertions and deletions, or translocations. 
+VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, often referred to as an all-sites-vcf or genome-vcf or it can contain just sites that differ from  the reference. You can save any type of variant in a vcf file, such as single nucleotide variations, insertions and deletions, or translocations. 
 
 As .bam files, .vcf files also contain a header that describes the information found in the file. In the header you can also find out which vcf version is used to encode information in this file. You can always check the specific documentation for the vcf version if you do not know how to interpret the data. PDFs of the documentation of the most recent versions of vcf can be found [here](https://github.com/samtools/hts-specs). 
 
