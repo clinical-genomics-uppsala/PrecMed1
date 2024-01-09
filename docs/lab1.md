@@ -1,10 +1,10 @@
 # Sequencing data formats and visualization 
-In this computer lab we will talk about and have a look at the most common file formats used for next-generation sequencing data. 
+In this computer lab we will have a look at the most common file formats used for next-generation sequencing data. 
 
 ## FASTQ
-To store the countless reads generated in short read sequencing along with additional information, the FASTQ file fomrat was developped as a progression of the FASTA file format.  
+To store the countless reads generated in short read sequencing along with additional information, the FASTQ file format was developed as a progression of the FASTA file format.  
 
-FASTQ files often contain multiple reads that are described in four rows:
+FASTQ files often contain multiple reads where each read is described using four rows:
  
 1. A sequence identifier, row starts with @ 
 
@@ -126,7 +126,7 @@ Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, 
 !!! question "Question 6"
 
 	:question: 
-	Navigate to position 133748283 on this chromosome. There is a variant here in the sample sequenced with the  capture method. You can get a read count and allele frequency  when clicking at the position in the coverage plot.  
+	Navigate to position 133748283 on this chromosome. There is a variant here in the sample sequenced with the capture method. You can get a read count and allele frequency when clicking at the position in the coverage plot.  
         What is the allele frequency and read depth at this position for the capture sequence data? What about the amplicon sequence data? And what about the WGS sample? 
 
 
