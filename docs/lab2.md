@@ -290,7 +290,7 @@ If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinst
 ### Background and Artifacts
 Another step for validating you variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
 
-To identify artifacts you have to be able to separate the calls that look like a real call (quality, depth etc often look very good), but is actually a result of some sort of introduced bias, from a disease causing variant. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA such as long repetitive sequences or homopolymers. Some artifacts are easier to identify, for example sequencing chemistry can affect our ability to sequence certain areas.
+To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify, for example sequencing chemistry can affect our ability to sequence certain areas.
 
 !!! question "Question 12"
     :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
