@@ -113,7 +113,9 @@ Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The fir
 
 !!! question "Question 7"
     :question:
-    What role does the the genes play in the ongogenic FGFR3::TACC3 fusions.
+    What role does the ongogenic FGFR3::TACC3 fusions play in cancer?
+    
+    For example, the function of the fused protein, clinical target and drugs, prevalence, etc.
 
 <br/>
 Scroll further down in the document to find remaining fusions that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
@@ -127,7 +129,7 @@ Scroll further down in the document to find remaining fusions that Arriba has fo
 ## Variant annotation in vcf
 Use the `grep` command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
 
-Investigate the SNV found in the region chr7:140453022-140453248. 
+Investigate the annotation of the SNV found in the region chr7:140453022-140453248. 
 
 !!! question "Question 8"
     :question:
@@ -168,7 +170,7 @@ Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.h
 
 !!! question "Question 10"
     :question:
-    How many chromosomes have deletions?
+    How many chromosomes have deletions?  (Always take special care when looking at the X chromosome)
 
 !!! question "Question 11"
     :question:
@@ -184,11 +186,11 @@ In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Canc
 Find the EGFR amplification and zoom in on the gene.
 
 !!! TIP
-    * When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.
+    When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.
 
 !!! question "Question 13"
     :question:
-    What is the approximate log2 ratio of the EGFR mutation in the figure? 
+    What is the approximate log2 ratio, based on the plot, of the EGFR mutation?
 
 !!! question "Question 14"
     :question:
