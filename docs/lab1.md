@@ -1,10 +1,10 @@
 # Sequencing data formats and visualization 
-In this computer lab we will talk about and have a look at the most common file formats used for next-generation sequencing data. 
+In this computer lab we will have a look at the most common file formats used for next-generation sequencing data. 
 
 ## FASTQ
-To store the countless reads generated in short read sequencing along with additional information, the FASTQ file fomrat was developped as a progression of the FASTA file format.  
+To store the countless reads generated in short read sequencing along with additional information, the FASTQ file format was developed as a progression of the FASTA file format.  
 
-FASTQ files often contain multiple reads that are described in four rows:
+FASTQ files often contain multiple reads where each read is described using four rows:
  
 1. A sequence identifier, row starts with @ 
 
@@ -92,7 +92,7 @@ Open IGV and select reference hg19. Now load the .bam files of sample_A.sorted, 
          
 
 	:question: 
-	Navigate to position 133748283 on this chromosome. There is a variant here in the sample sequenced with the  capture method. You can get a read count and allele frequency  when clicking at the position in the coverage plot.  
+	Navigate to position 133748283 on this chromosome. There is a variant here in the sample sequenced with the capture method. You can get a read count and allele frequency when clicking at the position in the coverage plot.  
         What is the allele frequency and read depth at this position for the capture sequence data? What about the amplicon sequence data? And what about the WGS sample? 
 
 
@@ -129,7 +129,7 @@ Open IGV and select reference hg19. Now load the .bam files of sample_A.sorted, 
 
 ## VCF
 
-VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, referred to as an all-sites-vcf or just sites that differ from  the reference.
+VCF stands for **v**ariant **c**all **f**ormat. A vcf file is used to store variations of the genome encountered in a sample or data set. Each row in a vcf file describes a variant of a specific genomic position in your sample(s). You can either save all sites of the genome in a vcf-file, referred to as an all-sites-vcf or just sites that differ from the reference.
 
 As bam files, vcf files also contain a header that describes the information found in the file. It also shows which vcf version is used to encode information in this file. You can always check the specific documentation for the vcf version if you do not know how to interpret the data. PDFs of the documentation of the most recent versions of vcf can be found [here](https://github.com/samtools/hts-specs). 
 
