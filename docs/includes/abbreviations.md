@@ -13,6 +13,7 @@
 *[GQ]: Genotype quality
 *[HLA]: Human leukocyte antigen
 *[HRD]: Homologous recombination deficiency
+*[IGV]: Integrative Genomics Viewer
 *[MAF]: Minor allele frequency
 *[MSI]: Microsatellite instability
 *[MSS]: Microsatellite stable 
