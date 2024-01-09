@@ -30,6 +30,8 @@ All of the below are installed or available through the module system on rackham
 ## 1. Visualising Germline Variants in IGV
 The visual inspection of the sequencing data supporting a germline variant is an important part of a clinical bioinformaticians work. Here we will use IGV to visualise some structural variants.
 
+The reads in the BAM file we will used have been mapped to the **HG38** reference genome, so make sure to switch to this genome version in IGV.
+
 Open IGV and then open the `NA12878_examples.bam` file in the sv_examples folder. 
 
 In the regions below there are different types of structural variants.
@@ -42,7 +44,7 @@ In the regions below there are different types of structural variants.
 * chr20:43695763-43697956
 * chr1:197786656-197790287
 
-!!! question
+!!! question "Question 1"
     :question: 
     Determine the type of variants displayed above
 
@@ -62,20 +64,72 @@ In the regions below there are different types of structural variants.
 
 ### Case1 - Pathogenic SNV in TP53 gene
 
-**TODO**: add example instructions to show how bcftools or grep can be used to extract VEP info for a TP53 mutation in a vcf
+#### VCF with VEP annotations
+Here we will take an example VCF file with a pathogenic variant in the TP53 gene. This case will serve as an example on how to filter variants in a vcf file and how to extract information about the variants. **There are no questions for this case**. 
 
----
+Here you are given a VCF file called **case1.vep_annotated.vcf.gz** containing SNPS and Indels. The VCF has been annotated with variant effect information using the [Variant Effect Predictor]
+(https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in a INFO field starting with "CSQ=".
+
+We can extract information about what the various fields in the VEP annotations are using a grep search of the VCF header:
+
+```bash
+
+zgrep ^# case1.vep_annotated.vcf.gz | grep CSQ
+
+```
+
+Given the information above a simple grep search for TP53 and 'pathogenic' will help us narrow down the search to two variants.
+
+```bash
+
+zgrep -f TP53 case1.vep_annotated.vcf.gz | grep pathogenic
+
+```
+
+Examine the output above and see if you can identify the information on the the consequence and impact of each variant.
+
+#### Using bcftools
+
+Using grep is a simple and quick way to extract information from a VCF. However, there are many more specialist tools one can use with VCF files. Here we will use the popular bcftools program which has many options available for filtering vcf files and has a plugin for handling the VEP formatted information. 
+
+The bcftools program is available on uppmax through the module system and can be loaded as follows:
+
+```bash
+    module load bcftools
+```
+
+One loaded we can list all the available VEP subfields from the CSQ INFO field
+
+```bash
+bcftools +split-vep case1.vep_annotated.vcf.gz -l 
+```
+
+Here we will take a number of steps to filter the VCF file and we will make use of pipes to perform each step sequentially:
+
+1. Exclude all records in the VCF that do not have 'PASS' in the FILTER column
+    ```bash 
+    bcftools view -f PASS case1.vep_annotated.vcf.gz | less
+    ```
+2. Exclude common variants, as we are only interested in the rare variants. Here we will use the [MAX_AF subfield](https://www.ensembl.org/info/docs/tools/vep/script/vep_options.html#opt_max_af) and a [filtering expression](https://samtools.github.io/bcftools/bcftools.html#expressions) from bcftools.
+    ```bash 
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float -e "MAX_AF>0.05" | less
+    ```
+3. Keep only variants in the TP53 gene.  
+    ```bash 
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.05 | SYMBOL!='TP53'"
+    ```
+
 
 ### Case 2 - Patient with hemochromotosis
 
 #### Clinical and Family History
 
-A 55 year old male patient has been experiencing symptoms of lethargy and aches in his joints. Blood tests performed displayed elevated levels of ferritin. The patient does not have a family history of confirmed hemochromotosis type 1. 
+A 55 year old male patient has been experiencing symptoms of lethargy and aches in his joints. Blood tests performed displayed elevated levels of ferritin. The patient does not have a family history of confirmed hemochromotosis type 1 which is a disease characterised by an accumulation of too much iron in the body.
 
 #### Searching OMIM
 There are a number of ways to obtain a list of gene disease associations. In this case we have a good idea what the disease is and so we will search the Online Mendelian Inheritance in Man ([OMIM](https://omim.org/)) catalog for hemochromotosis type 1 and navigate to the molecular genetics section.
 
-!!! question
+!!! question "Question 2"
     :question: 
     In which gene should we be searching for variants?
 
