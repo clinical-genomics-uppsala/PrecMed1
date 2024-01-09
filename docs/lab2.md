@@ -166,7 +166,7 @@ Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx**
     | --- | --- | ---| --- | ---|
     | SampleC | 34 | 91 | 34 | 99 | 
     ??? tip
-        Is the reads mapped to the entire genome?
+        Can we map reads to the entire genome?
 
 
 ### Duplication rate
