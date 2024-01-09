@@ -59,7 +59,7 @@ In the regions below there are different types of structural variants.
     * Color alignments by -> insert size and pair
     * Sort alignments by -> insert size
 
-
+---
 ## 2. Cases
 
 ### Case1 - Pathogenic SNV in TP53 gene
@@ -67,8 +67,7 @@ In the regions below there are different types of structural variants.
 #### VCF with VEP annotations
 Here we will take an example VCF file with a pathogenic variant in the TP53 gene. This case will serve as an example on how to filter variants in a vcf file and how to extract information about the variants. **There are no questions for this case**. 
 
-Here you are given a VCF file called **case1.vep_annotated.vcf.gz** containing SNPS and Indels. The VCF has been annotated with variant effect information using the [Variant Effect Predictor]
-(https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in a INFO field starting with "CSQ=".
+Here you are given a VCF file called `case1.vep_annotated.vcf.gz` containing SNPS and Indels. The VCF has been annotated with variant effect information using the [Variant Effect Predictor](https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in the INFO field of starting with "CSQ=".
 
 We can extract information about what the various fields in the VEP annotations are using a grep search of the VCF header:
 
@@ -95,7 +94,7 @@ Using grep is a simple and quick way to extract information from a VCF. However,
 The bcftools program is available on uppmax through the module system and can be loaded as follows:
 
 ```bash
-    module load bcftools
+module load bcftools
 ```
 
 One loaded we can list all the available VEP subfields from the CSQ INFO field
@@ -112,12 +111,17 @@ Here we will take a number of steps to filter the VCF file and we will make use 
     ```
 2. Exclude common variants, as we are only interested in the rare variants. Here we will use the [MAX_AF subfield](https://www.ensembl.org/info/docs/tools/vep/script/vep_options.html#opt_max_af) and a [filtering expression](https://samtools.github.io/bcftools/bcftools.html#expressions) from bcftools.
     ```bash 
-    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float -e "MAX_AF>0.05" | less
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float -e "MAX_AF>0.1" | less
     ```
 3. Keep only variants in the TP53 gene.  
     ```bash 
-    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.05 | SYMBOL!='TP53'"
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.1 | SYMBOL!='TP53'"
     ```
+
+Using bcftools also allows the output  to be formatted in a more human readable way where a subset of columns that are of most interest can be extracted (e.g., Consequence and CLIN_SIG can be extracted to look for evidence of pathogenicity) :
+```bash 
+bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.1 | SYMBOL!='TP53'" -f "%CHROM %POS %SYMBOL %Consequence %IMPACT %Protein_position %Amino_acids %CLIN_SIG [%GT ]\n"
+```
 
 
 ### Case 2 - Patient with hemochromotosis
@@ -134,22 +138,17 @@ There are a number of ways to obtain a list of gene disease associations. In thi
     In which gene should we be searching for variants?
 
 #### Extracting variants
-Using `bcftools`, or `grep`, extract the variants from the gene identified above in the vcf file inside the case 2 folder.
+Using `bcftools`, or `grep`, extract the variants from the gene identified above from the  `case2.vep_annotated.vcf.gz` file case 2 folder. You can filter using the bcftool commands from steps 1 and steps3 from case1 above.
 
-!!! question
+!!! question "Question 3"
     :question:
-    What is the consequence and the impact of the variant?
-!!! question
+    Do you see any variants that have evidence of pathogenicity? What is the consequence and the impact of the variant that has evidence?
+!!! question "Question 4"
     :question:
-    What genotype does the sample have and what is the inheritance mode of hemochromotosis type 1?  
-
-#### Checking variant information in ClinVar
-The CLINSIG field of the VEP annotation can contain multiple entries. Use the variant rs-id to search in [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/) and find more information on the molecular consequences of this variant.
-
-!!! question
-    :question: 
-    What molecular consequences are listed for this variant in ClinVar?  
-
+    What is the the MAX_AF for the variant?
+!!! question "Question 5"
+    :question:
+    What genotype does the sample have and what is the [mode of inheritance](https://www.ncbi.nlm.nih.gov/books/NBK115561/) of hemochromotosis type 1?  
 ---
 ### Case3 - Analysis of a Trio using variants and HPO terms
 
@@ -170,53 +169,54 @@ When analysing a trio an important quality check is to confirm that the samples 
 All files needed are in the Case3 folder and the commands below assume that you are in the case3 folder.
 
 ```bash
-    time singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
-    docker://hydragenetics/peddy:0.4.8 \
+    singularity  exec --no-home -B $PWD:$PWD \
+    hydragenetics_peddy_0.4.8.sif \
     python -m peddy --procs $(nproc) \
     --prefix peddy_results \
-    case3.vcf.gz case3.ped
+    case3.vep_annotated.vcf.gz case3.ped
 
 ```
 
-!!! question
+!!! question "Question 6"
     :question: 
     Check the peddy report file. Do the samples show the expected relatedness and correct sex?
         
-!!! question
+!!! question "Question 7"
     :question: 
     How does peddy check the sex of the sample?
+    ??? tip "Hint"
+        Consult the [peddy documentation](https://peddy.readthedocs.io/en/latest/#sex-check)
 
 #### Using HPO terms to prioritise genes
 We are also provided with HPO terms in the file `case3_hpo.txt`. We will use these HPO terms to try and identify some candidate genes. To do this we will use a tool that takes HPO terms and returns a prioritized list of genes associated with the phenotypes described by the HPO terms. Go to [https://phen2gene.wglab.org/](https://phen2gene.wglab.org/), paste in the hpo terms listed in the **`hpo_terms.txt`** in the box for HPO IDs and click submit.
 
 Take the Gene that receives the highest ranking in the list and extract any variants in the VCF file from the gene. 
 
-!!! question
+!!! question "Question 8"
     :question: 
     What kind of pathogenic variant is present in this gene and what is its consequence? 
 
-!!! question
+!!! question "Question 9"
     :question:   
         What is the inheritance mode of the variant in this case?
 
-!!! question
+!!! question "Question 10"
     :question:   
-        Go to the OMIM page for this gene. What phenotype on OMIM might fit with this inheritance mode and clinical history? 
+        Go to the [OMIM page for this gene](https://omim.org/entry/300005?search=MECp2&highlight=mecp2). What phenotype on OMIM might fit with this inheritance mode and clinical history? 
 
     ??? tip "Hint"
         What phenotype has the same inheritance as our case and has similar phenotype?
 
 ---
-
 ### Case4 - Structural variant underlying a heritable cancer syndrome
 
 Here we will examine a VCF with structural variants from a patient 
 
 #### Clinical and Family History
-A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNPs and Indel variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
+A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNPs and Indel variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
 
 #### Variant filtration
-Take a look inside the file called `case4_manta.vep_annotated.vcf.gz`. You can see that this file is annotated with VEP and has information from ClinVar. We perform three filtration steps to narrow down the list of SVs:
+Take a look inside the file called `case4_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar. We will perform three filtration steps to narrow down the list of SVs:
 
 1. Retain only records with a PASS in the filter field.  
 2. Exclude variants with an allele frequency in Gnomad SV 4.0 > 0.05.  
@@ -230,20 +230,23 @@ wget -qO - ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/gene_condition_source_id   | c
 
 ```
 
-Use `grep` to extract variants that overlap with the genes listed above and view any detected regions in IGV. Using the filtered vcf file answer the following questions:
+Use `grep -f -w lynch_syndrome_genes.txt` to extract variants that overlap with the genes listed above and view any detected regions in IGV. 
 
 
-!!! question
+Using the filtered vcf file answer the following questions:
+
+
+!!! question "Question 9"
     :question: 
-    Which gene(s) are impacted by structural variants?
+    Which of the Lynch Syndrome genes are affected by a structural variant?
 
-!!! question
+!!! question "Question 10"
     :question:
     What type of structural variants are they?
 
-!!! question
+!!! question "Question 11"
     :question: 
-    Do they overlap with any know pathogenic variants of the same type?
+    Do they overlap with any known pathogenic variants of the same type?
 
 ---
 ### Case5 - Repeat expansion detection
@@ -262,7 +265,7 @@ https://github.com/Illumina/ExpansionHunter/blob/master/docs/06_OutputVcfFiles.m
 All files needed are in the Case5 folder and the commands below assume that you are in the case5 folder.
 
 ```bash
-singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
+singularity exec --no-home -B $PWD:$PWD \
     docker://hydragenetics/expansionhunter:5.0.0 \
     ExpansionHunter --reads case5.bam \
     --reference homo_sapiens.fasta  \
@@ -275,7 +278,7 @@ singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
 To visualise the read support for the expansion hunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
 
 ```bash
-singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
+singularity exec --no-home -B $PWD:$PWD \
     docker://hydragenetics/reviewer:0.2.7 \
     REViewer --reads case5.expansion_hunter_realigned.sorted.bam \
     --vcf case5.expansion_hunter.vcf \
@@ -289,11 +292,11 @@ singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
 The image output by REViewer is in SVG format. This is best viewed in a web browser such as firefox or Google Chrome. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories.
 
 
-!!! question  
+!!! question  "Question 12"
     :question: 
     How many repeats does the patient have in the longer allele and is it pathogenic?
 
-!!! question  
+!!! question  "Question 13"
     :question:
     Expansion hunter divides supporting reads into spanning, flanking and in-repeat
     reads. In this case which type of read offers the most support to the expanded allele call? 
@@ -301,7 +304,7 @@ The image output by REViewer is in SVG format. This is best viewed in a web brow
 We will then use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated are pathological. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
 
 ```bash
-singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
+singularity exec --no-home -B $PWD:$PWD \
     docker://hydragenetics/stranger:0.8.1 \
     stranger -f variant_catalog_hg38.json case5.expansion_hunter.vcf > case5.stranger_annotated.vcf
 
@@ -309,12 +312,12 @@ singularity  exec --no-home -B /beegfs-storage/,$PWD:$PWD \
 
 Use the stranger annotated VCF file to answer the following questions:
 
-!!! question  
+!!! question  "Question 14"
     :question:  Are the both DMPK alleles above the pathogenic threshold?
 
  A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomad.   
 
-!!! question  
+!!! question  "Question 15"
     :question: The tri-nucleotide repeat motif for DMPK in the literature is given as CTG. Why does Expansion Hunter report a repeat motif of CAG?
 
 ## References 
