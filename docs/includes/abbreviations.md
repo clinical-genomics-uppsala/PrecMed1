@@ -26,6 +26,10 @@
 *[nsSNVs]: Non-synonymous single nucleotide variations
 *[SNV]: Single nucleotide variation
 *[SNVs]: Single nucleotide variations
+*[SV]: Structural variant
+*[SVs]: Structural variants
+*[STR]: short tandem repeat
+*[STRs]: short tandem repeats
 *[INDEL]: Insertion and deletion
 *[INDELs]: Insertions and deletions
 *[TMB]: Tumor mutational burden
