@@ -120,8 +120,7 @@ Scroll further down in the document to find further fusion that Arriba has found
 
 ### Setup environment and setup necessary files
 ```sh
-# Enter 
-# Copy config.yaml file
+# Enter pipeline folder
 cd ~/lab4_somatic/pipeline
 
 # Setup environment
@@ -135,7 +134,7 @@ pip install -r requirements.txt
 # Make sure that environment is active.
 # NOTE: not required if you followed the steps in previous section
 # and still have that terminal session active
-soure venv/bin/activate
+source venv/bin/activate
 
 # load slurm library
 module load slurm-drmaa
