@@ -126,7 +126,7 @@ Scroll further down in the document to find remaining fusions that Arriba has fo
 
 ## Run somatic pipeline
 
-### Setup environment and setup necessary files
+### Setup environment
 ```sh
 # Enter pipeline folder
 cd ~/lab4_somatic/pipeline
