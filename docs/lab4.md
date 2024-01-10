@@ -120,23 +120,18 @@ Scroll further down in the document to find further fusion that Arriba has found
 
 ### Setup environment and setup necessary files
 ```sh
-# Copy necessay files/folders
+# Enter 
 # Copy config.yaml file
-cp PATH_PIPELINE/config.yaml config.yaml
-
-# Copy profile used to submit jobs to cluster
-cp -r PATH_PIPELINE/profile profile
-
-# Copy fastq files
-cp -r PATH_PIPELINE/profile profile
+cd ~/lab4_somatic/pipeline
 
 # Setup environment
-python3.9 -m venv venv && soure venv/bin/activate
-pip install -r PATH_TO_PIPLINE/requirements.txt
+python3.9 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ### Run
 ```sh
+# Make sure you are in the pipleine folder: ~/lab4_somatic/pipeline
 # Make sure that environment is active.
 # NOTE: not required if you followed the steps in previous section
 # and still have that terminal session active
@@ -146,7 +141,7 @@ soure venv/bin/activate
 module load slurm-drmaa
 
 # Run pipeline
-snakemake -s PATH_TO_PIPELINE/Snakefile --profile profile
+snakemake -s Snakefile --profile profile
 ```
 
 # The output will end up in folder named analysis
