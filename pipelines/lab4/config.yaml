@@ -8,8 +8,9 @@
 
  vep_cache: "/sw/data/vep/107"
 
+ ## Remember to change ACCOUNT_ID from 'uppmax2024-2-1' to your project id
  container:
   bwa: "/proj/uppmax2024-2-1/nobackup/singularity_images/bwa.sif"
   fastp: "/proj/uppmax2024-2-1/nobackup/singularity_images/fastp.sif"
   gatk: "/proj/uppmax2024-2-1/nobackup/singularity_images/gatk.sif"
-  vep: "/proj/uppmax2024-2-1/nobackup/singularity_images/vep.sif"
+  vep: "/proj/uppmax2024-2-1/nobackup/singularity_images/vep.107.sif"
