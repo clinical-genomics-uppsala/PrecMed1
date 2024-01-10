@@ -126,6 +126,32 @@ Scroll further down in the document to find remaining fusions that Arriba has fo
 
 ## Run somatic pipeline
 
+### Setup environment
+```sh
+# Enter pipeline folder
+cd ~/lab4_somatic/pipeline
+
+# Setup environment
+python3.9 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Run
+```sh
+# Make sure you are in the pipleine folder: ~/lab4_somatic/pipeline
+# Make sure that environment is active.
+# NOTE: not required if you followed the steps in previous section
+# and still have that terminal session active
+source venv/bin/activate
+
+# load slurm library
+module load slurm-drmaa
+
+# Run pipeline
+snakemake -s Snakefile --profile profile
+```
+
+# The output will end up in folder named analysis
 ---
 
 ## Variant annotation in vcf
@@ -221,5 +247,3 @@ Find the CDKN2A and CDKN2B deletion.
     :question:
     Consider another hypothetical case were the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
 
-
----
