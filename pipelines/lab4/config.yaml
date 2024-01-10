@@ -7,3 +7,9 @@
  vep_fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/GATK/concat.fasta"
 
  vep_cache: "/sw/data/vep/107"
+
+ container:
+  bwa: "/proj/uppmax2024-2-1/nobackup/singularity_images/bwa.sif"
+  fastp: "/proj/uppmax2024-2-1/nobackup/singularity_images/fastp.sif"
+  gatk: "/proj/uppmax2024-2-1/nobackup/singularity_images/gatk.sif"
+  vep: "/proj/uppmax2024-2-1/nobackup/singularity_images/vep.sif"
