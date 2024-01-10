@@ -15,7 +15,7 @@ rule fastp:
    log:
      "analysis/fastp/{sample}.log"
    container:
-     "img/fastp.sif"
+     config["container"]["fastp"]
    shell:
      "(fastp "
      "-i {input.read1} "
@@ -34,7 +34,7 @@ rule bwa_mem:
         readgroups=lambda wildcards: f"@RG\\tID:${wildcards.sample}_T_L001_ACT-ACT\\tSM:{wildcards.sample}_T\\tLB:HCGF125_L001_ACT-ACT\\tPL:ILLUMINA",
 	fasta=config['fasta_file']
     container:
-        "img/bwa.sif"
+        config["container"]["bwa"]
     log:
         "analysis/bwa_mem/{sample}.bam.log"
     threads:
@@ -54,7 +54,7 @@ rule samtools_index:
     output:
         bai=temp("{file}.bam.bai"),
     container:
-        "img/bwa.sif"
+        config["container"]["bwa"]
     shell:
         "samtools index {input}"
 
@@ -70,7 +70,7 @@ rule mutect:
     log:
         "analysis/mutect/{sample}.vcf.log"
     container:
-        "img/gatk.sif"
+        config["container"]["gatk"]
     shell:
         "(gatk Mutect2 " 
         "--input {input.bam} "
@@ -91,7 +91,7 @@ rule vep:
     log:
         "analysis/vep/{sample}.annotted.vcf.log"
     container:
-        "img/vep.107.sif"
+        config["container"]["vep"]
     threads: 1
     shell:
         "(vep "
