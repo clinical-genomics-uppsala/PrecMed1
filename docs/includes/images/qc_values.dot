@@ -1,0 +1,38 @@
+digraph snakemake_dag {
+	
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans, fontsize=10, penwidth=2];
+    edge[penwidth=1, color=grey30, fontname=sans, fontsize=9];
+    machine[label="Sequencing Machine", color = "0.0 0.0 0.0", style="dotted"];
+	fastq[label = ".fastq", color = "0.45 0.6 0.85"];
+	bam[label = ".bam", color = "0.52 0.6 0.85"];
+	vcf[label = ".vcf", color = "0.65 0.6 0.85"];
+    qcvalues[label="QC |{<q1>clustering | <q2>baseQ | <q3>num reads | <q4>index distribution |<q5> GC content | <q6>adapter | <q7>coverage | <q8>mapQ | <q9>duplication | <q10>variant call | <q11>allelfreq | <q12> genotype quality}", shape="record", style="", fontsize=8];
+
+
+    machine -> qcvalues:q1[arrowhead="none"]
+    machine -> qcvalues:q2[arrowhead="none"]
+    machine -> qcvalues:q3[arrowhead="none"]
+    machine -> qcvalues:q4[arrowhead="none"]
+    machine -> fastq[constraint=false]
+    fastq -> qcvalues:q2[arrowhead="none"]
+    fastq -> qcvalues:q5[arrowhead="none"]
+    fastq -> qcvalues:q6[arrowhead="none"]
+    fastq -> qcvalues:q9[arrowhead="none"]
+    fastq -> bam[label="alignment ",constraint=false]
+    bam -> qcvalues:q2[arrowhead="none"]
+    bam -> qcvalues:q3[arrowhead="none"]
+    bam -> qcvalues:q7[arrowhead="none"]
+    bam -> qcvalues:q8[arrowhead="none"]
+    bam -> qcvalues:q9[arrowhead="none"]
+    bam -> qcvalues:q10[arrowhead="none"]
+    bam -> qcvalues:q11[arrowhead="none"]
+    bam -> vcf[label="variant calling",constraint=false]
+    vcf -> qcvalues:q7[arrowhead="none"]
+    vcf -> qcvalues:q8[arrowhead="none"]
+    vcf -> qcvalues:q10[arrowhead="none"]
+    vcf -> qcvalues:q11[arrowhead="none"]
+    vcf -> qcvalues:q12[arrowhead="none"]
+    
+
+}            
