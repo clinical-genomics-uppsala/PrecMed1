@@ -14,10 +14,12 @@ In this computer lab we are going to explore different kinds of somatic variants
 * rsync
 
 ## Files
-Download the lab 4 files to your local computer. Exchange `{user}` with your UPPMAX username.
+Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
+Download the lab 4 files to your home directory on rackham (UPPMAX).
 
 ```bash
-rsync -ah {user}@rackham.uppmax.uu.se:/proj/snic2017-1-1/lab4_files ~/
+cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab4_somatic/ ~/
+cd lab4_somatic
 ```
 
 ## Links to resources
