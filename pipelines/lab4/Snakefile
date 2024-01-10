@@ -63,6 +63,7 @@ rule mutect:
     input:
         bam="analysis/bwa_mem/{sample}.bam",
         bai="analysis/bwa_mem/{sample}.bam.bai",
+        bed="design.bed",
     output:
         vcf="analysis/mutect/{sample}.vcf",
     params:
@@ -75,6 +76,7 @@ rule mutect:
         "(gatk Mutect2 " 
         "--input {input.bam} "
         "--reference {params.fasta} "
+	"--intervals  {input.bed} "
         "--output {output.vcf}) "
         " &> {log}"
 
