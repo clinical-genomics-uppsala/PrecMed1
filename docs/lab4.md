@@ -151,7 +151,8 @@ module load slurm-drmaa
 snakemake -s Snakefile --profile profile
 ```
 
-# The output will end up in folder named analysis
+The output will end up in folder named analysis
+
 ---
 
 ## Variant annotation in vcf
