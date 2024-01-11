@@ -33,7 +33,7 @@ cd lab4_somatic
 Lets first explore some different types of variant that can occur in a somatic sample. 
 
 ### IGV
-Open IGV and then open the `RNA-SeraSeq_R.FGFR3.TACC3.bam` file, make sure that the reference genome is set to *Human hg19*. 
+Open IGV and then open the `HD832_T.variant.genes.bam` file, make sure that the reference genome is set to *Human hg19*. 
 
 ### Variants
 In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/).
