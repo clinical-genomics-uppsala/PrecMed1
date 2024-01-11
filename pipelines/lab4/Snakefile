@@ -1,0 +1,108 @@
+rule all:
+   input:
+      "analysis/vep/HD832.annotated.vcf"
+
+configfile: "config.yaml"
+
+# Perform trimming on provided fastq files
+rule fastp:
+   input:
+     read1="fastq/{sample}.filtered.sorted.R1.fastq.gz",
+     read2="fastq/{sample}.filtered.sorted.R2.fastq.gz",
+   output:
+     read1="analysis/fastp/{sample}.trimmed.R1.fastq.gz",
+     read2="analysis/fastp/{sample}.trimmed.R2.fastq.gz"
+   log:
+     "analysis/fastp/{sample}.log"
+   container:
+     config["container"]["fastp"]
+   shell:
+     "(fastp "
+     "-i {input.read1} "
+     "-I {input.read2} "
+     "-o {output.read1} "
+     "-O {output.read2})"
+     " &> {log} " 
+
+# Align reads against a reference genome
+rule bwa_mem:
+    input:
+        reads=["analysis/fastp/{sample}.trimmed.R1.fastq.gz", "analysis/fastp/{sample}.trimmed.R2.fastq.gz"]
+    output:
+        bam="analysis/bwa_mem/{sample}.bam"
+    params:
+        readgroups=lambda wildcards: f"@RG\\tID:${wildcards.sample}_T_L001_ACT-ACT\\tSM:{wildcards.sample}_T\\tLB:HCGF125_L001_ACT-ACT\\tPL:ILLUMINA",
+	fasta=config['fasta_file']
+    container:
+        config["container"]["bwa"]
+    log:
+        "analysis/bwa_mem/{sample}.bam.log"
+    threads:
+        2
+    shell:
+        "(bwa mem -t 2 "
+        "-R '{params.readgroups}' "
+        "{params.fasta} "
+        "{input.reads} | "
+        "samtools sort -o {output.bam} - )"
+	"&> {log}"
+
+# Create index for bam file
+rule samtools_index:
+    input:
+        bam="{file}.bam",
+    output:
+        bai=temp("{file}.bam.bai"),
+    container:
+        config["container"]["bwa"]
+    shell:
+        "samtools index {input}"
+
+# Call variants using Mutect2 from gatk
+rule mutect:
+    input:
+        bam="analysis/bwa_mem/{sample}.bam",
+        bai="analysis/bwa_mem/{sample}.bam.bai",
+        bed="design.bed",
+    output:
+        vcf="analysis/mutect/{sample}.vcf",
+    params:
+        fasta=config['gatk_fasta_file']
+    log:
+        "analysis/mutect/{sample}.vcf.log"
+    container:
+        config["container"]["gatk"]
+    shell:
+        "(gatk Mutect2 " 
+        "--input {input.bam} "
+        "--reference {params.fasta} "
+	"--intervals  {input.bed} "
+        "--output {output.vcf}) "
+        " &> {log}"
+
+# Annotate called variants
+rule vep:
+    input:
+        vcf="analysis/mutect/{sample}.vcf",
+        fasta=config['vep_fasta_file'],
+    output:
+        vcf="analysis/vep/{sample}.annotated.vcf",
+    params:
+        cache=config['vep_cache'],
+        extra=" --assembly GRCh37 --check_existing --pick --sift b --polyphen b --ccds --uniprot --hgvs --symbol --numbers --domains --regulatory --canonical --protein --biotype --uniprot --tsl --appris --gene_phenotype --af --af_1kg --af_gnomad --max_af --pubmed --variant_class "
+    log:
+        "analysis/vep/{sample}.annotated.vcf.log"
+    container:
+        config["container"]["vep"]
+    threads: 1
+    shell:
+        "(vep "
+        "--vcf "
+        "--no_stats "
+        "-o {output.vcf} "
+        "-i {input.vcf} "
+        "--dir_cache {params.cache} "
+        "--fork {threads} "
+        "--offline --cache --refseq "
+        "--fasta {input.fasta} "
+        "{params.extra} ) &> {log}"

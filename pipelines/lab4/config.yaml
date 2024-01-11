@@ -1,0 +1,22 @@
+---
+ 
+ fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/bwa/concat.fa"
+
+ gatk_fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/GATK/concat.fasta"
+
+ vep_fasta_file: "/sw/data/reference/Homo_sapiens/hg19/program_files/GATK/concat.fasta"
+
+ vep_cache: "/sw/data/vep/107"
+
+ ## Remember to change ACCOUNT_ID from 'uppmax2024-2-1' to your project id
+ ## and possibly entire path if your sif files are stored elsewhere
+ ## The sif files can be creates with the following commands
+ ## singularity build fastp.sif docker://hydragenetics/fastp:0.20.1
+ ## singularity build bwa.sif docker://hydragenetics/bwa_mem:0.7.17
+ ## singularity build gatk.sif docker://hydragenetics/gatk4:4.2.2.0
+ ## singularity build vep.107.sif docker://hydragenetics/vep:107
+ container:
+  bwa: "/proj/ACCOUNT_ID/nobackup/singularity_images/bwa.sif"
+  fastp: "/proj/ACCOUNT_ID/nobackup/singularity_images/fastp.sif"
+  gatk: "/proj/ACCOUNT_ID/nobackup/singularity_images/gatk.sif"
+  vep: "/proj/ACCOUNT_ID/nobackup/singularity_images/vep.107.sif"
