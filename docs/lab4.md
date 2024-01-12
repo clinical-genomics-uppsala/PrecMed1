@@ -124,37 +124,6 @@ Scroll further down in the document to find remaining fusions that Arriba has fo
 
 ---
 
-## Run somatic pipeline
-
-### Setup environment
-```sh
-# Enter pipeline folder
-cd ~/lab4_somatic/pipeline
-
-# Setup environment
-python3.9 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-```
-
-### Run
-```sh
-# Make sure you are in the pipleine folder: ~/lab4_somatic/pipeline
-# Make sure that environment is active.
-# NOTE: not required if you followed the steps in previous section
-# and still have that terminal session active
-source venv/bin/activate
-
-# load slurm library
-module load slurm-drmaa
-
-# Run pipeline
-snakemake -s Snakefile --profile profile
-```
-
-The output will end up in folder named analysis
-
----
-
 ## Variant annotation in vcf
 Use the `grep` command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
 
@@ -248,3 +217,63 @@ Find the CDKN2A and CDKN2B deletion.
     :question:
     Consider another hypothetical case were the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
 
+## Run a simple somatic pipeline
+A sequencing machine usually does not directly generate the VCF files needed for diagnosing a patient. Instead, it produces fastq files. These files need to be processed by a collection of tools, forming a pipeline, to generate the VCF files required for diagnosis.
+
+In this exercise we will run a simple pipeline that will generate an annotated VCF file. The different tools that will be executed can be seen in the following image.
+
+![mosdepth_percontig](includes/images/somatic_pipeline.png)
+
+The different tools that will be run are:
+
+1. fastp: filters out low quality reads and removes adapter sequences.
+2. bwa mem: align reads against the provided reference genome.
+3. samtools index: creates an index file for the bam file necessary for subsequent tools.
+4. mutect2: a caller capable of identifying SNV, insertion and deletion variants.
+5. vep: an annotating tool that facilitates the analysis and prediction of the functional consequences of variants.
+
+!!! Info
+    :info:
+    The pipeline is written in Snakemake, which based on rules and output files requested decides what tools need to be run and in which order. It also handles submitting the jobs to the computer cluster, which in this case is Snowy. The pipeline can also be continued if canceled or partially rerun if some part of it is changed. 
+
+### Setup environment
+To run the pipeline Snakemake needs to be installed.
+```sh
+# on Rackham
+# Enter pipeline folder
+cd ~/lab4_somatic/pipeline
+
+# Setup environment
+python3.9 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Run
+```sh
+# on Rackham
+# Make sure you are in the pipeline folder: ~/lab4_somatic/pipeline
+# Make sure that environment is active.
+# NOTE: not required if you followed the steps in previous section
+# and still have that terminal session active
+source venv/bin/activate
+
+# load slurm library
+module load slurm-drmaa
+
+# Run pipeline
+snakemake -s Snakefile --profile profile
+```
+
+### Find a variant
+
+The output will end up in folder named analysis
+
+!!! question "Question 17"
+    :question:
+    Please find an ALK SNV that isn't common in the population?
+
+!!! TIP
+    * Look at the annotated vcf file under analysis.
+    * MAX_AF field in the VEP annotation can be used to determine the maximum observed frequency in the global population.
+    
+---
