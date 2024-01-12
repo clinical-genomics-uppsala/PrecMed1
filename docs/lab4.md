@@ -220,17 +220,21 @@ Find the CDKN2A and CDKN2B deletion.
 ## Run a simple somatic pipeline
 A sequencing machine usually does not directly generate the VCF files needed for diagnosing a patient. Instead, it produces fastq files. These files need to be processed by a collection of tools, forming a pipeline, to generate the VCF files required for diagnosis.
 
-In this exercise we will run a simple pipeline that will generate a annotated VCF file. The different tools that will be executed can be seen in the following image.
+In this exercise we will run a simple pipeline that will generate an annotated VCF file. The different tools that will be executed can be seen in the following image.
 
 ![mosdepth_percontig](includes/images/somatic_pipeline.png)
 
 The different tools that will be run are:
 
-1. fastp: filters out bad reads and removes adapter sequences.
+1. fastp: filters out low quality reads and removes adapter sequences.
 2. bwa mem: align reads against the provided reference genome.
-3. samtools index: creates an index file necessary for subsequent tools.
-4. mutect: a caller capable of identifying SNV, insertion and deletion variants.
+3. samtools index: creates an index file for the bam file necessary for subsequent tools.
+4. mutect2: a caller capable of identifying SNV, insertion and deletion variants.
 5. vep: an annotating tool that facilitates the analysis and prediction of the functional consequences of variants.
+
+!!! Info
+    :info:
+    The pipeline is written in Snakemake, which based on rules and output files requested decides what tools need to be run and in which order. It also handles submitting the jobs to the computer cluster, which in this case is Snowy. The pipeline can also be continued if canceled or partially rerun if some part of it is changed. 
 
 ### Setup environment
 To run the pipeline Snakemake needs to be installed.
@@ -266,9 +270,10 @@ The output will end up in folder named analysis
 
 !!! question "Question 17"
     :question:
-    Please find an ALK SNV that isn't common the population?
+    Please find an ALK SNV that isn't common in the population?
 
 !!! TIP
     * Look at the annotated vcf file under analysis.
-    * MAX_AF field in the VEP annotation can be used to determine the maximum observed frequency in the population.
+    * MAX_AF field in the VEP annotation can be used to determine the maximum observed frequency in the global population.
+    
 ---
