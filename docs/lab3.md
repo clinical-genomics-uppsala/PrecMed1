@@ -94,6 +94,7 @@ Using grep is a simple and quick way to extract information from a VCF. However,
 The bcftools program is available on uppmax through the module system and can be loaded as follows:
 
 ```bash
+module load bioinfo-tools
 module load bcftools
 ```
 
@@ -170,7 +171,7 @@ All files needed are in the Case3 folder and the commands below assume that you 
 
 ```bash
     singularity  exec --no-home -B $PWD:$PWD \
-    hydragenetics_peddy_0.4.8.sif \
+    /proj/uppmax2024-2-1/nobackup/singularity_images_lab3/peddy_0.4.8.sif \
     python -m peddy --procs $(nproc) \
     --prefix peddy_results \
     case3.vep_annotated.vcf.gz case3.ped
@@ -200,12 +201,6 @@ Take the Gene that receives the highest ranking in the list and extract any vari
     :question:   
         What is the inheritance mode of the variant in this case?
 
-!!! question "Question 10"
-    :question:   
-        Go to the [OMIM page for this gene](https://omim.org/entry/300005?search=MECp2&highlight=mecp2). What phenotype on OMIM might fit with this inheritance mode and clinical history? 
-
-    ??? tip "Hint"
-        What phenotype has the same inheritance as our case and has similar phenotype?
 
 ---
 ### Case4 - Structural variant underlying a heritable cancer syndrome
@@ -219,34 +214,35 @@ A patient diagnosed with colon cancer and with a family history of colon cancer.
 Take a look inside the file called `case4_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar. We will perform three filtration steps to narrow down the list of SVs:
 
 1. Retain only records with a PASS in the filter field.  
-2. Exclude variants with an allele frequency in Gnomad SV 4.0 > 0.05.  
-3. Look for variants in a set of candidate genes.  
+2. Look for variants that overlap with a set of candidate genes in the ```lynch_syndrome_genes.bed```. 
+3. Exclude variants with an allele frequency in Gnomad SV 4.0 > 0.1 (called gnomad_AF in the VCF VEP annotation field).  
 
-To obtain the gene needed for step 3 above we will use ClinVar's list of genes associated with Lynch Syndrome. 
+!!! note
+    For step 2 you can use the ```-R lynch_syndrome_genes.bed``` with `bcftools view` command to extract variants that overlap with the genes listed in the bed file.
+
+
+The genes associated with a disease can be obtained from a number of sources. Here the genes listed for step 2 above were obtained from ClinVar's list of genes associated with Lynch Syndrome. 
 
 ```bash
 
-wget -qO - ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/gene_condition_source_id   | cut -f 2,5 | grep "Lynch syndrome" | cut -f1 | sort | uniq > lynch_syndrome_genes.txt
+wget -qO - ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/gene_condition_source_id   | cut -f 2,5 | grep "Lynch syndrome" | cut -f1 | sort | uniq 
 
 ```
 
-Use `grep -f -w lynch_syndrome_genes.txt` to extract variants that overlap with the genes listed above and view any detected regions in IGV. 
+Using the filtered vcf generated from Steps 1-3 above and the `case4.bam` file to answer the following questions:
 
 
-Using the filtered vcf file answer the following questions:
-
-
-!!! question "Question 9"
+!!! question "Question 10"
     :question: 
     Which of the Lynch Syndrome genes are affected by a structural variant?
 
-!!! question "Question 10"
-    :question:
-    What type of structural variants are they?
-
 !!! question "Question 11"
+    :question:
+    What type of structural variant affects this gene and how large is it?
+
+!!! question "Question 12"
     :question: 
-    Do they overlap with any known pathogenic variants of the same type?
+    Using the `case4.bam` file, view the Structural variant in IGV. Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
 
 ---
 ### Case5 - Repeat expansion detection
@@ -266,20 +262,33 @@ All files needed are in the Case5 folder and the commands below assume that you 
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
-    docker://hydragenetics/expansionhunter:5.0.0 \
+    /proj/uppmax2024-2-1/nobackup/singularity_images_lab3/expansionhunter_5.0.0.sif \
     ExpansionHunter --reads case5.bam \
     --reference homo_sapiens.fasta  \
-    --threads $(nproc) \
-    --variant-catalog ${catalog} \
+    --variant-catalog variant_catalog_hg38.json  \
     --output-prefix case5.expansion_hunter
 ```
 
 
 To visualise the read support for the expansion hunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
 
+First we need to sort and index the samll bam file produced by ExpansionHunter using samtools.
+
+
+```
+module load bioinfo-tools
+module load samtools
+
+samtools sort -O BAM  case5.expansion_hunter_realigned.bam -o case5.expansion_hunter_realigned.sorted.bam
+samtools index case5.expansion_hunter_realigned.sorted.bam
+
+```
+
+Now we will run REViewer on the sorted `case5.expansion_hunter_realigned.sorted.bam` and the `case5.expansion_hunter.vcf` to produce a plot for the DMPK locus.
+
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
-    docker://hydragenetics/reviewer:0.2.7 \
+    /proj/uppmax2024-2-1/nobackup/singularity_images_lab3/reviewer_0.2.7.sif \
     REViewer --reads case5.expansion_hunter_realigned.sorted.bam \
     --vcf case5.expansion_hunter.vcf \
     --reference homo_sapiens.fasta \
@@ -292,11 +301,11 @@ singularity exec --no-home -B $PWD:$PWD \
 The image output by REViewer is in SVG format. This is best viewed in a web browser such as firefox or Google Chrome. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories.
 
 
-!!! question  "Question 12"
+!!! question  "Question 13"
     :question: 
     How many repeats does the patient have in the longer allele and is it pathogenic?
 
-!!! question  "Question 13"
+!!! question  "Question 14"
     :question:
     Expansion hunter divides supporting reads into spanning, flanking and in-repeat
     reads. In this case which type of read offers the most support to the expanded allele call? 
@@ -305,21 +314,22 @@ We will then use the tool [Stranger](https://github.com/Clinical-Genomics/strang
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
-    docker://hydragenetics/stranger:0.8.1 \
+    /proj/uppmax2024-2-1/nobackup/singularity_images_lab3/stranger_0.8.1.sif \
     stranger -f variant_catalog_hg38.json case5.expansion_hunter.vcf > case5.stranger_annotated.vcf
 
 ```
 
 Use the stranger annotated VCF file to answer the following questions:
 
-!!! question  "Question 14"
+!!! question  "Question 15"
     :question:  Are the both DMPK alleles above the pathogenic threshold?
 
  A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomad.   
 
-!!! question  "Question 15"
-    :question: The tri-nucleotide repeat motif for DMPK in the literature is given as CTG. Why does Expansion Hunter report a repeat motif of CAG?
+!!! question  "Question 16"
+    :question: The tri-nucleotide repeat motif for DMPK in the literature is given as CTG. Why does Expansion Hunter report a repeat motif of CAG?  
 
+---
 ## References 
 
 Case 3 comes from the case 5 patient scenario on the [genebreaker website](http://genebreaker.cmmt.ubc.ca/patient_scenarios). 
