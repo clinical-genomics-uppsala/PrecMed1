@@ -76,13 +76,13 @@ In the regions below there are different types of structural variants.
 #### VCF with VEP annotations
 Here we will take an example VCF file with a pathogenic variant in the TP53 gene. This case will serve as an example on how to filter variants in a vcf file and how to extract information about the variants. **There are no questions for this case**. 
 
-Here you are given a VCF file called `case1.vep_annotated.vcf.gz` containing SNPS and Indels. The VCF has been annotated with variant effect information using the [Variant Effect Predictor](https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in the INFO field of starting with "CSQ=".
+Here you are given a VCF file called `case1.vep_annotated.vcf.gz` containing SNVs and INDELs. The VCF has been annotated with variant effect information using the [Variant Effect Predictor](https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in the INFO field of starting with "CSQ=".
 
 We can extract information about what the various fields in the VEP annotations are using a grep search of the VCF header:
 
 ```bash
 
-zgrep ^# case1.vep_annotated.vcf.gz | grep CSQ
+zgrep  ^# case1.vep_annotated.vcf.gz | grep CSQ
 
 ```
 
@@ -90,7 +90,7 @@ Given the information above a simple grep search for TP53 and 'pathogenic' will 
 
 ```bash
 
-zgrep -f TP53 case1.vep_annotated.vcf.gz | grep pathogenic
+zgrep -w TP53 case1.vep_annotated.vcf.gz | grep pathogenic
 
 ```
 
@@ -163,7 +163,7 @@ Using `bcftools`, or `grep`, extract the variants from the gene identified above
 ---
 ### Case3 - Analysis of a Trio using variants and HPO terms
 
-Analysis of rare genetic diseases is often carried out on a trio (proband, mother and father). Here we will analyse a trio VCF of SNPs and INDELs to try and find the causal variant for the following case:
+Analysis of rare genetic diseases is often carried out on a trio (proband, mother and father). Here we will analyse a trio VCF of SNVs and INDELs to try and find the causal variant for the following case:
 
 #### Clinical and Family History
 A two year-old female presented for a welfare check. Her early pediatric milestones were reassuring, she walked shortly after her first birthday and began talking around the same time. However, at the appointment, her mother notes that she is no longer using words that she used to and that she no longer feeds herself and seems less engaged. On examination, her growth parameters are in the normal range, but are notable for minimal growth in head circumference over the last 9 months. She verbalizes but does not make intelligible words and does not reciprocate in verbal exchange. She is an only child and the family history is negative with respect to significant medical problems.
@@ -218,7 +218,7 @@ Take the Gene that receives the highest ranking in the list and extract any vari
 Here we will examine a VCF with structural variants from a patient 
 
 #### Clinical and Family History
-A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNPs and Indel variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
+A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNVs and INDEL variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
 
 #### Variant filtration
 Take a look inside the file called `case4_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar and Genome Aggregation Database (gnomAD) SV v4.0. We will perform three filtration steps to narrow down the list of SVs:
