@@ -190,7 +190,7 @@ All files needed are in the Case3 folder and the commands below assume that you 
 
 !!! question "Question 6"
     :question: 
-    Check the peddy report file. Do the samples show the expected relatedness and correct sex?
+    View the peddy_results.html file by copying it to your laptop and viewing it in your web browser. Do the samples show the expected relatedness and correct sex?
         
 !!! question "Question 7"
     :question: 
@@ -239,7 +239,7 @@ wget -qO - ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/gene_condition_source_id   | c
 
 ```
 
-Using the filtered vcf generated from Steps 1-3 above and the `case4_sv.bam` file to answer the following questions:
+Use the filtered vcf generated from Steps 1-3 above and the `case4_sv.bam` file to answer the following questions:
 
 
 !!! question "Question 10"
@@ -278,7 +278,7 @@ singularity exec --no-home -B $PWD:$PWD \
 ```
 
 
-First we need to sort and index the samll bam file produced by ExpansionHunter using samtools available through the module system on Uppmax-.
+Before we proceed further we need to sort and index the small bam file produced by ExpansionHunter using samtools available through the module system on Uppmax.
 
 ```
 module load bioinfo-tools
@@ -289,9 +289,8 @@ samtools index case5.expansion_hunter_realigned.sorted.bam
 
 ```
 
-
-To visualise the read support for the expansion hunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
-REViewer requires the sorted `case5.expansion_hunter_realigned.sorted.bam`, the `case5.expansion_hunter.vcf` output by  to produce a plot for the DMPK locus.
+To visualise the read support for the ExpansionHunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
+REViewer requires the sorted `case5.expansion_hunter_realigned.sorted.bam`, the `case5.expansion_hunter.vcf` output by  to produce a plot for the DMPK locus. 
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -306,17 +305,7 @@ singularity exec --no-home -B $PWD:$PWD \
 ```
 
 The image output by REViewer is in SVG format. This is best viewed in a web browser such as firefox or Google Chrome. You can download 
-the file called `case5.reviewer.DMPK.svg` and open it with your web browser. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories.
-
-
-!!! question  "Question 13"
-    :question: 
-    How many repeats does the patient have in the longer allele and is it pathogenic?
-
-!!! question  "Question 14"
-    :question:
-    Expansion hunter divides supporting reads into spanning, flanking and in-repeat
-    reads. In this case which type of read offers the most support to the expanded allele call? 
+the file called `case5.reviewer.DMPK.svg` and open it with your web browser. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories, and to assess the coverage for each allele.
 
 We will now use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated by ExpansionHunter are pathological. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
 
@@ -327,10 +316,20 @@ singularity exec --no-home -B $PWD:$PWD \
 
 ```
 
-Use the stranger annotated VCF file to answer the following questions:
+Use the `case5.stranger_annotated.vcf` file to answer the following questions:
+
+!!! question  "Question 13"
+    :question: 
+    How many repeats does the patient have in the in each allele?
+
+!!! question  "Question 14"
+    :question:  Are the both DMPK alleles above the pathogenic threshold?
 
 !!! question  "Question 15"
-    :question:  Are the both DMPK alleles above the pathogenic threshold?
+    :question:
+    Expansion hunter divides supporting reads into spanning, flanking and in-repeat
+    reads. How many spanning, flanking and in-repeat reads support the longer expanded allele? 
+
 
  A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomAD.   
 
