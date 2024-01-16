@@ -19,6 +19,15 @@ All of the below are installed or available through the module system on rackham
 * singularity  
 * bcftools  
 
+## Files
+Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
+Download the lab 3 files to your home directory on rackham (UPPMAX).
+
+```bash
+cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab3_germline/ ~/
+cd lab3_germline
+```
+
 ## Links to resources
 * [Genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/)
 * [IGV desktop Documentation](https://igv.org/doc/desktop/)
@@ -32,7 +41,7 @@ The visual inspection of the sequencing data supporting a germline variant is an
 
 The reads in the BAM file we will used have been mapped to the **HG38** reference genome, so make sure to switch to this genome version in IGV.
 
-Open IGV and then open the `NA12878_examples.bam` file in the sv_examples folder. 
+Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` folder. 
 
 In the regions below there are different types of structural variants.
 
@@ -104,19 +113,20 @@ One loaded we can list all the available VEP subfields from the CSQ INFO field
 bcftools +split-vep case1.vep_annotated.vcf.gz -l 
 ```
 
-Here we will take a number of steps to filter the VCF file and we will make use of pipes to perform each step sequentially:
+Here we will take a number of steps to filter the VCF file and we will make use of pipes to perform each step sequentially.
+Here we visualise the VCF output of each step with `less -S`. To exit `less` type q.:
 
 1. Exclude all records in the VCF that do not have 'PASS' in the FILTER column
     ```bash 
-    bcftools view -f PASS case1.vep_annotated.vcf.gz | less
+    bcftools view -f PASS case1.vep_annotated.vcf.gz | less -S
     ```
 2. Exclude common variants, as we are only interested in the rare variants. Here we will use the [MAX_AF subfield](https://www.ensembl.org/info/docs/tools/vep/script/vep_options.html#opt_max_af) and a [filtering expression](https://samtools.github.io/bcftools/bcftools.html#expressions) from bcftools.
     ```bash 
-    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float -e "MAX_AF>0.1" | less
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float -e "MAX_AF>0.1" | less -S
     ```
 3. Keep only variants in the TP53 gene.  
     ```bash 
-    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.1 | SYMBOL!='TP53'"
+    bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.1 | SYMBOL!='TP53'" | less -S
     ```
 
 Using bcftools also allows the output  to be formatted in a more human readable way where a subset of columns that are of most interest can be extracted (e.g., Consequence and CLIN_SIG can be extracted to look for evidence of pathogenicity) :
@@ -211,7 +221,7 @@ Here we will examine a VCF with structural variants from a patient
 A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNPs and Indel variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
 
 #### Variant filtration
-Take a look inside the file called `case4_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar. We will perform three filtration steps to narrow down the list of SVs:
+Take a look inside the file called `case4_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar and Genome Aggregation Database (gnomAD) SV v4.0. We will perform three filtration steps to narrow down the list of SVs:
 
 1. Retain only records with a PASS in the filter field.  
 2. Look for variants that overlap with a set of candidate genes in the ```lynch_syndrome_genes.bed```. 
@@ -229,7 +239,7 @@ wget -qO - ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/gene_condition_source_id   | c
 
 ```
 
-Using the filtered vcf generated from Steps 1-3 above and the `case4.bam` file to answer the following questions:
+Using the filtered vcf generated from Steps 1-3 above and the `case4_sv.bam` file to answer the following questions:
 
 
 !!! question "Question 10"
@@ -242,21 +252,19 @@ Using the filtered vcf generated from Steps 1-3 above and the `case4.bam` file t
 
 !!! question "Question 12"
     :question: 
-    Using the `case4.bam` file, view the Structural variant in IGV. Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
+    Using the `case4_sv.bam` file, view the Structural variant in IGV. Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
 
 ---
 ### Case5 - Repeat expansion detection
 
-Here we will take a look at the difficult problem of calling expansions of short tandem repeats (STRs) with whole genome Illumina paired-end data.
+Next we will take a look at the difficult problem of calling expansions of short tandem repeats (STRs) with whole genome Illumina paired-end data.
 
 #### Clinical and Family History
-This male patient, age 40, has symptoms that include mild muscle weakness, myotonia, and cataracts. This patient is suspected to have Myotonic dystrophy type 1 (DM1).
-
-Myotonic dystrophy type 1 is a progressive neuromuscular disease that occurs due to a CTG expansion in the 3' UTR of the DMPK gene. 
+This male patient, age 40, has symptoms that include mild muscle weakness, myotonia, and cataracts. This patient is suspected to have Myotonic dystrophy type 1 (DM1). Myotonic dystrophy type 1 is a progressive neuromuscular disease that occurs due to a CTG expansion in the 3' UTR of the DMPK gene. 
 
 #### Repeat expansion genotyping
-To detect a repeat expansion in DMPK we will use a program called ExpansionHunter. A description and explanation of the VCF produced by Expansion Hunter is available [here](
-https://github.com/Illumina/ExpansionHunter/blob/master/docs/06_OutputVcfFiles.md). The BAM file used for this test contains reads mapped to a region of chr19 that contains the DMPK gene.
+To detect a repeat expansion in DMPK we will use a program called ExpansionHunter. A description and explanation of the VCF produced by ExpansionHunter is available [here](
+https://github.com/Illumina/ExpansionHunter/blob/master/docs/06_OutputVcfFiles.md). The `case5.bam` file contains reads mapped to a region of chr19 that contains the DMPK gene.
 
 All files needed are in the Case5 folder and the commands below assume that you are in the case5 folder.
 
@@ -270,10 +278,7 @@ singularity exec --no-home -B $PWD:$PWD \
 ```
 
 
-To visualise the read support for the expansion hunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
-
-First we need to sort and index the samll bam file produced by ExpansionHunter using samtools.
-
+First we need to sort and index the samll bam file produced by ExpansionHunter using samtools available through the module system on Uppmax-.
 
 ```
 module load bioinfo-tools
@@ -284,7 +289,9 @@ samtools index case5.expansion_hunter_realigned.sorted.bam
 
 ```
 
-Now we will run REViewer on the sorted `case5.expansion_hunter_realigned.sorted.bam` and the `case5.expansion_hunter.vcf` to produce a plot for the DMPK locus.
+
+To visualise the read support for the expansion hunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
+REViewer requires the sorted `case5.expansion_hunter_realigned.sorted.bam`, the `case5.expansion_hunter.vcf` output by  to produce a plot for the DMPK locus.
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -298,7 +305,8 @@ singularity exec --no-home -B $PWD:$PWD \
 
 ```
 
-The image output by REViewer is in SVG format. This is best viewed in a web browser such as firefox or Google Chrome. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories.
+The image output by REViewer is in SVG format. This is best viewed in a web browser such as firefox or Google Chrome. You can download 
+the file called `case5.reviewer.DMPK.svg` and open it with your web browser. Examine the reviewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories.
 
 
 !!! question  "Question 13"
@@ -310,7 +318,7 @@ The image output by REViewer is in SVG format. This is best viewed in a web brow
     Expansion hunter divides supporting reads into spanning, flanking and in-repeat
     reads. In this case which type of read offers the most support to the expanded allele call? 
 
-We will then use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated are pathological. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
+We will now use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated by ExpansionHunter are pathological. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -324,7 +332,7 @@ Use the stranger annotated VCF file to answer the following questions:
 !!! question  "Question 15"
     :question:  Are the both DMPK alleles above the pathogenic threshold?
 
- A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomad.   
+ A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomAD.   
 
 !!! question  "Question 16"
     :question: The tri-nucleotide repeat motif for DMPK in the literature is given as CTG. Why does Expansion Hunter report a repeat motif of CAG?  
