@@ -14,6 +14,8 @@
 *[HLA]: Human leukocyte antigen
 *[HRD]: Homologous recombination deficiency
 *[IGV]: Integrative Genomics Viewer
+*[INDEL]: Insertion and deletion
+*[INDELs]: Insertions and deletions
 *[MAF]: Minor allele frequency
 *[MSI]: Microsatellite instability
 *[MSS]: Microsatellite stable 
@@ -31,6 +33,6 @@
 *[SVs]: Structural variants
 *[STR]: short tandem repeat
 *[STRs]: short tandem repeats
-*[INDEL]: Insertion and deletion
-*[INDELs]: Insertions and deletions
 *[TMB]: Tumor mutational burden
+*[VCF]: Variant Call Format
+*[WGS]: Whole Genome Sequencing
