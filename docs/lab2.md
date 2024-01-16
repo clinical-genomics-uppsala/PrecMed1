@@ -1,6 +1,3 @@
-<!-- ---
-status: new
---- -->
 # Computer lab 2: Sequencing quality control
 
 This computer lab picks up as the sequencing machine has finished. Even if the sequencing machine did run ok there is no guarantee that the data is actually what we expect and the quality is good enough to use in our downstream analysis.  
@@ -10,7 +7,7 @@ As the sequencing machine finishes it usually outputs some QC report, for Illumi
 ## Prerequisites
 * IGV
 * Web browser
-* Access to Uppmax project
+* Access to Uppmax project (uppmax2024-2-1)
 
 If running locally:
 
@@ -18,14 +15,16 @@ If running locally:
 * awk
 
 ## Files
-Can be found at the Uppmax project.
+Can be found at the Uppmax project (uppmax2024-2-1).
+To ensure that you don't accidentally overwrite someone else file start by copying the entire `lab2_qc` folder to your home (or local computer).
 Either download the entire folder locally or all work can be done in your own homefolder on Rackham.
-To ensure that you don't accidently overwrite someone else file start by copying the entire `lab2` folder to your home (or local computer)
+
 ```bash
 mkdir ~/${course_folder}
-cp -r ${project_path}/lab2 ~/${course_folder}
-cd ~/${course_folder}/lab2/
+cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab2_qc ~/${course_folder}
+cd ~/${course_folder}/lab2_qc/
 ```
+
 ---
 
 ## Common Quality Values
@@ -86,26 +85,18 @@ SAV hela korning 100M-1.2B
 
 ### Percent [%] mapped
 
-After trimming away low quality reads and bases, the reads are aligned to a reference genome. The percent of reads that are mapped is often tracked during this step. This is to measure how well your data match the genome reference provided. 
+After trimming away low quality reads and bases, the reads are aligned to a reference genome. The percent of reads that are mapped is often tracked during this step. This is to measure how well your data match the genome reference provided. This value is usually provided as a QC value from the alignment software you have used, e.g. [bwa](https://bio-bwa.sourceforge.net/) or [minimap2](https://github.com/lh3/minimap2) or any QC-checks done on aligned files.   
 
-<!-- Fixa fastq screen resultat med kontaminerat prov 
-module load bioinfo-tools
-module load fastq_screen/0.15.2
+One program that uses a different approach is [Fastq_Screen](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/_build/html/index.html#). Fastq Screen roughly aligns fastq-reads to a reference genome database, and compare the amount reads aligned between the different references. 
 
-fastq_screen --get_genomes
-
-fastq_screen --conf $config $contaminated_fastq
-fastq_screen --conf $config $ok_fastq
--->
 !!! question "Question 3"
-    :question: Explain what might have happened here:  
+    :question: Explain what you see in the following fastqscreen result:
 
-    ![fastq_screen](includes/images/fastq_screen.png)
-    Human contaminated with mouse 
+    ![fastq_screen](includes/images/fq_screen_plot.png)
     
 
 ### Coverage
-A measurement of how well covered your sample is. Usually defined as *"Y" X coverage*, where for example 40X coverage is normal in whole genome sequencing. This means that the average position is covered by *Y* number of reads. There are many different programs that calculate coverage (often in combination with other QC parameters), some examples are:
+A measurement of how well covered your sample is. Usually defined as *"Y" X coverage*, where for example 40X coverage is normal in whole genome sequencing (WGS). This means that the average position is covered by *Y* number of reads. There are many different programs that calculate coverage (often in combination with other QC parameters), some examples are:
 
 - [Samtools Stats](http://www.htslib.org/doc/samtools-stats.html)
 - [Picard CollectAlignmentSummaryMetrics](https://gatk.broadinstitute.org/hc/en-us/articles/13832683660955-CollectAlignmentSummaryMetrics-Picard-)
@@ -117,10 +108,10 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
     *(Bam-file aligned to Hg19 reference genome.)*  
 
     ```bash
-    cd ${project_folder}/${user_folder}/
+    cd ~/${course_folder}/lab2_qc/
     module load bioinfo-tools
-    module load mosdepth
-    mosdepth sampleB-output ${project_folder}/lab2/sampleB_subset.bam
+    module load mosdepth/0.3.3
+    mosdepth sampleB-output ${path_to_file}/sampleB_subset.bam
     ```
 
     or if using singularity locally you need download bamfile and index files from Uppmax first, and then run mosdepth locally using singularity
@@ -160,13 +151,13 @@ A more quantitative value based on coverage distribution is the fold 80 base pen
 Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx** as it is often described as. This means that X % of the genome or target regions is covered by **at least** Y reads. By default several of these levels are calculated in most of the [Picard](http://broadinstitute.github.io/picard/picard-metric-definitions.html) metrics programs (depending one your sequencing method which collect metrics you run may vary). Since this is such a popular value many coverage programs often calculates breadth and allows you to specify your own specific thresholds if needed. The most common program used are the [Picard metrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html) algorithms. Since this is a measurement of coverage over a given **target** it is important to keep track of what region/target this is calculated over to be able to compare numbers.
 
 !!! question "Question 6"
-    Why might the coverage breadth vary for the same human wgs (reference genome HG38) sample calculated with different pipelines?
+    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample calculated with different pipelines?
 
     | Name | PipelineA: Median Cov | PipelineA: % &ge; 30x | PipelineB: Median Cov | PipelineB: % &ge; 30x |
     | --- | --- | ---| --- | ---|
     | SampleC | 34 | 91 | 34 | 99 | 
     ??? tip
-        Can we map reads to the entire genome?
+        Can we map reads to the entire human genome?
 
 
 ### Duplication rate
@@ -184,7 +175,8 @@ Fastqc 100 000 reads 50 bp identical
 picard, mapped 5' end of read -->
 
 !!! question "Question 7"
-    :question: Find the estimated duplication rate for sampleA from both FastQC and Picard CollectDuplicateMetrics.
+    Use the files in `lab2_qc/`-folder answer the following questions:  
+    :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 8.
     ??? tip
         Checkout the output from the different programs under the `qc`-folder.
     :question: Explain why the duplication rate differs between FastQC and Picard MarkDuplicates/CollectDuplicateMetrics?
@@ -193,10 +185,10 @@ picard, mapped 5' end of read -->
 
 ---
 
-| Sample  | Number of reads | Duplication rate | Mean Coverage | % &ge; 200x | % &ge; 500x |  Fold80 |
-| --- | --- | --- | ---- | --- | --- | --- | 
-| SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  | | |
-| SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  | | |
+| Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
+| --- | --- | --- | ---- | --- |
+| SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  |
+| SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 
 !!! question "Question 8"
     :question: Fill out the table above with the missing values for sampleD.
@@ -206,64 +198,22 @@ picard, mapped 5' end of read -->
         ??? tip "Programs"
             Number of reads: fastqc  
             Duplication rate: fastqc or collect duplicate metrics  
-            Mean coverage: mosdepth  
-            Coverage breadth: mosdepth  
-            Fold80: Picard HsMetrics  
-    ??? tip "Tip: Coverage breadth"
-        Finding coverage breadth is not always easy, in the mosdepth_bed folder, locate the `qc/mosdepth_bed/sampleD_T.thresholds.bed.gz` file and have a look inside it with `less ${file}` (use `q` to exit).  What you want is the total coverage breadth for 200x and 500x, not per region. Identify which columns show per region coverage breadth.  
-        To calculate the % &ge; Yx you need to add together coverage for the entire design and then divide it by the total length of the design: 
-        $$ \frac{\sum covered\ bases} {\sum region\ length} $$
-        
-        For example:
-
-        |  |  |  | 10x|
-        |---|---|---|---|
-        |chrA |1 |11|2|
-        |chrA|20|25|0|
-
-        Would give us $ \frac {(2+0)} {(11-1)+(25-20)}=0.08 $ or 8 % &ge; 10x
-
-        Identify which columns you are interested in and use it to replace `$x` with the column number (1-index) in the script below:
-        ``` bash
-        zcat qc/mosdepth_bed/sampleD_T.thresholds.bed.gz | awk 'NR>1{tot_length+=$3-$2;tot_bases+=$x}END{print tot_bases"/"tot_length"="tot_bases/tot_length}'
-        ```bash
-        Step-by-step explanation:
-        
-        *   `zcat` allows for reading the gzipped file without extracting it.
-        *   [`awk`](https://www.geeksforgeeks.org/awk-command-unixlinux-examples/) is a handy string manipulating program
-        *   `NR>1` means skip the first line since that line is the header.
-        *   `tot_length+=$3-$2` is a cumulative variable that increases with the length of the region for each row. The values in column 2 is subtracted from column 3 and the sum is added to the variable `tot_length`.
-        *   `tot_bases+=$x` is the cumulative value of your desired column.
-        *   `END` just means do the following once the end of the file is reached.
-        *   `print ` print the following to the command line.
+            Median coverage: mosdepth  
+            Fold80: Picard HsMetrics
 
 
         
 
 ## MultiQC
-As you might have notice it takes quite a while to identify and find the different QC-values to track. To combat the never-ending file searching and enable easier tracking of QC-values the program [MultiQC](https://multiqc.info/) is often used. MultiQC aggregate the different QC-values into a single report. MultiQC only aggregate results from other programs (over [100 tools](https://multiqc.info/modules/) are automatically included, but you can also build your own tables or plots) and never does any calculation, therefor what values you can find and the layout of a MultiQC report varies a lot. It all depends on which programs you have run and input into MultiQC. MultiQC also allows you to configure almost all parts of the report with a config so a MultiQC-report does not always look like a "MultiQC-report".  
+As you might have notice it takes quite a while to identify and find the different QC-values to track. To combat the never-ending file searching and enable easier tracking of QC-values the program [MultiQC](https://multiqc.info/) is often used. MultiQC aggregate the different QC-values into a single report. MultiQC **only** aggregate results from other programs (over [100 tools](https://multiqc.info/modules/) are automatically included, but you can also build your own tables or plots) and never does any calculation, therefor what values you can find and the layout of a MultiQC report varies a lot. It all depends on which programs you have run and input into MultiQC. MultiQC also allows you to configure almost all parts of the report with a config so a MultiQC-report does not always look like a "MultiQC-report".  
 
 <br>
 The report is a self-contained interactive `.html`-file where you can adapt/configure/highlight etc the plots and tables directly in your web-browser. It also allows for an easy export of table and plots if needed. 
 !!! question "Question 9"
-    :question: Open the provided MultiQC-report (`lab2/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted.
+    :question: Open the provided MultiQC-report (`lab2_qc/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted.
 
 !!! question "Question 10"
-    :question: Fill in the same table as in Question 8 but for SampleD with the values found in the MultiQC report.
-
-<!-- !!! question "Question 11"
-    :question: Try generating a new MultiQC and using the data in lab2/Question10-folder where the fastp module is listed first. Then upload a screenshot to studium. 
-    ```
-    module load bioinfo-tools
-    module load multiqc
-    multiqc --config ${project_folder}/lab2/qc/multiqc_config.yaml ${project_folder}/lab2/qc/
-    ```
-    ??? tip
-        Check the `multiqc_config.yaml` if there is something in there that can be changed? -->
-<!-- 
-extra assignments/question 9
-edit a ready multiqc report mha config, tex ordningen eller lägga till module baserat på vad för filer som finns preppade?
--->
+    :question: Fill in the same table as in Question 8 but for SampleE with the values found in the MultiQC report.
 
 ## Variant Quality
 The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
@@ -281,7 +231,7 @@ The other quality-value that is usually included are mapping quality, how well a
 <!-- 14              -->
 
 ### Genotype Quality
-Most variant callers have some sort of genotype quality scoring available for each variantcall. The problem here is that it is not standardized and each caller can have completely different values making them hard to compare. For example for the GATK produced vcf-files there are several different quality values, there is the `QUAL` column as well as the `GQ` and `PL` fields in the FORMAT column. For more in-depth info on the different vcf columns and annotation for GATK see more info [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format). While other programs might also use the `GQ` field but their definition is completely different. 
+Most variant callers have some sort of genotype quality scoring available for each variantcall. The problem here is that it is not standardized and each caller can have completely different values making them hard to compare. For example for GATK produced vcf-files there are several different quality values, there is the `QUAL` column as well as the `GQ` and `PL` fields in the FORMAT column. For more in-depth info on the different vcf columns and annotation for GATK see more info [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format). While other programs might also call there quality value for the same thing, their definition is often completely different. 
 
 ![gq_values](includes/images/gq_values.png)
 
@@ -290,7 +240,7 @@ If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinst
 ### Background and Artifacts
 Another step for validating you variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
 
-To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify, for example sequencing chemistry can affect our ability to sequence certain areas.
+To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify than others, for example sequencing chemistry can affect our ability to sequence certain areas.
 
 !!! question "Question 12"
     :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
@@ -299,6 +249,55 @@ To identify background noise you need to separate an actual call to the normal n
 
 Both background and artifacts is a lot easier identify if a normal pool of samples is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include. 
 
-<!-- Something about how to calc AF? Jonas just a messy region. -->
-
 <br>
+
+---
+
+## Extra assigment
+**Coverage breadth**
+
+Finding coverage breadth is not always easy. In the mosdepth_bed folder, locate the `qc/mosdepth_bed/sampleD_T.thresholds.bed.gz` file and have a look inside it with `less ${file}` (use `q` to exit).  
+
+:question: Fill in the table for coverage breadth for sampleD. You want the total coverage breadth, not per region.  
+
+| Sample  | % &ge; 200x | % &ge; 500x |
+| --- | --- | --- |
+|sampleD | | |
+
+To calculate the % &ge; Yx you need to add together coverage for the entire design and then divide it by the total length of the design: 
+    $$ \frac{\sum covered\ bases} {\sum region\ length} $$
+        
+For example:
+
+|  |  |  | 10x|
+|---|---|---|---|
+|chrA |1 |11|2|
+|chrA|20|25|0|
+
+Would give us $$ \frac {(2+0)} {(11-1)+(25-20)}=0.08 $$ i.e. 8 % &ge; 10x
+
+??? Tip
+    Try piping the output from `zcat` (to open the gzipped file "on/the/fly") to [`awk`](https://linuxhandbook.com/awk-command-tutorial/) to calculate the coverage breadth using the formula above. 
+
+    ??? Tip "Full command"
+        Identify which columns you are interested in and use it to replace `$x` with the column number (1-index) in the script below:
+        ``` bash
+        zcat qc/mosdepth_bed/sampleD_T.thresholds.bed.gz | awk 'NR>1{tot_length+=$3-$2;tot_bases+=$x}END{print tot_bases"/"tot_length"="tot_bases/tot_length}'
+        ```
+        
+        Step-by-step explanation:
+                
+        *   `zcat` allows for reading the gzipped file without extracting it.
+        *   [`awk`](https://www.geeksforgeeks.org/awk-command-unixlinux-examples/) is a handy string manipulating program
+        *   `NR>1` means skip the first line since that line is the header.
+        *   `tot_length+=$3-$2` is a cumulative variable that increases with the length of the region for each row. The values in column 2 is subtracted from column 3 and the sum is added to the variable `tot_length`.
+        *   `tot_bases+=$x` is the cumulative value of your desired column.
+        *   `END` just means do the following once the end of the file is reached.
+        *   `print ` print the following to the command line.
+        
+        Compare your values with the value found in MultiQC.
+
+:question: See if you can find a way of calculating the coverage breadth of 450x for sampleD_subsample.
+
+??? tip
+    Which program was used to produce the original file? Is there a way of change the input parameters to calculate different level of coverage breadth?
