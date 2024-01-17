@@ -174,7 +174,7 @@ Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, 
 
  
 :question:
-Navigate to chr5:170846329-170847798. Look at the sample sequenced with the capture method. Make sure to scroll all the way up so you can see the coverage plot. What is the read depth here? How does this compare to the read depth in other areas we looked at. Check the reference, are you looking at a gene? Intronic or extronic region? What do you think is happening here?   
+Navigate to chr5:170846329-170847798. Look at the sample sequenced with the capture method. Make sure to scroll all the way up so you can see the coverage plot. What is the read depth here? How does this compare to the read depth in other areas we looked at. Check the reference, are you looking at a gene, and if yes, what part of the gene? What do you think is happening here?   
 
 
 :question:
