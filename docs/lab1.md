@@ -1,6 +1,24 @@
 # Sequencing data formats and visualization 
 In this computer lab we will have a look at the most common file formats used for next-generation sequencing data. 
 
+For this, you should have IGV installed on your computer. If you haven't done so yet, please download it [here](https://igv.org/). There is also a web application in case you can't get it set up, though functionality is decreased. 
+
+We will be performing the analysis on uppmax and on your computer locally. To get set up you need to load the following modules on uppmax:
+
+```text
+module load bioinfo-tools 
+module load IGVtools/2.16.0
+module load samtools 
+module load bcftools 
+```
+
+Then copy the files you need to your home directory: 
+
+```text
+cd ~
+mkdir lab1
+rsync /proj/uppmax2024-2-1/nobackup/lab_files/lab1_data_format/* ~/lab1/.
+```
 ## FASTQ
 To store the countless reads generated in short read sequencing along with additional information, the FASTQ file format was developed as a progression of the FASTA file format.  
 
@@ -37,7 +55,7 @@ If sequencing was performed on paired reads, you will always have at least two .
 
 ### Assignment 1 
 
-In `PATH` you will find an example of a FASTQ file generated with a NovaSeq sequencing machine: `q1.fq`
+In `~/lab1/` you will find an example of a FASTQ file generated with a NovaSeq sequencing machine: `q1.fq`
 
 !!! question "Question 1"
 
@@ -50,7 +68,7 @@ In `PATH` you will find an example of a FASTQ file generated with a NovaSeq sequ
 
 
 :question:
-Have a look at the quality scores, what do you think is happening here? 
+Have a look at the the characters in the quality row, what do you think is happening here? 
    
 !!! question "Question 2"
 
@@ -107,10 +125,17 @@ To help visualize mapped reads, tools such as IGV have been developed. We can us
 ### Assignment 3 
 
 :question:
-In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'
+In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'.
+
+You should then download the bam files to your computer (sample_A.sorted, sample_B and sample_C). You can do this with scp. In a terminal window in a local directory run: 
+
+```text
+scp "<USER>@rackham.uppmax.uu.se:~/lab1/*.bam*"  . 
+```
+exchange &lt;USER> with your uppmax user name. The command will prompt you to type in your uppmax password and then will transfer the data to the directory you are in. 
 
 
-Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. Select the .bam files and make sure that the .bai files are in the same directory. You can either use IGV on the [compute cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on your computer. 
+Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. Select the .bam files and make sure that the .bai files are in the same directory. You can either use IGV on the [compute cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on your computer. You can use the command `igvtools_gui` on uppmax to open IGV but this is not recommended as the graphic forwarding is not that great. If you have issues opening IGV locally there is also an [IGV web app](https://igv.org/app/).
 
 ??? info
 	Once you input data, you can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  
@@ -139,6 +164,7 @@ Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, 
 	Navigate to chr9:5070021.  Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence? 
      
 !!! question "Question 8"
+	:question:
 	Navigate to chr9:5073770. What type of variant do you find here? What is the read depth, and allele frequencies in the different .bam files? 
 
 
@@ -152,19 +178,19 @@ Navigate to chr5:170846329-170847798. Look at the sample sequenced with the capt
 
 
 :question:
-The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are errors/artefacts?
-
+The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Navigate to chromosome 9. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are errors/artefacts?
+ß
 
 !!! question "Question 10"
 	:question: 
 	Switch the reference genome again and look at sample_C. Look again at the variant in detail chr9:133748283. Is this an artefact? Why - why not? 
 
-!!! question "Question 11"
-	:question:
-	After looking at the different samples and the allele frequencies of their varriants in IGV, which sample do you think is somatic, which is germline? 
 
-	??? note
-		From germline samples you expect less variants than in somatic (tumor) samples. Also generally you expect the allele frequencies in diploid germline samples to be around 0%, 50% or 100% as the variation is inherited. Variation in somatic samples can be anything in the range of 0-100% due to rising mutations and subclones. 
+:question:
+After looking at the different samples and the allele frequencies of their varriants in IGV, which sample do you think is somatic, which is germline? 
+
+??? note
+	From germline samples you expect less variants than in somatic (tumor) samples. Also generally you expect the allele frequencies in diploid germline samples to be around 0%, 50% or 100% as the variation is inherited. Variation in somatic samples can be anything in the range of 0-100% due to rising mutations and subclones. 
 
 
 ## VCF
@@ -177,24 +203,25 @@ One method to filter and edit .vcf files is [bcftools](https://samtools.github.i
 
 ### Assignment 4
 
-In this assignment we will look at variants in the vcf file. Some of them we have already looked at in IGV, and you can always compare how the variants look like in the .vcf and in the .bam file. 
+In this assignment we will look at variants in the vcf file. Some of them we have already looked at in IGV, and you can always compare how the variants look like in the .vcf and in the .bam file. We will do this on UPPMAX again, so open up the terminal and navigate to `~/lab1`
 
-!!! question "Question 12"
+
+!!! question "Question 11"
 
 	:question:
-	Look at the files sample_C.vcf.gz and sample_B.vcf.gz. Are they all-sites-vcf-files? Explain! 
+	Look at the files sample_C.vcf.gz and sample_B.vcf.gz. Are they genome-vcf-files? Explain! 
 
 
 :question: 
 Search for the variant in chromosome 9 position 133748283 in sample_C.vcf.gz. It's a position in the ABL gene we have looked at before. What is the variant frequency and read depth in the vcf file? How many reads have found either allele? Check the header to understand which tags you are looking for. How do the values compare to the values observed in IGV?
 
-!!! question "Question 13"
+!!! question "Question 12"
 	:question:
 	Search for the variant chr9	37025419 in sample_C.vcf.gz. Check the FILTER column and look at the header in sample_C.vcf.gz, what does the flag in the filter field indicate? Look at this position in IGV, how many reads are found on the forward, how many on the reverse strand? How is it for the reference allele? Why do you think this is?    
 
-!!! question "Question 14"
+!!! question "Question 13"
 	:question:
-	Using bcftools, figure out how many variants were found on chromosome 9  in sample_C.vcf.gz that passed all filters (FILTER="PASS") in sample_C.vcf.gz. 
+	Using bcftools, figure out how many variants were found on chromosome 9  in sample_C.vcf.gz that passed all filters (FILTER="PASS") in sample_C.vcf.gz. Make sure you are not including the header when counting 
 
 
 If you are done with all the exercises here, there is one more question for you on the quiz on studium! 
