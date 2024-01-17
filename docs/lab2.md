@@ -90,7 +90,7 @@ After trimming away low quality reads and bases, the reads are aligned to a refe
 One program that uses a different approach is [Fastq_Screen](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/_build/html/index.html#). Fastq Screen roughly aligns fastq-reads to a reference genome database, and compare the amount reads aligned between the different references. 
 
 !!! question "Question 3"
-    :question: Explain what you see in the following fastqscreen result:
+    :question: Explain what you see in the following Fastq Screen result of 4 separate samples (SampleA-D):
 
     ![fastq_screen](includes/images/fq_screen_plot.png)
     
@@ -214,6 +214,8 @@ The report is a self-contained interactive `.html`-file where you can adapt/conf
 
 !!! question "Question 10"
     :question: Fill in the same table as in Question 8 but for SampleE with the values found in the MultiQC report.
+    ??? tip 
+        For all MultiQC tables you can configure and choose which columns to view by clicking the **:material-dots-grid:Configure Columns**-button.
 
 ## Variant Quality
 The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
