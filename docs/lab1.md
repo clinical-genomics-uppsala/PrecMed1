@@ -127,7 +127,7 @@ To help visualize mapped reads, tools such as IGV have been developed. We can us
 :question:
 In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'.
 
-You should then download the bam files to your computer (sample_A.sorted, sample_B and sample_C). You can do this with scp. In a terminal window in a local directory run: 
+You should then download the bam files and bam index files to your computer (sample_A.sorted, sample_B and sample_C). You can do this with scp. In a terminal window in a local directory run: 
 
 ```text
 scp "<USER>@rackham.uppmax.uu.se:~/lab1/*.bam*"  . 
