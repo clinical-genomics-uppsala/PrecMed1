@@ -179,7 +179,6 @@ Navigate to chr5:170846329-170847798. Look at the sample sequenced with the capt
 
 :question:
 The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Navigate to chromosome 9. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are errors/artefacts?
-ß
 
 !!! question "Question 10"
 	:question: 
