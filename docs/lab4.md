@@ -208,15 +208,6 @@ Find the CDKN2A and CDKN2B deletion.
     :question:
     Based on the copy number plot and the VAF-plot it seems that most of chromosome 10 has only one copy in the tumor (hemizygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region overlapping CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
 
-### Extra CNV questions
-!!! question
-    :question:
-    Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
-
-!!! question
-    :question:
-    Consider another hypothetical case were the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
-
 ## Run a simple somatic pipeline
 A sequencing machine usually does not directly generate the VCF files needed for diagnosing a patient. Instead, it produces fastq files. These files need to be processed by a collection of tools, forming a pipeline, to generate the VCF files required for diagnosis.
 
@@ -236,10 +227,16 @@ The different tools that will be run are:
     :info:
     The pipeline is written in Snakemake, which based on rules and output files requested decides what tools need to be run and in which order. It also handles submitting the jobs to the computer cluster, which in this case is Snowy. The pipeline can also be continued if canceled or partially rerun if some part of it is changed. 
 
+### Start an interactive job
+UPPMAX is not happy if we run to much on the head node so we need to start an interactive job
+```sh
+# on Rackham
+interactive -M snowy -A uppmax2024-2-1 -n 1 -p core -t 1:00:00
+```
+
 ### Setup environment
 To run the pipeline Snakemake needs to be installed.
 ```sh
-# on Rackham
 # Enter pipeline folder
 cd ~/lab4_somatic/pipeline
 
@@ -277,3 +274,12 @@ The output will end up in folder named analysis
     * MAX_AF field in the VEP annotation can be used to determine the maximum observed frequency in the global population.
     
 ---
+
+## Extra CNV questions
+!!! question
+    :question:
+    Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
+
+!!! question
+    :question:
+    Consider another hypothetical case were the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
