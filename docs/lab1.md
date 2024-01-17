@@ -186,7 +186,7 @@ The WGS sample was mapped to hg38. Lets switch the reference accordingly and ope
 
 
 :question:
-After looking at the different samples and the allele frequencies of their varriants in IGV, which sample do you think is somatic, which is germline? 
+After looking at the different samples and the allele frequencies of their variants in IGV, which sample do you think is somatic, which is germline? 
 
 ??? note
 	From germline samples you expect less variants than in somatic (tumor) samples. Also generally you expect the allele frequencies in diploid germline samples to be around 0%, 50% or 100% as the variation is inherited. Variation in somatic samples can be anything in the range of 0-100% due to rising mutations and subclones. 
