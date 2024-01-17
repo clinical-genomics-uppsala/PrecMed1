@@ -19,6 +19,14 @@ All of the below are installed or available through the module system on rackham
 * singularity  
 * bcftools  
 
+## Interactive jobs on Uppmax
+
+In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
+
+```bash
+interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
+```
+
 ## Files
 Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
 Download the lab 3 files to your home directory on rackham (UPPMAX).
@@ -26,6 +34,14 @@ Download the lab 3 files to your home directory on rackham (UPPMAX).
 ```bash
 cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab3_germline/ ~/
 cd lab3_germline
+```
+
+## Interactive jobs on Uppmax
+
+In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
+
+```bash
+interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
 ```
 
 ## Links to resources
@@ -39,7 +55,7 @@ cd lab3_germline
 ## 1. Visualising Germline Variants in IGV
 The visual inspection of the sequencing data supporting a germline variant is an important part of a clinical bioinformaticians work. Here we will use IGV to visualise some structural variants.
 
-The reads in the BAM file we will used have been mapped to the **HG38** reference genome, so make sure to switch to this genome version in IGV.
+The reads in the BAM file we will used have been mapped to the **hg38** reference genome, so make sure to switch to this genome version in IGV.
 
 Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` folder. 
 
@@ -104,7 +120,7 @@ The bcftools program is available on uppmax through the module system and can be
 
 ```bash
 module load bioinfo-tools
-module load bcftools
+module load bcftools/1.19
 ```
 
 One loaded we can list all the available VEP subfields from the CSQ INFO field
@@ -113,8 +129,7 @@ One loaded we can list all the available VEP subfields from the CSQ INFO field
 bcftools +split-vep case1.vep_annotated.vcf.gz -l 
 ```
 
-Here we will take a number of steps to filter the VCF file and we will make use of pipes to perform each step sequentially.
-Here we visualise the VCF output of each step with `less -S`. To exit `less` type q.:
+Here we will take a number of steps to filter the VCF file and we will make use of pipes to perform each step sequentially. Here we visualise the VCF output of each step with `less -S`. Just type `q` to exit `less` in the terminal.
 
 1. Exclude all records in the VCF that do not have 'PASS' in the FILTER column
     ```bash 
@@ -182,7 +197,7 @@ All files needed are in the Case3 folder and the commands below assume that you 
 ```bash
     singularity  exec --no-home -B $PWD:$PWD \
     /proj/uppmax2024-2-1/nobackup/singularity_images_lab3/peddy_0.4.8.sif \
-    python -m peddy --procs $(nproc) \
+    python -m peddy --sites hg38 \
     --prefix peddy_results \
     case3.vep_annotated.vcf.gz case3.ped
 
@@ -194,7 +209,7 @@ All files needed are in the Case3 folder and the commands below assume that you 
         
 !!! question "Question 7"
     :question: 
-    How does peddy check the sex of the sample?
+    How does peddy check the sex of a sample?
     ??? tip "Hint"
         Consult the [peddy documentation](https://peddy.readthedocs.io/en/latest/#sex-check)
 
