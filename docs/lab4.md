@@ -22,6 +22,12 @@ cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab4_somatic/ ~/
 cd lab4_somatic
 ```
 
+It is also recommended to download the files to you local computer using scp or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine:
+
+```bash
+scp {username}@rackham.uppmax.uu.se:/home/jonasc/lab4_somatic .
+```
+
 ## Links to resources
 * [Genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/)
 * [The role of fusion genes in cancer](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7931065/)
@@ -68,9 +74,8 @@ In the regions below there are different type of variants or mutations. For addi
 !!! question "Question 4"
     :question: 
     Determine the allele frequency for all non-artifact variants
-    <!-- Kanske ngn kommentar om IGV AF och varfor den inte alltid ar sa exakt. typ: -->
     ??? note
-        IGV uses all reads available in the bamfile, no filtering is applied. Therefor the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers filters and weights reads before calculating AF.
+        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefor the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers filters and weights reads before calculating AF.
     
 
 !!! TIP
@@ -89,7 +94,6 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of 
 3. Copy and paste both of the following regions into IGV at the same time:
 > chr4:1807661-1809661 chr4:1738429-1744429
 
-<br/>
 !!! question "Question 5"
     :question:
     This is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
@@ -103,13 +107,12 @@ Using the current visualization settings it is hard to see the fusion break poin
 4. Scroll down and check the box named "Show soft-clipped bases"
 5. Click the Save button
 
-<br/>
 !!! question "Question 6"
     :question:
-    Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine between which exons the fusion has occurred.
+    Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine in which exons the fusion has occurred.
 
 ### Fusion visualization using the Arriba fusion caller
-Somatic fusion calling can be performed by a number of different callers. One such caller is caller [Arriba](https://arriba.readthedocs.io/en/latest/). The nice thing with this caller is that the fusions that they call are [visualized](https://arriba.readthedocs.io/en/latest/visualization/) in a very clear and informative way. 
+Somatic fusion calling can be performed by a number of different callers. One such caller is [Arriba](https://arriba.readthedocs.io/en/latest/). The nice thing with this caller is that the fusions that they call are [visualized](https://arriba.readthedocs.io/en/latest/visualization/) in a very clear and informative way. 
 
 Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The first fusion in this document is the same one that we previously studied in IGV, FGFR3::TACC3. Here we can see the fusion breakpoint as well as the direction and if it is in-frame. This together with the included protein domains in the fusion product is important to determine if the fusion is clinically relevant.
 
@@ -125,7 +128,7 @@ Scroll further down in the document to find remaining fusions that Arriba has fo
 ---
 
 ## Variant annotation in vcf
-Use the `grep` command, in the terminal, on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
+Use the `grep` or `bcftools` command on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
 
 Investigate the annotation of the SNV found in the region chr7:140453022-140453248. 
 
