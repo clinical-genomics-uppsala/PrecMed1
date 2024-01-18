@@ -19,13 +19,6 @@ All of the below are installed or available through the module system on rackham
 * singularity  
 * bcftools  
 
-## Interactive jobs on Uppmax
-
-In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
-
-```bash
-interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
-```
 
 ## Files
 Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
@@ -81,7 +74,7 @@ In the regions below there are different types of structural variants.
     * Copy the regions into IGV
     * Zoom in or out as needed 
     * View as pairs
-    * Color alignments by -> insert size and pair
+    * Color alignments by -> insert size and pair orientation
     * Sort alignments by -> insert size
 
 ---
@@ -110,7 +103,7 @@ zgrep -w TP53 case1.vep_annotated.vcf.gz | grep pathogenic
 
 ```
 
-Examine the output above and see if you can identify the information on the the consequence and impact of each variant.
+Examine the output above and see if you can identify the information on the consequence and impact of each variant.
 
 #### Using bcftools
 
@@ -119,8 +112,7 @@ Using grep is a simple and quick way to extract information from a VCF. However,
 The bcftools program is available on uppmax through the module system and can be loaded as follows:
 
 ```bash
-module load bioinfo-tools
-module load bcftools/1.19
+module load bioinfo-tools bcftools/1.19
 ```
 
 One loaded we can list all the available VEP subfields from the CSQ INFO field
@@ -216,7 +208,7 @@ All files needed are in the Case3 folder and the commands below assume that you 
 #### Using HPO terms to prioritise genes
 We are also provided with HPO terms in the file `case3_hpo.txt`. We will use these HPO terms to try and identify some candidate genes. To do this we will use a tool that takes HPO terms and returns a prioritized list of genes associated with the phenotypes described by the HPO terms. Go to [https://phen2gene.wglab.org/](https://phen2gene.wglab.org/), paste in the hpo terms listed in the **`hpo_terms.txt`** in the box for HPO IDs and click submit.
 
-Take the Gene that receives the highest ranking in the list and extract any variants in the VCF file from the gene. 
+Take the Gene that receives the highest ranking in the list and extract any variants in the VCF file from the gene. Filtering this VCF file with  bcftools will take ~1 minute before any output is written.
 
 !!! question "Question 8"
     :question: 
@@ -224,7 +216,7 @@ Take the Gene that receives the highest ranking in the list and extract any vari
 
 !!! question "Question 9"
     :question:   
-        What is the inheritance mode of the variant in this case?
+    What is the inheritance mode of the variant in this case?
 
 
 ---
@@ -268,6 +260,8 @@ Use the filtered vcf generated from Steps 1-3 above and the `case4_sv.bam` file 
 !!! question "Question 12"
     :question: 
     Using the `case4_sv.bam` file, view the Structural variant in IGV. Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
+    ??? tip "Hint"
+        View as pairs option in IGV can help visualise the effect of the SV on insert size
 
 ---
 ### Case5 - Repeat expansion detection
@@ -304,8 +298,8 @@ samtools index case5.expansion_hunter_realigned.sorted.bam
 
 ```
 
-To visualise the read support for the ExpansionHunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post]() from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
-REViewer requires the sorted `case5.expansion_hunter_realigned.sorted.bam`, the `case5.expansion_hunter.vcf` output by  to produce a plot for the DMPK locus. 
+To visualise the read support for the ExpansionHunter results we will use a program called REViewer which works with the small BAM file produced by expansionHunter. More information on REViewer is available in this [blog post](https://www.illumina.com/science/genomics-research/articles/reviewer-alignments-short-reads-long-repeat.html) from illumina and in the [REViewer publication](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01085-z).
+REViewer requires the sorted `case5.expansion_hunter_realigned.sorted.bam`, the `case5.expansion_hunter.vcf` output by ExpansionHunter and the variant catalog file to produce a plot for the DMPK locus. 
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -335,7 +329,7 @@ Use the `case5.stranger_annotated.vcf` file to answer the following questions:
 
 !!! question  "Question 13"
     :question: 
-    How many repeats does the patient have in the in each allele?
+    How many repeats does the patient have in each allele?
 
 !!! question  "Question 14"
     :question:  Are the both DMPK alleles above the pathogenic threshold?
