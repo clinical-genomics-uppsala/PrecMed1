@@ -16,7 +16,7 @@ If running locally:
 
 ## Files
 Can be found at the Uppmax project (uppmax2024-2-1).
-To ensure that you don't accidentally overwrite someone else file start by copying the entire `lab2_qc` folder to your home (or local computer).
+To ensure that you don't accidentally overwrite someone elses file start by copying the entire `lab2_qc` folder to your home (or local computer).
 Either download the entire folder locally or all work can be done in your own homefolder on Rackham.
 
 ```bash
@@ -33,7 +33,7 @@ While running a bioinformatic pipeline it is important to continuously collect Q
 ![qcvalues dag](includes/images/qc_values.png){: width:150%"}  
 <br>
 
-One issue or hurdle is that the same word can be used for different quality-values, it can also be the same value but calculated at different timepoints or the algorithm might differ depending on which program you use. For example duplication rate is a value of how many copies of the same read your library has, this can be estimated optically from the fastq-files or calculated after the reads have been aligned to your reference genome. Even if you calculate the duplication rate on the same file the algorithm can also differ between different programs (or even version of program). For example, how you define a duplicated read can differ, do you look at just the starting point or do you look at both the starting and end position of the reads. Therefor it is **always** important to know how and on what file a value is calculated.  
+One issue or hurdle is that the same word can be used for different quality-values, it can also be the same value but calculated at different timepoints or the algorithm might differ depending on which program you use. For example duplication rate is a value of how many copies of the same read your library has, this can be estimated optically from the fastq-files or calculated after the reads have been aligned to your reference genome. Even if you calculate the duplication rate on the same file the algorithm can also differ between different programs (or even version of program). For example, how you define a duplicated read can differ, do you look at just the starting point or do you look at both the starting and end position of the reads. Therefore, it is **always** important to know how and on what file a value is calculated.  
 <br>
 
 Another important factor to keep in mind is what kind of library you are looking at, capture, amplicon, pcr-free or even long-read all differs in expected values and results, and the values are often not comparable across methods.
@@ -223,7 +223,7 @@ The next step after you have validated the quality of the sequencerun is variant
 ### BaseQ and MapQ
 There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. However, the baseQ vary depending on sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want at least a phred-score of at least 20 to be able to trust a base-call.
 
-The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and there for it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
+The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and therefore it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
 !!! question "Question 11"
     :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q30?
@@ -233,21 +233,21 @@ The other quality-value that is usually included are mapping quality, how well a
 <!-- 14              -->
 
 ### Genotype Quality
-Most variant callers have some sort of genotype quality scoring available for each variantcall. The problem here is that it is not standardized and each caller can have completely different values making them hard to compare. For example for GATK produced vcf-files there are several different quality values, there is the `QUAL` column as well as the `GQ` and `PL` fields in the FORMAT column. For more in-depth info on the different vcf columns and annotation for GATK see more info [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format). While other programs might also call there quality value for the same thing, their definition is often completely different. 
+Most variant callers have some sort of genotype quality scoring available for each variant call. The problem here is that it is not standardized and each caller can have completely different values making them hard to compare. For example for GATK produced vcf-files there are several different quality values, there is the `QUAL` column as well as the `GQ` and `PL` fields in the FORMAT column. For more in-depth info on the different vcf columns and annotation for GATK see more info [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035531692-VCF-Variant-Call-Format). While other programs might also call their quality value by the same name, their definition is often completely different. 
 
 ![gq_values](includes/images/gq_values.png)
 
 If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller) and [Google's Deepvariant](https://github.com/google/deepvariant)); both specialized on germline calling, both use the flag `GQ` and the `QUAL` column as a quality measurements, we see a clear difference on both of the quality scores for the same variants. That said, the genotype quality score is not useless, but actually a good quality measurement of a variant call, you just always have to know how the file were produced and what scoring thresholds are considered "good" for that specific program. 
 
-### Background and Artifacts
-Another step for validating you variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
+### Background and artifacts
+Another step for validating your variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
 
 To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify than others, for example sequencing chemistry can affect our ability to sequence certain areas.
 
 !!! question "Question 12"
     :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
 
-To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No techniques has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
+To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No technique has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
 
 Both background and artifacts is a lot easier identify if a normal pool of samples is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include. 
 
