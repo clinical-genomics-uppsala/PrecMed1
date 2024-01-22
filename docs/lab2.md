@@ -151,7 +151,7 @@ A more quantitative value based on coverage distribution is the fold 80 base pen
 Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx** as it is often described as. This means that X % of the genome or target regions is covered by **at least** Y reads. By default several of these levels are calculated in most of the [Picard](http://broadinstitute.github.io/picard/picard-metric-definitions.html) metrics programs (depending one your sequencing method which collect metrics you run may vary). Since this is such a popular value many coverage programs often calculates breadth and allows you to specify your own specific thresholds if needed. The most common program used are the [Picard metrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html) algorithms. Since this is a measurement of coverage over a given **target** it is important to keep track of what region/target this is calculated over to be able to compare numbers.
 
 !!! question "Question 6"
-    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample calculated with different pipelines? Discuss using the following keywords: target, qc-program, read filtering.
+    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample (same fastq files used) calculated with different pipelines? Discuss using the following keywords: target, qc-program, read filtering.
 
     | Name | PipelineA: Median Cov | PipelineA: % &ge; 30x | PipelineB: Median Cov | PipelineB: % &ge; 30x |
     | --- | --- | ---| --- | ---|
