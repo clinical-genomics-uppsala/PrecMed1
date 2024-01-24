@@ -150,14 +150,15 @@ A more quantitative value based on coverage distribution is the fold 80 base pen
 #### Coverage breadth
 Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx** as it is often described as. This means that X % of the genome or target regions is covered by **at least** Y reads. By default several of these levels are calculated in most of the [Picard](http://broadinstitute.github.io/picard/picard-metric-definitions.html) metrics programs (depending one your sequencing method which collect metrics you run may vary). Since this is such a popular value many coverage programs often calculates breadth and allows you to specify your own specific thresholds if needed. The most common program used are the [Picard metrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html) algorithms. Since this is a measurement of coverage over a given **target** it is important to keep track of what region/target this is calculated over to be able to compare numbers.
 
-!!! question "Question 6"
-    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample (same fastq files used) calculated with different pipelines? Discuss using the following keywords: target, qc-program, read filtering.
+---
+
+:question:    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample (same fastq files used) calculated with different pipelines? Discuss using the following keywords: target, qc-program, read filtering.
 
     | Name | PipelineA: Median Cov | PipelineA: % &ge; 30x | PipelineB: Median Cov | PipelineB: % &ge; 30x |
     | --- | --- | ---| --- | ---|
     | SampleC | 34 | 91 | 34 | 99 | 
-    ??? tip
-        Can we map reads to the entire human genome?
+
+---
 
 
 ### Duplication rate
@@ -174,9 +175,9 @@ Fastqc 100 000 reads 50 bp identical
 #### Aligned
 picard, mapped 5' end of read -->
 
-!!! question "Question 7"
+!!! question "Question 6"
     Use the files in `lab2_qc/`-folder answer the following questions:  
-    :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 8.
+    :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 7.
     ??? tip
         Checkout the output from the different programs under the `qc`-folder.
     :question: Explain why the duplication rate differs between FastQC and Picard MarkDuplicates/CollectDuplicateMetrics?
@@ -190,7 +191,7 @@ picard, mapped 5' end of read -->
 | SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 | SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 
-!!! question "Question 8"
+!!! question "Question 7"
     :question: Fill out the table above with the missing values for sampleD.
 
     ??? tip
@@ -209,11 +210,11 @@ As you might have notice it takes quite a while to identify and find the differe
 
 <br>
 The report is a self-contained interactive `.html`-file where you can adapt/configure/highlight etc the plots and tables directly in your web-browser. It also allows for an easy export of table and plots if needed. 
-!!! question "Question 9"
+!!! question "Question 8"
     :question: Open the provided MultiQC-report (`lab2_qc/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted.
 
-!!! question "Question 10"
-    :question: Fill in the same table as in Question 8 but for SampleE with the values found in the MultiQC report.
+!!! question "Question 9"
+    :question: Fill in the same table as in Question 7 but for SampleE with the values found in the MultiQC report.
     ??? tip 
         For all MultiQC tables you can configure and choose which columns to view by clicking the **:material-dots-grid:Configure Columns**-button.
 
@@ -225,7 +226,7 @@ There are several different ways and steps to validate a variant. Most variant c
 
 The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and therefore it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
-!!! question "Question 11"
+!!! question "Question 10"
     :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q30?
     ??? tip
         Sort the position based on base (right click -> sort by -> base). Under view -> preferences -> alignments make make sure that  `shade mismatched bases by quality` is checked.
@@ -244,7 +245,7 @@ Another step for validating your variant is eliminating the risk that the varian
 
 To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify than others, for example sequencing chemistry can affect our ability to sequence certain areas.
 
-!!! question "Question 12"
+!!! question "Question 11"
     :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
 
 To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No technique has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
