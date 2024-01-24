@@ -154,9 +154,9 @@ Yet another common measurement of coverage is coverage breadth, or **% &ge; Yx**
 
 :question:    Why might the coverage breadth vary for the same human WGS (reference genome HG38) sample (same fastq files used) calculated with different pipelines? Discuss using the following keywords: target, qc-program, read filtering.
 
-    | Name | PipelineA: Median Cov | PipelineA: % &ge; 30x | PipelineB: Median Cov | PipelineB: % &ge; 30x |
-    | --- | --- | ---| --- | ---|
-    | SampleC | 34 | 91 | 34 | 99 | 
+| Name | PipelineA: Median Cov | PipelineA: % &ge; 30x | PipelineB: Median Cov | PipelineB: % &ge; 30x |
+| --- | --- | ---| --- | ---|
+| SampleC | 34 | 91 | 34 | 99 | 
 
 ---
 
