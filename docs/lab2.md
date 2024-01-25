@@ -182,7 +182,7 @@ picard, mapped 5' end of read -->
         Checkout the output from the different programs under the `qc`-folder.
     :question: Explain why the duplication rate differs between FastQC and Picard MarkDuplicates/CollectDuplicateMetrics?
     ??? tip
-        Check-out [FastQC's](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) documentation and compare it with [Picard Markduplicate's](http://broadinstitute.github.io/picard/picard-metric-definitions.html#HsMetrics).
+        Check-out [FastQC's](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/) documentation and compare it with [Picard Markduplicate's](https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-).
 
 ---
 
