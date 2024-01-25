@@ -19,6 +19,9 @@ cd ~
 mkdir lab1
 rsync /proj/uppmax2024-2-1/nobackup/lab_files/lab1_data_format/* ~/lab1/.
 ```
+
+The samples you will be working with in this lab are both from a germline sample as well as a somatic sample (blood cancer). 
+
 ## FASTQ
 To store the countless reads generated in short read sequencing along with additional information, the FASTQ file format was developed as a progression of the FASTA file format.  
 
@@ -62,7 +65,7 @@ In `~/lab1/` you will find an example of a FASTQ file generated with a NovaSeq s
 	:question: 
 	Have a look at the [sequence identifier](https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers) of the FASTQ file. The format used in this file follows the changes after Casava 1.8. 
 
-	* Is this FASTQ file from paired end sequencing? 
+	* Is this FASTQ file from paired end sequencing? (try to infer this from the sequence identifier, maybe the second file wasn't copied over)
 	* Which read pair are we looking at? 
 	* What is the index of this sample? 
 
@@ -73,7 +76,7 @@ Have a look at the the characters in the quality row, what do you think is happe
 !!! question "Question 2"
 
 	:question: 
-	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system. 
+	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system (example: ! is 33 in the decimal system, Therefore the Phred score value is 33-33=0). 
 
 ## BAM
 Aligned reads are stored in .sam/.bam/.cram files. While the .sam file is a text file, .bam is a binary file and therefore needs less disk space. A further compression is the .cram file. 
@@ -125,7 +128,8 @@ To help visualize mapped reads, tools such as IGV have been developed. We can us
 ### Assignment 3 
 
 :question:
-In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from sample_A.bam. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'.
+In your next assignment we want to look at the reads with IGV. IGV needs index files to the bam files, however, this is missing from **sample_A.bam**. Indexing will only work on sorted bam files, and it is good practice to perform sorting before indexing. For this, you can use further samtools subcommands, aptly named `sort` and `index`. Find the [documentation](https://www.htslib.org/doc/samtools.html) for these subcommands and create an index file. You should end up with files called 'sample_A.sorted.bam' and 'sample_A.sorted.bam.bai'.
+*sample_B.bam and sample_C.bam already have index files, no need to create new ones here.*
 
 You should then download the bam files and bam index files to your computer (sample_A.sorted, sample_B and sample_C). You can do this with scp. In a terminal window in a local directory run: 
 
@@ -138,8 +142,10 @@ exchange &lt;USER> with your uppmax user name. The command will prompt you to ty
 Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, sample_B and sample_C into IGV. Select the .bam files and make sure that the .bai files are in the same directory. You can either use IGV on the [compute cluster](https://www.uppmax.uu.se/support/user-guides/integrative-genomics-viewer--igv--guide/), or you can download the files and start IGV locally on your computer. You can use the command `igvtools_gui` on uppmax to open IGV but this is not recommended as the graphic forwarding is not that great. If you have issues opening IGV locally there is also an [IGV web app](https://igv.org/app/).
 
 ??? info
-	Once you input data, you can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  
-	Click on the coverage plot part of a base to get more information on read depth of the base and the allele frequency of the variants found in this position. You can also see which strand they were found on. 
+	Once you input data, you can click on a read and get more information about the read. If you right click on a read, you have the option of visualizing different features such as mate pairs, or mapping quality.  It is often helpful to right click on a read and sort the reads by base, the position you are interested in should be in the center. If you do not have a center line click on 'View' on the bar on top the 'Preferences...' go to the tab 'Alignment' and make sure that 'show center line' is turned on. 
+
+
+	If you click on the coverage plot part at the top you get more information on read depth of the base and the allele frequency of the variants found in this position. You can also see which strand they were found on (+ for forward and - for reverse). 
 
 
 !!! question "Question 5"
@@ -161,7 +167,7 @@ Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, 
 
 !!! question "Question 7"
 	:question:
-	Navigate to chr9:5070021.  Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence? 
+	Navigate to chr9:5070022.  Which gene are we looking at? What variant do you observe at this position in the capture and amplicon sample. How long is the variant? What is the affected sequence? 
      
 !!! question "Question 8"
 	:question:
@@ -180,15 +186,26 @@ Navigate to chr5:170846329-170847798. Look at the sample sequenced with the capt
 :question:
 The WGS sample was mapped to hg38. Lets switch the reference accordingly and open the sample again. Navigate to chromosome 9. Do you notice a difference to how it looked like before? Try to find some SNVs, what are their allele frequencies? Mark down a few that you can find along with how many reads support them and how many strands are forward and reverse. Which do you think are real variants and which do you think are errors/artefacts?
 
+??? note "Artefacts"
+	Artefacts can be introduced at different steps during extraction, amplification, sequencing or mapping. To determine whether we think something is an artefact there are a few things we can look for in IGV. 
+
+	* Are there several reads supporting the variant call? 
+	* Can the variant be found only at the ends of reads? (Variants in middle of reads are more reliable)
+	* Do both forward and reverse strands support the variant in a somewhat equal manner? 
+	* Is there a lot of noise surrounding the variant? 
+
+	Additionally, artefacts often occur in the same spot of the genome when following the same protocols. So once we collect enough data, we can determine whether variants occur too often across our cohort in low allele depth to be considered a real variant. 
+
+
 !!! question "Question 10"
 	:question: 
-	Switch the reference genome again and look at sample_C. Look again at the variant in detail chr9:133748283. Is this an artefact? Why - why not? 
+	Switch the reference genome to hg19 again and look at sample_C. Look again at the variant in detail chr9:133748283. Is this an artefact? Why - why not? 
 
 
 :question:
 After looking at the different samples and the allele frequencies of their variants in IGV, which sample do you think is somatic, which is germline? 
 
-??? note
+??? "germline vs somatic"
 	From germline samples you expect less variants than in somatic (tumor) samples. Also generally you expect the allele frequencies in diploid germline samples to be around 0%, 50% or 100% as the variation is inherited. Variation in somatic samples can be anything in the range of 0-100% due to rising mutations and subclones. 
 
 
