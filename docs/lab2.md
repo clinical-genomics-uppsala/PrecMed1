@@ -277,7 +277,7 @@ For example:
 |chrA |1 |11|2|
 |chrA|20|25|0|
 
-Would give us $$ \frac {(2+0)} {(11-1)+(25-20)}=0.08 $$ i.e. 8 % &ge; 10x
+Would give us $$ \frac {(2+0)} {(11-1)+(25-20)}=0.1333... $$ i.e. 13.3 % &ge; 10x
 
 ??? Tip
     Try piping the output from `zcat` (to open the gzipped file "on/the/fly") to [`awk`](https://linuxhandbook.com/awk-command-tutorial/) to calculate the coverage breadth using the formula above. 
