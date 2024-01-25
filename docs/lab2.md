@@ -53,7 +53,7 @@ Number of reads are what they sound like, how many reads do you have in your sam
 Number of reads are calculated either directly in the sequencing machine, raw fastq or even the aligned bamfiles.  
 
 !!! question "Question 1"
-    :question: If you get a lower number of reads for a sample than expected, what (errors) could that indicate?  
+    :question: If you get a lower number of reads for a sample than expected, what could be the cause of this (wet lab errors, input file errors, sequencing machine errors, analysis errors)? 
 <br>
 Example of programs that calculate Number of Reads:
 
