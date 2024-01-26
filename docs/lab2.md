@@ -125,10 +125,10 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
         
         ??? tip 
             How would you translate the region into a bedfile format?  
-            `chrA    X   Y`
-            To get the coordinates into a file you can use echo:
-            `echo -e "chrA\tX\tY" > design.bed `
-            The `-e` will ensure that echo translates the `\t` to a tab.
+            `chrA    X   Y`  
+            To get the coordinates into a file you can use echo:  
+            `echo -e "chrA\tX\tY" > design.bed `  
+            The `-e` will ensure that echo translates the `\t` to a tab.  
 
 #### Coverage distribution
 Coverage distribution describes how the aligned reads are divided over the reference genome. Are they isolated to certain areas? Are some areas not covered properly? Are all regions covered the same?  
