@@ -202,7 +202,7 @@ picard, mapped 5' end of read -->
         ??? tip "Programs"
             Number of reads: fastqc  
             Duplication rate: fastqc or collect duplicate metrics  
-            Median coverage: mosdepth  
+            Mean coverage: mosdepth  
             Fold80: Picard HsMetrics
 
 
