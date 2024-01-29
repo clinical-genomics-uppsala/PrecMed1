@@ -214,7 +214,7 @@ As you might have notice it takes quite a while to identify and find the differe
 <br>
 The report is a self-contained interactive `.html`-file where you can adapt/configure/highlight etc the plots and tables directly in your web-browser. It also allows for an easy export of table and plots if needed. 
 !!! question "Question 8"
-    :question: Open the provided MultiQC-report (`lab2_qc/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted.
+    :question: Open the provided MultiQC-report (`lab2_qc/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted using the "Toolbox" on the right side of the report.
 
 !!! question "Question 9"
     :question: Fill in the same table as in Question 7 but for SampleE with the values found in the MultiQC report.
