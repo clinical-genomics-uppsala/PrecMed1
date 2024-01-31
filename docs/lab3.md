@@ -19,6 +19,14 @@ All of the below are installed or available through the module system on rackham
 * singularity  
 * bcftools  
 
+## Interactive jobs on Uppmax
+
+In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
+
+```bash
+interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
+```
+
 
 ## Files
 Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
@@ -27,14 +35,6 @@ Download the lab 3 files to your home directory on rackham (UPPMAX).
 ```bash
 cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab3_germline/ ~/
 cd lab3_germline
-```
-
-## Interactive jobs on Uppmax
-
-In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
-
-```bash
-interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
 ```
 
 ## Links to resources
