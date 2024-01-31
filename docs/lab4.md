@@ -25,7 +25,7 @@ cd lab4_somatic
 It is also recommended to download the files to you local computer using scp or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine:
 
 ```bash
-scp {username}@rackham.uppmax.uu.se:/home/jonasc/lab4_somatic .
+scp -r {username}@rackham.uppmax.uu.se:~/lab4_somatic .
 ```
 
 ## Links to resources
