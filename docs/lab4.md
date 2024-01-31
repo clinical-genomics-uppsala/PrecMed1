@@ -42,7 +42,7 @@ Lets first explore some different types of variant that can occur in a somatic s
 Open IGV and then open the `HD832_T.variant.genes.bam` file, make sure that the reference genome is set to *Human hg19*. 
 
 ### Variants
-In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/).
+In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/). In Questions 1 - 4 we use the same regions so it might be convenient to answer all these question at once for each region.
 
 **Regions:**
 
