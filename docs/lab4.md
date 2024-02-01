@@ -96,7 +96,7 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of 
 
 !!! question "Question 5"
     :question:
-    This is RNA sequency data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
+    This is RNA sequence data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
 Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
@@ -273,7 +273,7 @@ The output will end up in folder named analysis
 ## Extra CNV questions
 !!! question
     :question:
-    Consider a hypothetical case were one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
+    Consider a hypothetical case where one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
 !!! question
     :question:
