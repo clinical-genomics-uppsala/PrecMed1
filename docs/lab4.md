@@ -271,10 +271,10 @@ The output will end up in folder named analysis
 ---
 
 ## Extra CNV questions
-!!! question
+!!! question "Question 18"
     :question:
     Consider a hypothetical case where one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
-!!! question
+!!! question "Question 19"
     :question:
     Consider another hypothetical case where the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
