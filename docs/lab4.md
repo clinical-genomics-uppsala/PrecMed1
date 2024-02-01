@@ -48,7 +48,7 @@ In the regions below there are different type of variants or mutations. For addi
 
 * chr7:140453022-140453248
 * chr2:29416330-29416416
-* chr7:140432776-140436414
+* chr7:140434558-140434634
 * chr3:41265991-41266273
 * chr2:29416005-29416044
 
