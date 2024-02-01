@@ -257,7 +257,7 @@ pip install -r requirements.txt
 source venv/bin/activate
 
 # load slurm library
-module load slurm-drmaa
+module load python3/3.9.5 slurm-drmaa
 
 # Run pipeline
 snakemake -s Snakefile --profile profile
