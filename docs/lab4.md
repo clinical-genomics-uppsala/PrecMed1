@@ -75,7 +75,7 @@ In the regions below there are different type of variants or mutations. For addi
     :question: 
     Determine the allele frequency for all non-artifact variants
     ??? note
-        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefor the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers filters and weights reads before calculating AF.
+        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers performe additional filtering of reads before calculating AF.
     
 
 !!! TIP
@@ -171,11 +171,11 @@ Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.h
 
 !!! question "Question 10"
     :question:
-    How many chromosomes have deletions?  (Always take special care when looking at the X chromosome)
+    Based on the Genome view, how many chromosomes have deletions?  (Always take special care when looking at the X chromosome)
 
 !!! question "Question 11"
     :question:
-    How many chromosomes have duplications?
+    Based on the Genome view, how many chromosomes have duplications?
 
 !!! question "Question 12"
     :question:
@@ -227,7 +227,6 @@ The different tools that will be run are:
 5. vep: an annotating tool that facilitates the analysis and prediction of the functional consequences of variants.
 
 !!! Info
-    :info:
     The pipeline is written in Snakemake, which based on rules and output files requested decides what tools need to be run and in which order. It also handles submitting the jobs to the computer cluster, which in this case is Snowy. The pipeline can also be continued if canceled or partially rerun if some part of it is changed. 
 
 ### Start an interactive job
