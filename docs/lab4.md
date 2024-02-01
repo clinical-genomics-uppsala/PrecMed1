@@ -249,14 +249,7 @@ pip install -r requirements.txt
 
 ### Run
 ```sh
-# on Rackham
-# Make sure you are in the pipeline folder: ~/lab4_somatic/pipeline
-# Make sure that environment is active.
-# NOTE: not required if you followed the steps in previous section
-# and still have that terminal session active
-source venv/bin/activate
-
-# load slurm library
+# load python and slurm library 
 module load python3/3.9.5 slurm-drmaa
 
 # Run pipeline
