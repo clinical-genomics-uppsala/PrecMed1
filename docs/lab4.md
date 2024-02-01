@@ -242,6 +242,9 @@ To run the pipeline Snakemake needs to be installed.
 # Enter pipeline folder
 cd ~/lab4_somatic/pipeline
 
+# load python and slurm library 
+module load python3/3.9.5 slurm-drmaa
+
 # Setup environment
 python3.9 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
@@ -249,9 +252,6 @@ pip install -r requirements.txt
 
 ### Run
 ```sh
-# load python and slurm library 
-module load python3/3.9.5 slurm-drmaa
-
 # Run pipeline
 snakemake -s Snakefile --profile profile
 ```
