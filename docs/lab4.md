@@ -1,5 +1,5 @@
 # Computer lab 4 - Somatic variants
-In this computer lab we are going to explore different kinds of somatic variants.
+In this computer lab we are going to explore different kinds of somatic variants. The type and location of the variant can have an affect on the treatment of the cancer patient.
 
 ## Overview
 1. Explore different somatic variants in IGV
@@ -39,10 +39,10 @@ scp -r {username}@rackham.uppmax.uu.se:~/lab4_somatic .
 Lets first explore some different types of variant that can occur in a somatic sample. 
 
 ### IGV
-Open IGV and then open the `HD832_T.variant.genes.bam` file, make sure that the reference genome is set to *Human hg19*. 
+Open IGV and then open the `HD832_T.variant.genes.bam` file, make sure that the reference genome is set to **Human hg19**. 
 
 ### Variants
-In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/). In Questions 1 - 4 we use the same regions so it might be convenient to answer all these question at once for each region.
+In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/). **In Questions 1 - 4 we use the same regions so it might be convenient to answer all these question at once for each region.**
 
 **Regions:**
 
@@ -54,13 +54,19 @@ In the regions below there are different type of variants or mutations. For addi
 
 !!! question "Question 1"
     :question: 
-    In the regions above there are variants, determine which variant is of which type (there can be more than one)
+    In the regions above there are variants, determine which variant is of which type (there can be more than one). **Only variants with allele frequency above 5%** should be considered as this is the limit used in the clinic for this sequencing panel.
 
-    * SNV artifact
+    * Region with many artifacts
     * Somatic SNV
     * Germline SNV
     * Deletion
     * Insertion
+
+    !!! TIP
+    * Copy the regions into IGV
+    * Zoom in when needed
+    * Left click on positions in the coverage track to see support for each allele
+    * Right click in the read track and choose Collapsed or Squished to see more of the data
 
 
 !!! question "Question 2"
@@ -75,19 +81,12 @@ In the regions below there are different type of variants or mutations. For addi
     :question: 
     Determine the allele frequency for all non-artifact variants
     ??? note
-        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers performe additional filtering of reads before calculating AF.
-    
-
-!!! TIP
-    * Copy the regions into IGV
-    * Zoom in when needed
-    * Left click on positions in the coverage track to see support for each allele
-    * Right click in the read track and choose Collapsed or Squished to see more of the data
+        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers perform additional filtering of reads before calculating AF.
 
 ---
 
 ### Fusions
-Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of fusions in cancer is summarized in this [scientific paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7931065/).
+Now, lets look at a fusion event (chromosomal rearrangement) between the genes FGFR3 and TACC3. The role of fusions in cancer is summarized in this [scientific paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7931065/). In short, a RNA fused between two genes in-frame is translated into a novel fusion protein that may act as a potent oncogenic driver. Kinase genes are often partners in such fusions. Kinase fusions often retain kinase activity and result in ligand-independent activation and enhanced downstream signaling that leads to carcinogenesis.
 
 1. Make a new session in IGV or open a new window.
 2. Open the file `RNA-SeraSeq_R.FGFR3.TACC3.bam` in IGV. 
@@ -99,7 +98,7 @@ Now, lets look at a fusion event between the genes FGFR3 and TACC3. The role of 
     This is RNA sequence data from a capture design where only the FGFR3 gene was captured and not TACC3. How come we can see reads in the TACC3 gene anyway given that there is a gene fusion between these two genes?
 
 ### Fusion break point
-Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown. These are bases that does not match to the reference genome and as each mismatch has its own color the reads will look a bit like a rainbow.
+Using the current visualization settings it is hard to see the fusion break point. We should therefore change the settings in IGV so that soft clipped bases are shown (rainbow colored reads). These are reads where only part of the sequence match to the reference sequence and the other part matches somewhere else in the genome.
 
 1. Open the View menu
 2. Choose Preferences
@@ -123,7 +122,7 @@ Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The fir
     For example, the function of the fused protein, clinical target and drugs, prevalence, etc.
 
 <br/>
-Scroll further down in the document to find remaining fusions that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
+Scroll further down in the document to find additional fusions that Arriba has found. Usually only one true fusion is found per sample but in this case it is a synthetically created sample with many clinically relevant fusions. 
 
 ---
 
@@ -163,8 +162,7 @@ However, lets start with how it looks in a normal sample without alterations. Op
     However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected. See further [CNVkits explanation of log2ratio](https://cnvkit.readthedocs.io/en/stable/calling.html).
 
 !!! NOTE
-    The VAF-plots show the allele frequencies of heterozygous germline SNPs in the sample. When there is a deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions. Sometimes the genome can have two copies of the same allele and the deletion will only 
-    show up in the VAF-plot. This is called a [copy number neutral loss of heterozygozity](https://en.wikipedia.org/wiki/Loss_of_heterozygosity).
+    The VAF-plots show the allele frequencies of heterozygous **germline** SNPs in the sample. When there is a somatic deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions. Sometimes the genome can have two copies of the same allele and no copies of the other allele. This case will only show up in the VAF-plot as the copy number looks normal. This is called a [copy number neutral loss of heterozygozity](https://en.wikipedia.org/wiki/Loss_of_heterozygosity).
 
 ### Sample with CNVs
 Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.html`. 
@@ -177,10 +175,6 @@ Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.h
     :question:
     Based on the Genome view, how many chromosomes have duplications?
 
-!!! question "Question 12"
-    :question:
-    Look at the VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation between dots) stronger for a deletion than a duplication?
-
 ### Sample with clinically relevant amplification
 In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Cancers with this amplification are often resistant to tyrosine kinase inhibitors and can therefore affect the treatment of the patient. 
 
@@ -189,15 +183,11 @@ Find the EGFR amplification and zoom in on the gene.
 !!! TIP
     When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.
 
-!!! question "Question 13"
+!!! question "Question 12"
     :question:
     What is the approximate log2 ratio, based on the plot, of the EGFR mutation?
 
-!!! question "Question 14"
-    :question:
-    How many copies does this log2 ratio represent?
-
-!!! question "Question 15"
+!!! question "Question 13"
     :question:
     The table reports the copy number after taking tumor content into account. What is the actual reported copy number estimated in the tumor?
 
@@ -207,9 +197,9 @@ In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the g
 
 Find the CDKN2A and CDKN2B deletion. 
 
-!!! question "Question 16"
+!!! question "Question 14"
     :question:
-    Based on the copy number plot and the VAF-plot it seems that most of chromosome 9 has only one copy in the tumor (heterozygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region overlapping CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
+    Based on the copy number plot and the VAF-plot it seems that most of chromosome 9 has only one copy in the tumor (heterozygous deletion). Motivate, based on both the log2 ratio and the VAF plot why the region around CDKN2A and CDKN2B are a homozygous deletion in the tumor (both alleles deleted).
 
 ## Run a simple somatic pipeline
 A sequencing machine usually does not directly generate the VCF files needed for diagnosing a patient. Instead, it produces fastq files. These files need to be processed by a collection of tools, forming a pipeline, to generate the VCF files required for diagnosis.
@@ -260,21 +250,26 @@ snakemake -s Snakefile --profile profile
 
 The output will end up in folder named analysis
 
-!!! question "Question 17"
+!!! question "Question 15"
     :question:
-    Please find an ALK SNV that isn't common in the population?
+    Find and report an somatic SNV (single nucleotide variant) from the gene ALK that isn't common in the population?
 
 !!! TIP
     * Look at the annotated vcf file under analysis.
     * MAX_AF field in the VEP annotation can be used to determine the maximum observed frequency in the global population.
+    * BCFtools can be a useful tool here instead of counting columns
     
 ---
 
 ## Extra CNV questions
-!!! question "Question 18"
+!!! question "Extra question 16"
+    :question:
+    Look at the VAF-figure in chromosome 3 as an example. Why is the signal (the size of the separation between dots) stronger for a deletion than a duplication?
+
+!!! question "Extra question 17"
     :question:
     Consider a hypothetical case where one chromosome has two copies according to the log2 ratio plot at the same time as there is a clear separation in the VAF-signal plot (all SNPs far away from 50% in allele frequency). What has happened to the chromosome in this tumor to explain these data?
 
-!!! question "Question 19"
+!!! question "Extra question 18"
     :question:
     Consider another hypothetical case where the chromosome with log2 ratio of 0 has a clear separation in the VAF-signal plot while there are chromosomes with both higher and lower log2 ratios that have no VAF-signal. What has happened to the genome in this tumor to explain these data?
