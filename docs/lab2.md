@@ -2,7 +2,7 @@
 
 This computer lab picks up as the sequencing machine has finished. Even if the sequencing machine did run ok there is no guarantee that the data is actually what we expect and the quality is good enough to use in our downstream analysis.  
 <br>
-As the sequencing machine finishes it usually outputs some QC report, for Illumina machines this is in the Sequencing Analysis Viewer (SAV) file format but could also be a text file or similar. This QC-report usually contains information on how the sequencing went, i.e. how much data were produced, clustering and average basequality etc. If several samples were pooled there is also information on how much data each index(-pair) got, and how much of the data actually contains the specified indexes.
+As the sequencing machine finishes it usually outputs some QC report, for Illumina machines this is in binary file that can be opened with the Sequencing Analysis Viewer (SAV) but could also be a text file or similar. This QC-report usually contains information on how the sequencing went, i.e. how much data were produced, clustering and average basequality etc. If several samples were pooled there is also information on how much data each index(-pair) got, and how much of the data actually contains the specified indexes.
 
 ## Prerequisites
 * IGV
@@ -53,7 +53,7 @@ Number of reads are what they sound like, how many reads do you have in your sam
 Number of reads are calculated either directly in the sequencing machine, raw fastq or even the aligned bamfiles.  
 
 !!! question "Question 1"
-    :question: If you get a lower number of reads for a sample than expected, what could be the cause of this (wet lab errors, input file errors, sequencing machine errors, analysis errors)? 
+    :question: If you get a lower number of reads for a sample than expected, what could be the cause of this? List possible wet lab errors, input file errors, sequencing machine errors, and/or analysis errors. 
 <br>
 Example of programs that calculate Number of Reads:
 
@@ -63,11 +63,11 @@ Example of programs that calculate Number of Reads:
 * [Picard HSMetrics](http://broadinstitute.github.io/picard/picard-metric-definitions.html#HsMetrics)
 
 !!! question "Question 2"
-    :question: Explain why the parameter "Number of Reads" differ between different programs for this Illumina Nextseq run of 16 capture samples.
+    :question: Explain why the parameter "Number of Reads" within SampleA and B differ between different programs for this Illumina Nextseq run.
 
-    |  <br />**Sample** | SAV: <br />  **`Total reads`** | FastQC: <br /> **`Total Sequences`** | Samtools stats: <br /> **`raw total sequences`** | Picard HSMetrics: <br /> **`TOTAL_READS`** | 
-    | --- | --- | --- | ---- | --- |
-    | SampleA | <br /> 160M {: rowspan=2} | 5M | 8M | 10M |
+    |  <br />**Sample** | FastQC: <br /> **`Total Sequences`** | Samtools stats: <br /> **`raw total sequences`** | Picard HSMetrics: <br /> **`TOTAL_READS`** | 
+    | --- | --- | ---- | --- |
+    | SampleA | 5M | 8M | 10M |
     | SampleB | 5.3M | 9.2M | 11M |
 
     ??? tip
@@ -87,14 +87,6 @@ SAV hela korning 100M-1.2B
 
 After trimming away low quality reads and bases, the reads are aligned to a reference genome. The percent of reads that are mapped is often tracked during this step. This is to measure how well your data match the genome reference provided. This value is usually provided as a QC value from the alignment software you have used, e.g. [bwa](https://bio-bwa.sourceforge.net/) or [minimap2](https://github.com/lh3/minimap2) or any QC-checks done on aligned files.   
 
-One program that uses a different approach is [Fastq_Screen](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/_build/html/index.html#). Fastq Screen roughly aligns fastq-reads to a reference genome database, and compare the amount reads aligned between the different references. 
-
-!!! question "Question 3"
-    :question: Explain what you see in the following Fastq Screen result of 4 separate samples (SampleA-D):
-
-    ![fastq_screen](includes/images/fq_screen_plot.png)
-    
-
 ### Coverage
 A measurement of how well covered your sample is. Usually defined as *"Y" X coverage*, where for example 40X coverage is normal in whole genome sequencing (WGS). This means that the average position is covered by *Y* number of reads. There are many different programs that calculate coverage (often in combination with other QC parameters), some examples are:
 
@@ -102,7 +94,7 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
 - [Picard CollectAlignmentSummaryMetrics](https://gatk.broadinstitute.org/hc/en-us/articles/13832683660955-CollectAlignmentSummaryMetrics-Picard-)
 - [Mosdepth](https://github.com/brentp/mosdepth)
 
-!!! question "Question 4"
+!!! question "Question 3"
     :question: Calculate the average coverage of TP53's exon3 (hg19: chr17:7579312-7579590) in SampleB with mosdepth.  
     Either you do this locally on your computer (need to have singularity available), or on Uppmax.  
     *(Bam-file aligned to Hg19 reference genome.)*  
@@ -121,7 +113,7 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
     ```
     
     ??? tip
-        Looking into [mosdepth documentation](https://github.com/brentp/mosdepth) or using the built-in help `mosdepth --help`, is there a parameter that can help you restrict you calculation to only the region of interest?
+        Looking into [mosdepth documentation](https://github.com/brentp/mosdepth) or using the built-in help `mosdepth --help`, is there a parameter that can help you restrict your calculation to only the region of interest?
         
         ??? tip 
             How would you translate the region into a bedfile format?  
@@ -136,13 +128,14 @@ Just like you did in [lab 1](lab1.md#assignment-3), you can identify sequencing 
 
 ![mosdepth_percontig](includes/images/mosdepth-coverage-per-contig.png)
 
-!!! question "Question 5"
+!!! question "Question 4"
     :question: Looking at the coverage distribution (above) for 16 samples (same capture panel, same sequence run), what stands out? 
     ??? tip
-        Are there a difference between autosomal and sex chromosomes?  
+        Look at the autosomal and the sex chromosomes separately.  
         ??? tip "Autosomal chromosomes"
-            Looking at the autosomal chromosome there is one sample that stands out. This is its CNV profile. What does that tell us?  
-            ![cnv_profile](includes/images/cnv_profile_12add.png)
+            Looking at the autosomal chromosome there is one sample that stands out. This is its normalised read counts (denoised copy ratio) plotted per chromosome.
+            What does that tell us?  
+            ![cnv_profile](includes/images/cnv_profile_12add_cropped.png)
         ??? tip "Sex chromosomes"
             How many copies do we have of the sex chromosomes compared to autosomal, and how does this correlate to coverage?  
 
@@ -178,7 +171,7 @@ Fastqc 100 000 reads 50 bp identical
 #### Aligned
 picard, mapped 5' end of read -->
 
-!!! question "Question 6"
+!!! question "Question 5"
     Use the files in `lab2_qc/`-folder answer the following questions:  
     :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 7.
     ??? tip
@@ -192,9 +185,8 @@ picard, mapped 5' end of read -->
 | Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
 | --- | --- | --- | ---- | --- |
 | SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  |
-| SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 
-!!! question "Question 7"
+!!! question "Question 6"
     :question: Fill out the table above with the missing values for sampleD.
 
     ??? tip
@@ -209,15 +201,21 @@ picard, mapped 5' end of read -->
         
 
 ## MultiQC
-As you might have notice it takes quite a while to identify and find the different QC-values to track. To combat the never-ending file searching and enable easier tracking of QC-values the program [MultiQC](https://multiqc.info/) is often used. MultiQC aggregate the different QC-values into a single report. MultiQC **only** aggregate results from other programs (over [100 tools](https://multiqc.info/modules/) are automatically included, but you can also build your own tables or plots) and never does any calculation, therefor what values you can find and the layout of a MultiQC report varies a lot. It all depends on which programs you have run and input into MultiQC. MultiQC also allows you to configure almost all parts of the report with a config so a MultiQC-report does not always look like a "MultiQC-report".  
+As you might have notice it takes quite a while to identify and find the different QC-values to track. To combat the never-ending file searching and enable easier tracking of QC-values the program [MultiQC](https://multiqc.info/) is often used. MultiQC aggregate the different QC-values into a single report. MultiQC **only** aggregate results from other programs (over [100 tools](https://multiqc.info/modules/) are automatically included, but you can also build your own tables or plots) and never does any calculation, therefore what values you can find and the layout of a MultiQC report varies a lot. It all depends on which programs you have run and input into MultiQC. MultiQC also allows you to configure almost all parts of the report with a config so a MultiQC-report does not always look like a "MultiQC-report".  
 
 <br>
 The report is a self-contained interactive `.html`-file where you can adapt/configure/highlight etc the plots and tables directly in your web-browser. It also allows for an easy export of table and plots if needed. 
-!!! question "Question 8"
+!!! question "Question 7"
     :question: Open the provided MultiQC-report (`lab2_qc/MultiQC_DNA_report.html`) and "play around" with the different tools and parameters. Once you feel ready upload a screen-print of the MultiQC report with sampleP highlighted using the "Toolbox" on the right side of the report.
 
-!!! question "Question 9"
-    :question: Fill in the same table as in Question 7 but for SampleE with the values found in the MultiQC report.
+---
+
+| Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
+| --- | --- | --- | ---- | --- |
+| SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
+
+!!! question "Question 8"
+    :question: Fill in the table above, as in Question 7, but for SampleE with the values found in the MultiQC report.
     ??? tip 
         For all MultiQC tables you can configure and choose which columns to view by clicking the **:material-dots-grid:Configure Columns**-button.
 
@@ -225,14 +223,15 @@ The report is a self-contained interactive `.html`-file where you can adapt/conf
 The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
 
 ### BaseQ and MapQ
-There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. However, the baseQ vary depending on sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want at least a phred-score of at least 20 to be able to trust a base-call.
+There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. However, the baseQ vary depending on sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want a phred-score of at least 20 to be able to trust a base-call.
 
 The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and therefore it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
-!!! question "Question 10"
-    :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q30?
+!!! question "Question 9"
+    :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q20?
     ??? tip
-        Sort the position based on base (right click -> sort by -> base). Under view -> preferences -> alignments make make sure that  `shade mismatched bases by quality` is checked.
+        Sort the position based on base (right click -> sort by -> base). By default IGV only displays 100 reads. 
+        To show all reads click View -> PreferencesUnder view -> Preferences -> Alignments and un-tick "Downsampling reads". Also make sure that  `Shade mismatched bases by quality` is checked.
 
 <!-- 14              -->
 
@@ -241,19 +240,7 @@ Most variant callers have some sort of genotype quality scoring available for ea
 
 ![gq_values](includes/images/gq_values.png)
 
-If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller) and [Google's Deepvariant](https://github.com/google/deepvariant)); both specialized on germline calling, both use the flag `GQ` and the `QUAL` column as a quality measurements, we see a clear difference on both of the quality scores for the same variants. That said, the genotype quality score is not useless, but actually a good quality measurement of a variant call, you just always have to know how the file were produced and what scoring thresholds are considered "good" for that specific program. 
-
-### Background and artifacts
-Another step for validating your variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
-
-To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify than others, for example sequencing chemistry can affect our ability to sequence certain areas.
-
-!!! question "Question 11"
-    :question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
-
-To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No technique has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
-
-Both background and artifacts is a lot easier identify if a normal pool of samples is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include. 
+If we compare two variantcallers ([GATK's Haplotypcaller](https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller) and [Google's Deepvariant](https://github.com/google/deepvariant)); both specialized on germline calling, both use the flag `GQ` and the `QUAL` column as a quality measurements, we see a clear difference on both of the quality scores for the same variants. That said, the genotype quality score is not useless, but actually a good quality measurement of a variant call, you just always have to know how the file were produced and what scoring thresholds are considered "good" for that specific program.  
 
 <br>
 
@@ -262,7 +249,8 @@ Both background and artifacts is a lot easier identify if a normal pool of sampl
 ## Extra assigment
 **Coverage breadth**
 
-Finding coverage breadth is not always easy. In the mosdepth_bed folder, locate the `qc/mosdepth_bed/sampleD_T.thresholds.bed.gz` file and have a look inside it with `less ${file}` (use `q` to exit).  
+Finding coverage breadth is not always easy. In the mosdepth_bed folder, locate the `qc/mosdepth_bed/sampleD_T.thresholds.bed.gz` file and have a look inside it with `less ${file}` (use `q` to exit).
+In this file the number of bases covered per region is presented for a set of different threshold values.    
 
 :question: Fill in the table for coverage breadth for sampleD. You want the total coverage breadth, not per region.  
 
@@ -275,7 +263,7 @@ To calculate the % &ge; Yx you need to add together coverage for the entire desi
         
 For example:
 
-|  |  |  | 10x|
+| chrom | start | end | 10x|
 |---|---|---|---|
 |chrA |1 |11|2|
 |chrA|20|25|0|
@@ -303,7 +291,21 @@ Would give us $$ \frac {(2+0)} {(11-1)+(25-20)}=0.1333... $$ i.e. 13.3 % &ge; 10
         
         Compare your values with the value found in MultiQC.
 
-:question: See if you can find a way of calculating the coverage breadth of 450x for sampleD_subsample.
+:question: See if you can find a way of calculating the coverage breadth of 450x for chromosome 17 in sampleD_subsample.
+Use the file `lab2_qc/chr17_hg19.bed` to restrict the calculations to regions on chromosome 17.
 
 ??? tip
     Which program was used to produce the original file? Is there a way of change the input parameters to calculate different level of coverage breadth?
+
+
+**Background and artifacts**
+
+Another step for validating a variant is eliminating the risk that the variant actually is a sequencing artifact or just background from a "messy" region.  
+
+To identify artifacts you have to be able to separate the real variant calls from the variants that look like a real disease causing variant but is actually a call introduced by of some sort of bias. What further complicates the process is that since in sequencing we use organic enzymes and proteins we often introduce artifacts in the same region as the cell might have trouble processing the DNA, such as long repetitive sequences or homopolymers. Some artifacts are easier to identify than others, for example sequencing chemistry can affect our ability to sequence certain areas.
+
+:question: What is the most classic artifact introduced by 2-color chemistry in the Illumina sequencing?
+
+To identify background noise you need to separate an actual call to the normal noise or distribution of basecalls. No technique has 100 % base recall, and even if that was the case we still primarily sequence short-read today, there is always a chance that your read actually originates from somewhere else. Most background is below 5 % allele frequency otherwise it moves towards being an artifact, so for most high frequency variants we are safe. The problem arises when we want to be able to detect low frequency variants. To be able to detect low frequency variants we have to sequence deeper and have greater prior knowledge of the methods. 
+
+Both background and artifacts is a lot easier identify if a normal pool of samples is available to compare your data with. A normal pool consists of a number (the more the better) of "healthy" samples processed identical (or as close as possible) as your sample. Small and big biases are always introduced what ever we do, therefore it is important to spread out the normal samples in several batches to mitigate batch-bias. And different sequencing machines use different chemistry you need a normal-pool for each machine type you plan to include.
