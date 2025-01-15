@@ -173,7 +173,7 @@ picard, mapped 5' end of read -->
 
 !!! question "Question 5"
     Use the files in `lab2_qc/`-folder answer the following questions:  
-    :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 7.
+    :question: Find the estimated duplication rate for sampleD from both FastQC and Picard CollectDuplicateMetrics. Fill in values in the table in question 6.
     ??? tip
         Checkout the output from the different programs under the `qc`-folder.
     :question: Explain why the duplication rate differs between FastQC and Picard MarkDuplicates/CollectDuplicateMetrics?
@@ -182,12 +182,8 @@ picard, mapped 5' end of read -->
 
 ---
 
-| Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
-| --- | --- | --- | ---- | --- |
-| SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  |
-
 !!! question "Question 6"
-    :question: Fill out the table above with the missing values for sampleD.
+    :question: Fill out the table below with the missing values for sampleD.
 
     ??? tip
         Navigate the different outputs under the `qc`-folder to find the missing values for sampleD.
@@ -196,6 +192,10 @@ picard, mapped 5' end of read -->
             Duplication rate: fastqc or collect duplicate metrics  
             Mean coverage: mosdepth  
             Fold80: Picard HsMetrics
+
+| Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
+| --- | --- | --- | ---- | --- |
+| SampleD | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 
 
         
@@ -210,14 +210,14 @@ The report is a self-contained interactive `.html`-file where you can adapt/conf
 
 ---
 
+!!! question "Question 8"
+    :question: Fill in the table below, as in Question 6, but for SampleE with the values found in the MultiQC report.
+    ??? tip 
+        For all MultiQC tables you can configure and choose which columns to view by clicking the **:material-dots-grid:Configure Columns**-button.
+
 | Sample  | Total sequences (M Seqs) | Duplication rate | Mean Coverage |  Fold80 |
 | --- | --- | --- | ---- | --- |
 | SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
-
-!!! question "Question 8"
-    :question: Fill in the table above, as in Question 7, but for SampleE with the values found in the MultiQC report.
-    ??? tip 
-        For all MultiQC tables you can configure and choose which columns to view by clicking the **:material-dots-grid:Configure Columns**-button.
 
 ## Variant Quality
 The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
@@ -228,7 +228,7 @@ There are several different ways and steps to validate a variant. Most variant c
 The other quality-value that is usually included are mapping quality, how well a read has aligned to exactly that specific region of the reference genome. Different aligners use different scoring algorithm and therefore it is hard to compare quality values across programs. For some more in-depth reading see [here](http://www.acgt.me/blog/2014/12/16/understanding-mapq-scores-in-sam-files-does-37-42) and [here](https://davetang.org/muse/2011/09/14/mapping-qualities/) for example.
 
 !!! question "Question 9"
-    :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a basequality below Q20?
+    :question: Open `.bam` file called `sampleD_subset.bam` in IGV, and navigate to `chr17:7577114`. How many `T` calls have a base quality below Q20?
     ??? tip
         Sort the position based on base (right click -> sort by -> base). By default IGV only displays 100 reads. 
         To show all reads click View -> PreferencesUnder view -> Preferences -> Alignments and un-tick "Downsampling reads". Also make sure that  `Shade mismatched bases by quality` is checked.
