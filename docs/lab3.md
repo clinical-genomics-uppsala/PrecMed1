@@ -8,7 +8,7 @@ In this computer lab we are going to explore different kinds of germline variant
     - Case 2: Patient with hemochromotosis
     - Case 3: Analysis of a Trio using variants and HPO terms
     - Case 4: Structural variant underlying a heritable cancer syndrome
-    - Case 5: Repeat Expansion detection
+    - Case 5: Repeat Expansion detection (**Optional** extra case)
 
 ## Prerequisites 
 All of the below are installed or available through the module system on rackham/snowy.
@@ -115,7 +115,7 @@ The bcftools program is available on uppmax through the module system and can be
 module load bioinfo-tools bcftools/1.19
 ```
 
-One loaded we can list all the available VEP subfields from the CSQ INFO field
+Once loaded we can list all the available VEP subfields from the CSQ INFO field
 
 ```bash
 bcftools +split-vep case1.vep_annotated.vcf.gz -l 
@@ -264,7 +264,7 @@ Use the filtered vcf generated from Steps 1-3 above and the `case4_sv.bam` file 
         View as pairs option in IGV can help visualise the effect of the SV on insert size
 
 ---
-### Case5 - Repeat expansion detection
+### Optional Case5 - Repeat expansion detection
 
 Next we will take a look at the difficult problem of calling expansions of short tandem repeats (STRs) with whole genome Illumina paired-end data.
 
