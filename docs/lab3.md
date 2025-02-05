@@ -48,6 +48,12 @@ cd lab3_germline
 ## 1. Visualising Germline Variants in IGV
 The visual inspection of the sequencing data supporting a germline variant is an important part of a clinical bioinformaticians work. Here we will use IGV to visualise some structural variants.
 
+It is also recommended to download the bam file to your local computer using scp or similar. Example using scp on you local machine:
+
+```bash
+scp -r {username}@rackham.uppmax.uu.se:~/lab3_germline/sv_examples/ .
+```
+
 The reads in the BAM file we will used have been mapped to the **hg38** reference genome, so make sure to switch to this genome version in IGV.
 
 Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` folder. 
