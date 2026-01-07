@@ -22,7 +22,7 @@ cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab4_somatic/ ~/
 cd lab4_somatic
 ```
 
-It is also recommended to download the files to you local computer (if you have not done that already) using scp or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine:
+It is also recommended to download the files to you local computer (if you have not done that already) using scp, [FileZilla](https://uppsala.instructure.com/courses/115337/pages/things-to-do-before-the-course-starts) or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine:
 
 ```bash
 scp -r {username}@pelle.uppmax.uu.se:~/lab4_somatic .
