@@ -22,7 +22,7 @@ cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab4_somatic/ ~/
 cd lab4_somatic
 ```
 
-It is also recommended to download the files to you local computer (if you have not done that already) using scp, [FileZilla](https://uppsala.instructure.com/courses/115337/pages/things-to-do-before-the-course-starts) or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine:
+It is also recommended to download the files to you local computer (if you have not done that already) using scp, [FileZilla](https://uppsala.instructure.com/courses/115337/pages/things-to-do-before-the-course-starts) or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine (exchange {username} with you own username on uppmax):
 
 ```bash
 scp -r {username}@pelle.uppmax.uu.se:~/lab4_somatic .
@@ -41,6 +41,9 @@ Lets first explore some different types of variant that can occur in a somatic s
 ### IGV
 Open IGV and then open the `HD832_T.variant.genes.bam` file, make sure that the reference genome is set to **Human hg19**. 
 
+### IGV settings
+Somatic with low allele frequency does not show up in coverage track. To mitigate this **Right-click on coverage track, then Set allele frequency threshold to 0.05.**
+
 ### Variants
 In the regions below there are different type of variants or mutations. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/). **In Questions 1 - 4 we use the same regions so it might be convenient to answer all these question at once for each region.**
 
@@ -52,6 +55,12 @@ In the regions below there are different type of variants or mutations. For addi
 * chr3:41265991-41266273
 * chr2:29416005-29416044
 
+!!! TIP
+    * Copy the regions into IGV
+    * Zoom in when needed
+    * Left click on positions in the coverage track to see support for each allele
+    * Right click in the read track and choose Collapsed or Squished to see more of the data
+
 !!! question "Question 1"
     :question: 
     In the regions above there are variants, determine which variant is of which type (there can be more than one). **Only variants with allele frequency above 5%** should be considered as this is the limit used in the clinic for this sequencing panel.
@@ -62,16 +71,9 @@ In the regions below there are different type of variants or mutations. For addi
     * Deletion
     * Insertion
 
-    !!! TIP
-    * Copy the regions into IGV
-    * Zoom in when needed
-    * Left click on positions in the coverage track to see support for each allele
-    * Right click in the read track and choose Collapsed or Squished to see more of the data
-
-
 !!! question "Question 2"
     :question: 
-    Determine the exact start position of the variants for all non-artifact variants
+    **In question 2-4, ignore the artifact region.** Determine the exact genomic starting position of the variants for all non-artifact variants
 
 !!! question "Question 3"
     :question: 
@@ -79,7 +81,7 @@ In the regions below there are different type of variants or mutations. For addi
 
 !!! question "Question 4"
     :question: 
-    Determine the allele frequency for all non-artifact variants
+    Determine the allele frequency for all non-artifact variants. **Allele frequency for deletions and insertion need manual calculations**
     ??? note
         IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers perform additional filtering of reads before calculating AF.
 
@@ -133,7 +135,7 @@ Investigate the annotation of the SNV found in the region chr7:140453022-1404532
 
 !!! question "Question 8"
     :question:
-    What effect does the variant have on the protein sequence?
+    What effect does the variant have on the protein sequence? **Answer with amino acid number and change**
 
 !!! question "Question 9"
     :question:
@@ -169,11 +171,11 @@ Now, lets consider a sample with large chromosomal alterations: `CNV/tumor.cnv.h
 
 !!! question "Question 10"
     :question:
-    Based on the Genome view, how many chromosomes have deletions?  (Always take special care when looking at the X chromosome)
+    Based on the Genome view, which chromosomes have large deletions?  (Always take special care when looking at the X chromosome)
 
 !!! question "Question 11"
     :question:
-    Based on the Genome view, how many chromosomes have duplications?
+    Based on the Genome view, which chromosomes have large duplications?
 
 ### Sample with clinically relevant amplification
 In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Cancers with this amplification are often resistant to tyrosine kinase inhibitors and can therefore affect the treatment of the patient. 
@@ -181,15 +183,15 @@ In this sample (`CNV/EGFR_amp.cnv.html`) there is an amplification of EGFR. Canc
 Find the EGFR amplification and zoom in on the gene.
 
 !!! TIP
-    When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.
+    **OBS!!! When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.**
 
 !!! question "Question 12"
     :question:
-    What is the approximate log2 ratio, based on the plot, of the EGFR mutation?
+    What is the approximate log2 ratio, based on the plot, of the EGFR amplification? **Do not miss the tip above!**
 
 !!! question "Question 13"
     :question:
-    The table reports the copy number after taking tumor content into account. What is the actual reported copy number estimated in the tumor?
+    The table reports the copy number of the EGFR amplification after taking tumor content into account. What is the actual copy number found in the tumor based on the table?
 
 
 ### Sample with clinically relevant deletion
@@ -252,7 +254,7 @@ The output will end up in folder named analysis
 
 !!! question "Question 15"
     :question:
-    Find and report an somatic SNV (single nucleotide variant) from the gene ALK that isn't common in the population?
+    Find and report an somatic SNV (single nucleotide variant) from the gene ALK that is found in less than 1% in the population?
 
 !!! TIP
     * Look at the annotated vcf file under analysis.
