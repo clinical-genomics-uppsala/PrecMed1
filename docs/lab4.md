@@ -14,24 +14,24 @@ In this computer lab we are going to explore different kinds of somatic variants
 * rsync
 
 ## Files
-Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
-Download the lab 4 files to your home directory on rackham (UPPMAX).
+Login to [pelle](https://docs.uppmax.uu.se/cluster_guides/pelle/) on UPPMAX.
+Download the lab 4 files to your home directory on pelle (UPPMAX).
 
 ```bash
 cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab4_somatic/ ~/
 cd lab4_somatic
 ```
 
-It is also recommended to download the files to you local computer using scp or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine (exchange {username} with you own username on uppmax):
+It is also recommended to download the files to you local computer (if you have not done that already) using scp, [FileZilla](https://uppsala.instructure.com/courses/115337/pages/things-to-do-before-the-course-starts) or similar (for easier viewing of bam, html, and pdf files). Example using scp on you local machine (exchange {username} with you own username on uppmax):
 
 ```bash
-scp -r {username}@rackham.uppmax.uu.se:~/lab4_somatic .
+scp -r {username}@pelle.uppmax.uu.se:~/lab4_somatic .
 ```
 
 ## Links to resources
 * [Genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/)
 * [The role of fusion genes in cancer](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7931065/)
-* [Fusion caller: Arriba](https://arriba.readthedocs.io/en/latest/)
+* [Fusion caller: Arriba](https://github.com/suhrig/arriba/wiki/01-Home)
 * [CNV caller: CNVkit](https://cnvkit.readthedocs.io/en/stable/pipeline.html)
 * [CNVkits explanation of log2 ratio](https://cnvkit.readthedocs.io/en/stable/calling.html)
 
