@@ -11,7 +11,7 @@ As the sequencing machine finishes it usually outputs some QC report, for Illumi
 
 If running locally:
 
-* Singularity
+* Singularity (not available on Mac M1 silicon chip and above)
 * awk
 
 ## Files
@@ -97,16 +97,16 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
 !!! question "Question 3"
     :question: Calculate the average coverage of TP53's exon3 (hg19: chr17:7579312-7579590) in SampleB with mosdepth.  
     Either you do this locally on your computer (need to have singularity available), or on Uppmax.  
+    mosdepth is not yet installed in Pelle, and have to be run using singularity. Singularity is always loaded in the Pelle environment so it can be run without loading it. 
     *(Bam-file aligned to Hg19 reference genome.)*  
 
     ```bash
     cd ~/${course_folder}/lab2_qc/
-    module load bioinfo-tools
-    module load mosdepth/0.3.3
-    mosdepth sampleB-output ${path_to_file}/sampleB_subset.bam
+    singularity exec docker://hydragenetics/mosdepth:0.3.2 mosdepth sampleB-output ${path_to_file}/sampleB_subset.bam
     ```
 
-    or if using singularity locally you need download bamfile and index files from Uppmax first, and then run mosdepth locally using singularity
+    If you are running locally, you need to download the bamfile and index files from Uppmax first, and then run it.
+
     ```bash
     # Files needed: sampleB_subset.bam and sampleB_subset.bam.bai
     singularity exec docker://hydragenetics/mosdepth:0.3.2 mosdepth sampleB-output sampleB_subset.bam
@@ -220,7 +220,7 @@ The report is a self-contained interactive `.html`-file where you can adapt/conf
 | SampleE | | FastQC: <br />CollectDuplicateMetrics: |  |  |
 
 ## Variant Quality
-The next step after you have validated the quality of the sequencerun is variants. How do we know that a variant we see is real and not an artifact?
+The next step after you have validated the quality of the sequence run is variants. How do we know that a variant we see is real and not an artifact?
 
 ### BaseQ and MapQ
 There are several different ways and steps to validate a variant. Most variant callers have build-in filtering steps that ensures that the variants reported are filtered or at least flagged if the confidence is low. One of the most basic way is to look at the [base quality](lab1.md)<!--find specific passage about phredsscore --> of the variant's alternative bases. However, the baseQ vary depending on sequencing [machine and/or version of said machine](https://en.wikipedia.org/wiki/FASTQ_format#Encoding). A good rule-of-thumb is that you always want a phred-score of at least 20 to be able to trust a base-call.
