@@ -129,7 +129,7 @@ Scroll further down in the document to find additional fusions that Arriba has f
 ---
 
 ## Variant annotation in vcf
-Use the `grep` or `bcftools` command on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
+Use the `grep` or `bcftools` (use module load BCFtools first on Pelle) command on the vcf-file `HD832_T.filtered.vcf` to investigate the variants found earlier. 
 
 Investigate the annotation of the SNV found in the region chr7:140453022-140453248. 
 
@@ -224,8 +224,8 @@ The different tools that will be run are:
 ### Start an interactive job
 UPPMAX is not happy if we run to much on the head node so we need to start an interactive job
 ```sh
-# on Rackham
-interactive -M snowy -A uppmax2024-2-1 -n 1 -p core -t 1:00:00
+# on Pelle
+interactive -A uppmax2024-2-1 -t 2:00:00
 ```
 
 ### Setup environment
@@ -235,10 +235,10 @@ To run the pipeline Snakemake needs to be installed.
 cd ~/lab4_somatic/pipeline
 
 # load python and slurm library 
-module load python3/3.9.5 slurm-drmaa
+module load Python slurm-drmaa
 
 # Setup environment
-python3.9 -m venv venv && source venv/bin/activate
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 
