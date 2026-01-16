@@ -17,7 +17,7 @@ If running locally:
 ## Files
 Can be found at the Uppmax project (uppmax2024-2-1).
 To ensure that you don't accidentally overwrite someone elses file start by copying the entire `lab2_qc` folder to your home (or local computer).
-Either download the entire folder locally or all work can be done in your own homefolder on Rackham.
+Either download the entire folder locally or all work can be done in your own homefolder on Pelle.
 
 ```bash
 mkdir ~/${course_folder}
