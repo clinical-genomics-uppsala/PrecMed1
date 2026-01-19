@@ -11,7 +11,7 @@ In this computer lab we are going to explore different kinds of germline variant
     - Case 5: Repeat Expansion detection (**Optional** extra case)
 
 ## Prerequisites 
-All of the below are installed or available through the module system on rackham/snowy.
+All of the below are installed or available through the module system on Pelle
 
 * [IGV](https://igv.org/) - Desktop application or web app  
 * Shell / terminal / putty  
@@ -24,13 +24,13 @@ All of the below are installed or available through the module system on rackham
 In this lab all analysis will be performed in an interactive job on the snowy cluster. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
 
 ```bash
-interactive -t 04:00:00 -n 1 -p core -M snowy -A uppmax2024-2-1
+interactive -A uppmax2024-2-1 -t 4:00:00
 ```
 
 
 ## Files
-Login to [rackham](https://www.uppmax.uu.se/support/user-guides/rackham-user-guide/) on UPPMAX.
-Download the lab 3 files to your home directory on rackham (UPPMAX).
+Login to [pelle](https://docs.uppmax.uu.se/cluster_guides/pelle/) on UPPMAX.
+Download the lab 3 files to your home directory on pelle (UPPMAX).
 
 ```bash
 cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab3_germline/ ~/
@@ -51,7 +51,7 @@ The visual inspection of the sequencing data supporting a germline variant is an
 It is also recommended to download the bam file to your local computer using scp or similar. Example using scp on you local machine:
 
 ```bash
-scp -r {username}@rackham.uppmax.uu.se:~/lab3_germline/sv_examples/ .
+scp -r {username}@pelle.uppmax.uu.se:~/lab3_germline/sv_examples/ .
 ```
 
 The reads in the BAM file we will used have been mapped to the **hg38** reference genome, so make sure to switch to this genome version in IGV.
@@ -118,7 +118,7 @@ Using grep is a simple and quick way to extract information from a VCF. However,
 The bcftools program is available on uppmax through the module system and can be loaded as follows:
 
 ```bash
-module load bioinfo-tools bcftools/1.19
+module load BCFtools/1.22
 ```
 
 Once loaded we can list all the available VEP subfields from the CSQ INFO field
@@ -296,8 +296,7 @@ singularity exec --no-home -B $PWD:$PWD \
 Before we proceed further we need to sort and index the small bam file produced by ExpansionHunter using samtools available through the module system on Uppmax.
 
 ```
-module load bioinfo-tools
-module load samtools
+module load SAMtools/1.22
 
 samtools sort -O BAM  case5.expansion_hunter_realigned.bam -o case5.expansion_hunter_realigned.sorted.bam
 samtools index case5.expansion_hunter_realigned.sorted.bam
