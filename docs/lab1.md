@@ -84,7 +84,7 @@ In `~/lab1/` you will find an example of a FASTQ file generated with a NovaSeq s
 	Have a look at the [sequence identifier](https://en.wikipedia.org/wiki/FASTQ_format#Illumina_sequence_identifiers) of the FASTQ file. The format used in this file follows the changes after Casava 1.8. 
 
 	* Is this FASTQ file from paired end sequencing? (try to infer this from the sequence identifier, maybe the second file wasn't copied over)
-	* Which read pair are we looking at? 
+	* Which read in the read pair are we looking at (R1 / R2)? 
 	* What is the index of this sample? 
 
 
