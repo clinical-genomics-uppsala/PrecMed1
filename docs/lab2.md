@@ -97,12 +97,12 @@ A measurement of how well covered your sample is. Usually defined as *"Y" X cove
 !!! question "Question 3"
     :question: Calculate the average coverage of TP53's exon3 (hg19: chr17:7579312-7579590) in SampleB with mosdepth.  
     Either you do this locally on your computer (need to have singularity available), or on Uppmax.  
-    mosdepth is not yet installed in Pelle, and have to be run using singularity. Singularity is always loaded in the Pelle environment so it can be run without loading it. 
     *(Bam-file aligned to Hg19 reference genome.)*  
 
     ```bash
     cd ~/${course_folder}/lab2_qc/
-    singularity exec docker://hydragenetics/mosdepth:0.3.2 mosdepth sampleB-output ${path_to_file}/sampleB_subset.bam
+    module load mosdepth/0.3.12
+    mosdepth sampleB-output ${path_to_file}/sampleB_subset.bam
     ```
 
     If you are running locally, you need to download the bamfile and index files from Uppmax first, and then run it.
