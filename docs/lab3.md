@@ -77,6 +77,7 @@ In the regions below there are different types of structural variants.
     - Deletion
 
 !!! TIP
+    * In IGV click View > Preferences > Alignment > Show soft-clipped bases
     * Copy the regions into IGV
     * Zoom in or out as needed 
     * View as pairs
