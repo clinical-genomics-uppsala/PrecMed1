@@ -110,10 +110,10 @@ Using the current visualization settings it is hard to see the fusion break poin
 
 !!! question "Question 6"
     :question:
-    Using the gene track and the first transcript shown for each gene (NM_022965.4 and NM_006342.2) determine in which exons the fusion has occurred.
+    Using the gene track and a transcript of your choice determine in which exons the fusion has occurred. Specify both exon and transcript ID (NM_XXXX) in your answer.
 
 ### Fusion visualization using the Arriba fusion caller
-Somatic fusion calling can be performed by a number of different callers. One such caller is [Arriba](https://arriba.readthedocs.io/en/latest/). The nice thing with this caller is that the fusions that they call are [visualized](https://arriba.readthedocs.io/en/latest/visualization/) in a very clear and informative way. 
+Somatic fusion calling can be performed by a number of different callers. One such caller is [Arriba](https://github.com/suhrig/arriba/). The nice thing with this caller is that the fusions that they call are [visualized]https://arriba.readthedocs.io/en/latest/visualization/)(https://github.com/suhrig/arriba/wiki/06-Visualization) in a very clear and informative way. 
 
 Open the pdf file `RNA-SeraSeq_R.arriba.fusions.pdf` produced by Arriba. The first fusion in this document is the same one that we previously studied in IGV, FGFR3::TACC3. Here we can see the fusion breakpoint as well as the direction and if it is in-frame. This together with the included protein domains in the fusion product is important to determine if the fusion is clinically relevant.
 
