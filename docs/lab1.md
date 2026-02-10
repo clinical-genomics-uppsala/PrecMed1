@@ -94,7 +94,7 @@ Have a look at the the characters in the quality row, what do you think is happe
 !!! question "Question 2"
 
 	:question: 
-	What Phred score value do the symbols you see correspond to? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system (example: ! is 33 in the decimal system, Therefore the Phred score value is 33-33=0). 
+	What Phred score values do the symbols you see correspond to in the first four reads? Here is a link to an [ASCII table](https://en.wikipedia.org/wiki/ASCII#Printable_characters). Remember, we are counting from 33 in the decimal system (example: ! is 33 in the decimal system, Therefore the Phred score value is 33-33=0). 
 
 ## 2. BAM
 Aligned reads are stored in .sam/.bam/.cram files. While the .sam file is a regular text file, .bam is packaged as a binary file and therefore needs less disk space. A further compression is the .cram file which can be lossless or lossy. 
@@ -108,6 +108,10 @@ When working with the binary .bam and .cram files programs often need an index f
 
 In your terminal look and compare the .bam files in the directory. 
 Remember, .bam files are binary files, so using commands like `cat` or `less` will only results in gibberish on your screen. 
+
+??? tip
+    **To stop a job press Ctrl+C**
+
 Thankfully, there are programs that help you handling binary files. To explore .bam or .cram files you can use the program **samtools**. 
 [Samtools](https://www.htslib.org/doc/samtools.html) has a range of utilities to process sam/bam/cram files. These sub-commmands can be used like `samtools subcommand <optional flags>`. Each subcommand has it's own documentation page. Have a look at the documentation for [samtools view](https://www.htslib.org/doc/samtools-view.html), which is what we'll be using to investigate the .bam files. These files are really big so make sure to pipe into `less` or you will print the entire file in your terminal. 
 
@@ -152,7 +156,9 @@ In your next assignment we want to look at the reads with IGV. IGV needs index f
 You should then download the bam files and bam index files to your computer (sample_A.sorted and sample_C). **sample_B.bam** and it's index should have already been downloaded prior to the start of the lab as the file size is massive. You can download with scp. In a terminal window navigate to a local directory you want to download the data to and run: 
 
 ```text
-scp "<USER>@pelle.uppmax.uu.se:~/lab1/sample_{A,C}*.bam*"  . 
+scp "<USER>@pelle.uppmax.uu.se:~/lab1/sample_{A,C}*.bam*"  .
+# For Mac users
+scp "<USER>@pelle.uppmax.uu.se:~/lab1/sample_{A,C}\*.bam\*"  .
 ```
 exchange &lt;USER> with your uppmax user name. The command will prompt you to type in your uppmax password and then will transfer the data to the directory you are in. 
 
@@ -169,7 +175,7 @@ Now open IGV and select reference hg19. Load the .bam files of sample_A.sorted, 
 !!! question "Question 5"
 
 	:question:
-	Navigate to the gene ABL1. Look at the reference at the bottom to find where the exons are and where targeted regions might be sequenced. Zoom in closer and navigate to exonic sites. What is the difference between the different .bam files? See how the reads are mapped and also look at the coverage plots at the top of each .bam file. The samples we are looking at where sequenced with three different strategies, namely whole genome, amplicon and capture. Can you find out which sample was sequenced with which strategy?  
+	Navigate to the gene ABL1. Look at the reference at the bottom to find where the exons are and where targeted regions might be sequenced. Zoom in closer and navigate to exonic sites (for example around chr9:5073770). What is the difference between the different .bam files? See how the reads are mapped and also look at the coverage plots at the top of each .bam file. The samples we are looking at where sequenced with three different strategies, namely whole genome, amplicon and capture. Can you find out which sample was sequenced with which strategy?  
          
 
 !!! question "Question 6"
