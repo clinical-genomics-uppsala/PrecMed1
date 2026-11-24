@@ -265,7 +265,7 @@ Find the EGFR amplification and zoom in on the gene.
     The table reports the copy number of the EGFR amplification after taking tumor content into account. What is the actual copy number found in the tumor based on the table?
 
 #### Sample with clinically relevant deletion
-In the sample `CNV/CDKNA_B_del.cnv.html` there is a homozygous deletion of the genes CDKN2A and CDKN2B. This is a diagnostic marker in some cancer types, associated with poor prognosis.
+In the sample `CNV/CDKN2A_B_del.cnv.html` there is a homozygous deletion of the genes CDKN2A and CDKN2B. This is a diagnostic marker in some cancer types, associated with poor prognosis.
 
 Find the CDKN2A and CDKN2B deletion.
 
