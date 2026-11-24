@@ -25,7 +25,7 @@ Copy the files you need to your home directory:
 ```text
 cd ~
 mkdir lab1
-rsync /proj/uppmax2024-2-1/nobackup/lab_files/lab1_data_format/* ~/lab1/.
+rsync /proj/uppmax2024-2-1/uppmax2024-2-1/nobackup/lab_files/lab1_data_format/* ~/lab1/.
 ```
 
 The samples you will be working with in this lab are both from a germline sample (healthy tissue) as well as a somatic sample (blood cancer). 

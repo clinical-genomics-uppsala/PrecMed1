@@ -3,8 +3,7 @@ nav:
   - Introduction: intro.md
   - Lab1 - Sequencing data format and visualization: lab1.md
   - Lab2 - Sequencing quality control: lab2.md
-  - Lab3 - Germline variants: lab3.md
-  - Lab4 - Somatic variants: lab4.md
+  - Lab3 - Germline and somatic variants: lab3.md
 
 theme: material
 extra_css: [extra.css]

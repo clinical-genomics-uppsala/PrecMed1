@@ -21,7 +21,7 @@ Either download the entire folder locally or all work can be done in your own ho
 
 ```bash
 mkdir ~/${course_folder}
-cp -r /proj/uppmax2024-2-1/nobackup/lab_files/lab2_qc ~/${course_folder}
+cp -r /proj/uppmax2024-2-1/uppmax2024-2-1/nobackup/lab_files/lab2_qc ~/${course_folder}
 cd ~/${course_folder}/lab2_qc/
 ```
 
