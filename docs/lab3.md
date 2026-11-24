@@ -2,25 +2,30 @@
 In this computer lab we are going to explore different kinds of germline and somatic variants.
 
 ## Overview
-1. Visualise germline structural variants and somatic variants in IGV
-2. Find and examine potentially pathogenic germline variants:
+1. Germline variants:
+    - Visualise germline structural variants in IGV
     - Case 1: Pathogenic SNV in TP53 gene
     - Case 2: Structural variant underlying a heritable cancer syndrome
-3. Somatic copy number variations
-4. Repeat expansion detection (**Optional** extra case)
+2. Somatic variants:
+    - Visualise somatic variants in IGV
+    - Somatic copy number variations
+3. Repeat expansion detection (**Optional** extra case)
 
 ## Prerequisites
-All of the below are installed or available through the module system on Pelle
+On your own computer:
 
 * [IGV](https://igv.org/) - Desktop application or web app
 * Shell / terminal / putty
-* rsync
-* singularity
+
+On Pelle (installed or available through the module system):
+
 * bcftools
+* samtools
+* singularity
 
 ## Interactive jobs on Uppmax
 
-In this lab all analysis will be performed in an interactive job. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
+In this lab all command-line analysis will be performed in an interactive job. The following command can be used to launch an interactive session for 4 hours with 1 core allocated.
 
 ```bash
 interactive -A uppmax2024-2-1 -t 4:00:00
@@ -49,10 +54,11 @@ scp -r {username}@pelle.uppmax.uu.se:~/lab3_germline_and_somatic .
 * [CNV caller: CNVkit](https://cnvkit.readthedocs.io/en/stable/pipeline.html)
 * [STRipy STR database](https://stripy.org/database)
 
-## 1. Visualising Variants in IGV
+## 1. Germline Variants
+
+### Germline structural variants in IGV
 The visual inspection of the sequencing data supporting a variant is an important part of a clinical bioinformaticians work. For additional information regarding genetic variant types see [genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/).
 
-### Germline structural variants
 The reads in this BAM file have been mapped to the **hg38** reference genome, so make sure to switch to this genome version in IGV.
 
 Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` folder. In the regions below there are different types of structural variants. For additional information on interpreting read mapping in IGV see the [IGV documentation](https://igv.org/doc/desktop/#UserGuide/tracks/alignments/paired_end_alignments/#insert-size) on paired end alignments.
@@ -63,14 +69,6 @@ Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` fold
 * chr20:43695763-43697956
 * chr1:197786656-197790287
 
-!!! question "Question 1"
-    :question:
-    Determine the type of variants displayed above
-
-    - Inversion
-    - Tandem Duplication
-    - Deletion
-
 !!! TIP
     * In IGV click View > Preferences > Alignment > Show soft-clipped bases
     * Copy the regions into IGV
@@ -79,58 +77,26 @@ Open IGV and then open the `NA12878_examples.bam` file in the `sv_examples` fold
     * Color alignments by -> insert size and pair orientation
     * Sort alignments by -> insert size
 
-### Somatic variants
-Make a new session in IGV and open the `HD832_T.variant.genes.bam` file. This BAM file is mapped to **Human hg19**, so switch the reference genome.
-
-Somatic variants with low allele frequency do not show up in the coverage track. To mitigate this **right-click on the coverage track, then set allele frequency threshold to 0.05.**
-
-**In Questions 2 - 5 we use the same regions so it might be convenient to answer all these questions at once for each region.**
-
-**Regions:**
-
-* chr7:140453022-140453248
-* chr2:29416330-29416416
-* chr7:140434558-140434634
-* chr3:41265991-41266273
-* chr2:29416005-29416044
-
-!!! TIP
-    * Left click on positions in the coverage track to see support for each allele
-    * Right click in the read track and choose Collapsed or Squished to see more of the data
-
-!!! question "Question 2"
+!!! question "Question 1"
     :question:
-    In the regions above there are variants, determine which variant is of which type (there can be more than one). **Only variants with allele frequency above 5%** should be considered as this is the limit used in the clinic for this sequencing panel.
+    Determine the type of variants displayed above
 
-    * Region with many artifacts
-    * Somatic SNV
-    * Germline SNV
-    * Deletion
-    * Insertion
-
-!!! question "Question 3"
-    :question:
-    **In questions 3-5, ignore the artifact region.** Determine the exact genomic starting position of all non-artifact variants
-
-!!! question "Question 4"
-    :question:
-    Determine the number of supporting reads for all non-artifact variants
-
-!!! question "Question 5"
-    :question:
-    Determine the allele frequency for all non-artifact variants. **Allele frequency for deletions and insertions needs manual calculation**
-    ??? note
-        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers perform additional filtering of reads before calculating AF.
-
----
-## 2. Germline Cases
+    - Inversion
+    - Tandem Duplication
+    - Deletion
 
 ### Case 1 - Pathogenic SNV in TP53 gene
 
 #### VCF with VEP annotations
-Here we will take an example VCF file with a pathogenic variant in the TP53 gene. This case will serve as an example on how to filter variants in a vcf file and how to extract information about the variants. **There are no questions for this case**.
+Here we will take an example VCF file with a pathogenic variant in the TP53 gene. This case will serve as an example on how to filter variants in a vcf file and how to extract information about the variants. The same commands are used in Case 2.
 
 Here you are given a VCF file called `case1.vep_annotated.vcf.gz` containing SNVs and INDELs. The VCF has been annotated with variant effect information using the [Variant Effect Predictor](https://www.ensembl.org/info/docs/tools/vep/index.html) tool to calculate the [variant consequences](https://www.ensembl.org/info/genome/variation/prediction/predicted_data.html) of each variant in the VCF. The variant information added by VEP is located in the INFO field starting with "CSQ=".
+
+The commands below assume that you are in the `case1` folder:
+
+```bash
+cd ~/lab3_germline_and_somatic/case1
+```
 
 We can extract information about what the various fields in the VEP annotations are using a grep search of the VCF header:
 
@@ -182,8 +148,16 @@ Using bcftools also allows the output to be formatted in a more human readable w
 bcftools view -f PASS case1.vep_annotated.vcf.gz |  bcftools +split-vep -c MAX_AF:Float,SYMBOL -e "MAX_AF>0.1 | SYMBOL!='TP53'" -f "%CHROM %POS %SYMBOL %Consequence %IMPACT %Protein_position %Amino_acids %CLIN_SIG [%GT ]\n"
 ```
 
+!!! question "Question 2"
+    :question:
+    What is the consequence and the protein change of the pathogenic TP53 variant?
+
 ### Case 2 - Structural variant underlying a heritable cancer syndrome
-The files for this case are in the `case2` folder.
+The files for this case are in the `case2` folder:
+
+```bash
+cd ../case2
+```
 
 #### Clinical and Family History
 A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNVs and INDEL variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
@@ -200,22 +174,69 @@ Take a look inside the file called `case2_manta.vep_annotated.vcf.gz` using `les
 
 Use the filtered vcf generated from Steps 1-3 above and the `case2_sv.bam` file to answer the following questions:
 
-!!! question "Question 6"
+!!! question "Question 3"
     :question:
     Which of the Lynch Syndrome genes are affected by a structural variant?
 
-!!! question "Question 7"
+!!! question "Question 4"
     :question:
     What type of structural variant affects this gene and how large is it?
 
-!!! question "Question 8"
+!!! question "Question 5"
     :question:
-    Using the `case2_sv.bam` file, view the structural variant in IGV. Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
+    Using the `case2_sv.bam` file, view the structural variant in IGV (make sure the genome is set to **hg38**). Do the patterns of insert size and read coverage support for the structural variant indicate that the call made by Manta is correct?
     ??? tip "Hint"
         View as pairs option in IGV can help visualise the effect of the SV on insert size
 
 ---
-## 3. Somatic Copy Number Variation (CNV)
+## 2. Somatic Variants
+
+### Somatic variants in IGV
+Make a new session in IGV and open the `HD832_T.variant.genes.bam` file. This BAM file is mapped to **Human hg19**, so switch the reference genome.
+
+Somatic variants with low allele frequency do not show up in the coverage track. To mitigate this **right-click on the coverage track, then set allele frequency threshold to 0.05.**
+
+**In Questions 6 - 9 we use the same regions so it might be convenient to answer all these questions at once for each region.** One of the regions contains many artifacts; **ignore the artifact region in questions 7 - 9.**
+
+**Regions:**
+
+* A: chr7:140453022-140453248
+* B: chr2:29416330-29416416
+* C: chr7:140434558-140434634
+* D: chr3:41265991-41266273
+* E: chr2:29416005-29416044
+
+!!! TIP
+    * Left click on positions in the coverage track to see support for each allele
+    * Right click in the read track and choose Collapsed or Squished to see more of the data
+
+!!! question "Question 6"
+    :question:
+    In the regions above there are variants, determine which variant is of which type (there can be more than one). **Only variants with allele frequency above 5%** should be considered as this is the limit used in the clinic for this sequencing panel.
+
+    * Region with many artifacts
+    * Somatic SNV
+    * Germline SNV
+    * Deletion
+    * Insertion
+
+!!! question "Question 7"
+    :question:
+    **Ignore the artifact region.** Determine the exact genomic starting position of all non-artifact variants
+
+!!! question "Question 8"
+    :question:
+    Determine the number of supporting reads for all non-artifact variants
+
+!!! question "Question 9"
+    :question:
+    Determine the allele frequency for all non-artifact variants. **Allele frequency for deletions and insertions needs manual calculation**
+    ??? tip "Hint"
+        For a deletion or insertion, divide the number of reads with the deletion or insertion by the total number of reads at that position.
+    ??? note
+        IGV uses all reads available in the bamfile, no filtering except duplicate reads is applied by default. Therefore the calculated "raw" allele frequency from IGV does not always correlate with the AF found in vcf-files since callers perform additional filtering of reads before calculating AF.
+
+### Copy number variation (CNV)
 
 In cancer cells large and numerous copy number alterations are quite common, especially in certain solid tumors like lung cancers. CNVs are called by cancer specific callers like [CNVkit](https://cnvkit.readthedocs.io/en/stable/pipeline.html).
 
@@ -227,22 +248,22 @@ Open `CNV/tumor.cnv.html` in a browser. The first plot shows the zoomed-in view 
     * In the top plot, left-click to zoom out to chromosome view.
 
 !!! NOTE
-    Log2ratio is the copy number in the sample and is calculated as a ratio to the expected number of copies (diploid genome = 2) and then $ \log_2 $ is applied. A normal copy number of 2 is therefore $ \log_2(\frac {2}{2})=\log_2(1)=0 $.
+    The log2 ratio is the copy number in the sample relative to the expected number of copies (diploid genome = 2), with $ \log_2 $ applied. A normal copy number of 2 is therefore $ \log_2(\frac {2}{2})=\log_2(1)=0 $.
 
-    If the sample instead has an extra copy then $ \log_2(\frac {3}{2})=\log_2(1,5)=0.6 $
+    If the sample instead has an extra copy then $ \log_2(\frac {3}{2})=\log_2(1.5)=0.6 $
 
-    Or one lost copy is $ \log_2(\frac {1}{2})=\log_2(0,5)=-1 $.
+    Or one lost copy is $ \log_2(\frac {1}{2})=\log_2(0.5)=-1 $.
 
     However, this only applies if the tumor content is 100%. Otherwise, the effect of a somatic CNV will be smaller as only a subset of the cells are affected. See further [CNVkits explanation of log2ratio](https://cnvkit.readthedocs.io/en/stable/calling.html).
 
 !!! NOTE
     The VAF-plots show the allele frequencies of heterozygous **germline** SNPs in the sample. When there is a somatic deletion or duplication the allele frequencies will increase or decrease depending on the allele. This is used as additional evidence of amplifications and deletions.
 
-!!! question "Question 9"
+!!! question "Question 10"
     :question:
     Based on the Genome view, which chromosomes have large deletions? (Always take special care when looking at the X chromosome)
 
-!!! question "Question 10"
+!!! question "Question 11"
     :question:
     Based on the Genome view, which chromosomes have large duplications?
 
@@ -256,11 +277,11 @@ Find the EGFR amplification and zoom in on the gene.
 !!! TIP
     **When there are really high amplifications the data is sometimes outside the default scale. Click the box "Zoom to data extent" to see all the data.**
 
-!!! question "Question 11"
+!!! question "Question 12"
     :question:
     What is the approximate log2 ratio, based on the plot, of the EGFR amplification? **Do not miss the tip above!**
 
-!!! question "Question 12"
+!!! question "Question 13"
     :question:
     The table reports the copy number of the EGFR amplification after taking tumor content into account. What is the actual copy number found in the tumor based on the table?
 
@@ -269,12 +290,15 @@ In the sample `CNV/CDKN2A_B_del.cnv.html` there is a homozygous deletion of the 
 
 Find the CDKN2A and CDKN2B deletion.
 
-!!! question "Question 13"
+!!! TIP
+    If the VAF plot does not show, choose chromosome 9 in the Genome view instead of using the magnifier glass in the gene list.
+
+!!! question "Question 14"
     :question:
     Based on the copy number plot and the VAF-plot it seems that most of chromosome 9 has only one copy in the tumor (heterozygous deletion). Motivate, based on both the log2 ratio and the VAF plot, why the region around CDKN2A and CDKN2B is a homozygous deletion in the tumor (both alleles deleted).
 
 ---
-## 4. Optional - Repeat expansion detection
+## 3. Optional - Repeat expansion detection
 
 Next we will take a look at the difficult problem of calling expansions of short tandem repeats (STRs) with whole genome Illumina paired-end data.
 
@@ -284,7 +308,11 @@ This male patient, age 40, has symptoms that include mild muscle weakness, myoto
 #### Repeat expansion genotyping
 To detect a repeat expansion in DMPK we will use a program called ExpansionHunter. A description and explanation of the VCF produced by ExpansionHunter is available [here](https://github.com/Illumina/ExpansionHunter/blob/master/docs/06_OutputVcfFiles.md). The `case3.bam` file contains reads mapped to a region of chr19 that contains the DMPK gene.
 
-All files needed are in the `case3` folder and the commands below assume that you are in that folder.
+All files needed are in the `case3` folder and the commands below assume that you are in that folder:
+
+```bash
+cd ~/lab3_germline_and_somatic/case3
+```
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -318,10 +346,9 @@ singularity exec --no-home -B $PWD:$PWD \
     --output-prefix case3.reviewer
 ```
 
-The image output by REViewer is in SVG format. This is best viewed in a web browser such as Firefox or Google Chrome. You can download
-the file called `case3.reviewer.DMPK.svg` and open it with your web browser. Examine the REViewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories, and to assess the coverage for each allele.
+The image output by REViewer is in SVG format. This is best viewed in a web browser such as Firefox or Google Chrome. You can download the file called `case3.reviewer.DMPK.svg` and open it with your web browser. Examine the REViewer plot to understand the division of the supporting reads into the spanning, flanking and in-repeat categories, and to assess the coverage for each allele.
 
-We will now use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated by ExpansionHunter are pathological. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
+We will now use the tool [Stranger](https://github.com/Clinical-Genomics/stranger) to annotate the short tandem repeats in the ExpansionHunter VCF. This program adds additional information whether the length of the alleles estimated by ExpansionHunter are pathogenic. See [here](https://github.com/Clinical-Genomics/stranger?tab=readme-ov-file#output) for further information on the stranger annotated vcf.
 
 ```bash
 singularity exec --no-home -B $PWD:$PWD \
@@ -331,21 +358,21 @@ singularity exec --no-home -B $PWD:$PWD \
 
 Use the `case3.stranger_annotated.vcf` file to answer the following questions:
 
-!!! question  "Question 14"
+!!! question  "Question 15"
     :question:
     How many repeats does the patient have in each allele?
 
-!!! question  "Question 15"
+!!! question  "Question 16"
     :question:
     Are both DMPK alleles above the pathogenic threshold?
 
-!!! question  "Question 16"
+!!! question  "Question 17"
     :question:
     ExpansionHunter divides supporting reads into spanning, flanking and in-repeat
     reads. How many spanning, flanking and in-repeat reads support the longer expanded allele?
 
 A good resource for staying updated on pathogenic expansion repeats is the [STRipy STR database](https://stripy.org/database). Go to the DMPK entry to see information on this repeat expansion and the frequency of different repeat lengths in gnomAD.
 
-!!! question  "Question 17"
+!!! question  "Question 18"
     :question:
     The tri-nucleotide repeat motif for DMPK in the literature is given as CTG. Why does ExpansionHunter report a repeat motif of CAG?
