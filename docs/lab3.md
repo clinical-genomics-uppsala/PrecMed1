@@ -50,7 +50,6 @@ scp -r {username}@pelle.uppmax.uu.se:~/lab3_germline_and_somatic .
 * [Genetic variants explained](https://bitesizebio.com/23996/whats-so-important-about-variants/)
 * [IGV desktop Documentation](https://igv.org/doc/desktop/)
 * [VEP glossary](https://www.ensembl.org/info/website/glossary.html)
-* [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)
 * [CNV caller: CNVkit](https://cnvkit.readthedocs.io/en/stable/pipeline.html)
 * [STRipy STR database](https://stripy.org/database)
 
@@ -162,8 +161,8 @@ cd ../case2
 #### Clinical and Family History
 A patient diagnosed with colon cancer and with a family history of colon cancer. Genetic testing is performed to determine if the patient has Lynch Syndrome (hereditary nonpolyposis colorectal cancer). The analysis of SNVs and INDEL variants did not reveal any likely pathogenic variants. Therefore structural variant calling was performed using the structural variant (SV) caller [Manta](https://github.com/Illumina/manta) which combines paired and split-read evidence to call SVs.
 
-#### Variant filtration
-Take a look inside the file called `case2_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar and Genome Aggregation Database (gnomAD) SV v4.0. We will perform three filtration steps to narrow down the list of SVs:
+#### Variant filtering
+Take a look inside the file called `case2_manta.vep_annotated.vcf.gz` using `less -S`. You can see that this file is annotated with VEP and has information from ClinVar and Genome Aggregation Database (gnomAD) SV v4.0. We will perform three filtering steps to narrow down the list of SVs:
 
 1. Retain only records with a PASS in the filter field.
 2. Look for variants that overlap with a set of candidate genes in the `lynch_syndrome_genes.bed`. The genes in this file were obtained from ClinVar's list of genes associated with Lynch Syndrome.
